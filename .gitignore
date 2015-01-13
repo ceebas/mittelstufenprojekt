@@ -1,0 +1,9 @@
+#ignore mac spam
+.DS_Store
+
+#ignore Windows BilderSpam
+Thumbs.db
+
+.metadata
+
+.project
