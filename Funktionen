@@ -1,0 +1,48 @@
+1.	Diese Datei zeigt Funktionen, die verschiedene Benutzergruppen ausführen können.
+2.	Die Funktionen, die normale Benutzer ausführen können, können alle Benutzergruppen ausführen.
+	2.1	Der Admin kann alle Funktionen - auch die der Projektleiter - ausführen. Daher sind beim Admin nur Methoden aufgeführt, die andere nicht können. 
+	2.2	Reporter sind von 2. und 2.1 ausgeschlossen.
+3.	Funktionen, die mehrfach benutzt werden, sind von der Funktionsweise verschieden.
+
+Allgemein für alle Benutzergruppen:
+	- login: Benutzerlogin
+	- logout: Benutzerlogout
+	- editProfile: Ändert die Benutzerdaten
+
+Projekte:
+	Als Admin
+		- addNewProject: Neues Projekt hinzufügen
+		- editProject: Vorhandenes Projekt bearbeiten
+		- deleteProject: Projekt löschen
+	Als Projektleiter
+		- editProject: Vorhandenes Projekt bearbeiten
+		- setProjectStatus: Projekt aktiv/inaktiv setzen
+		- addUserToProject: Benutzer zum Projekt hinzufügen
+		- deleteUserFromProject; Benutzer vom Projekt entfernen
+	Als normaler Nutzer
+		- viewProject: Zugewiesenes Projekt ansehen
+	Als Reporter
+
+Benutzer:
+	Als Admin:
+		- addUser: Benutzer hinzufügen
+		- editUser: Benutzer bearbeiten
+		- deleteUser: Benutzer löschen
+	Als Projektleiter:
+	Als normaler Nutzer:
+		- viewUser: Benutzerprofil ansehen
+	Als Reporter:
+
+Buchungen:
+	Als Admin:
+		- addTaskName: Erstellt neue Buchungsart
+		- deleteTaskName: Löscht eine Buchungsart
+	Als Projektleiter:
+		- exportTasks: Exportiert alle eigenen Buchungen oder eines Projektes, was er leitet.
+	Als normaler Nutzer:
+		- addTask: Buchung hinzufügen
+		- editTask: Buchung bearbeiten
+		- deleteTask: Buchung löschen
+		- exportTasks: Exportiert alle eigenen Buchungen von einem bestimmten Zeitraum oder eines zugewienenen Projektes	
+	Als Reporter:
+		- exportTasks: Exportiert alle Buchungen eines beliebigen Projektes, Nutzers oder Zeitraumes
