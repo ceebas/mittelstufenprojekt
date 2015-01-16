@@ -1,0 +1,10 @@
+DROP TABLE IF EXISTS "project_participants";
+CREATE TABLE "project_participants" ("id" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL , "user" INTEGER NOT NULL , "project" INTEGER NOT NULL, FOREIGN KEY("user") REFERENCES users(id), FOREIGN KEY("project") REFERENCES projects(id));
+DROP TABLE IF EXISTS "projects";
+CREATE TABLE "projects" ("id" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL , "name" VARCHAR NOT NULL , "leader" INTEGER NOT NULL , "budget" DOUBLE, "active" BOOL NOT NULL  DEFAULT true, "done" BOOL NOT NULL  DEFAULT false, "date_from" DATETIME NOT NULL , "date_to" DATETIME NOT NULL, FOREIGN KEY("leader") REFERENCES users(id));
+DROP TABLE IF EXISTS "tasks";
+CREATE TABLE "tasks" ("id" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL , "name" INTEGER NOT NULL , "hourly_wage" DOUBLE NOT NULL );
+DROP TABLE IF EXISTS "users";
+CREATE TABLE "users" ("id" INTEGER PRIMARY KEY  NOT NULL ,"username" VARCHAR NOT NULL ,"password" VARCHAR NOT NULL ,"email" VARCHAR NOT NULL ,"firstname" VARCHAR NOT NULL  DEFAULT (null) ,"name" VARCHAR NOT NULL ,"holidays" INTEGER NOT NULL ,"hours_week" INTEGER NOT NULL ,"role"  NOT NULL  DEFAULT (0) );
+DROP TABLE IF EXISTS "working_times";
+CREATE TABLE "working_times" ("id" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL , "project" INTEGER NOT NULL , "user" INTEGER NOT NULL , "task" INTEGER NOT NULL , "date" DATETIME NOT NULL , "duration" DOUBLE NOT NULL , "text" VARCHAR, "text_internal" VARCHAR,  FOREIGN KEY("project") REFERENCES projects(id), FOREIGN KEY("user") REFERENCES users(id), FOREIGN KEY("task") REFERENCES tasks(id));
