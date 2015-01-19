@@ -1,5 +1,5 @@
 DROP TABLE IF EXISTS "project_participants";
-CREATE TABLE "project_participants" ("id" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL , "user" INTEGER NOT NULL , "project" INTEGER NOT NULL, FOREIGN KEY("user") REFERENCES users(id), FOREIGN KEY("project") REFERENCES projects(id));
+CREATE TABLE "project_participants" ("user" INTEGER NOT NULL , "project" INTEGER NOT NULL, FOREIGN KEY("user") REFERENCES users(id), FOREIGN KEY("project") REFERENCES projects(id));
 DROP TABLE IF EXISTS "projects";
 CREATE TABLE "projects" ("id" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL , "name" VARCHAR NOT NULL , "leader" INTEGER NOT NULL , "budget" DOUBLE, "active" BOOL NOT NULL  DEFAULT true, "done" BOOL NOT NULL  DEFAULT false, "date_from" DATETIME NOT NULL , "date_to" DATETIME NOT NULL, FOREIGN KEY("leader") REFERENCES users(id));
 DROP TABLE IF EXISTS "tasks";
