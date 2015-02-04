@@ -8,7 +8,7 @@ module.exports = function() {
 	/* Datenbank-Tabellen erstellen */
 	/* Datenbank-Tabellen erstellen */
 	//Tabelle fuer Benutzer
-	connection.query("CREATE TABLE IF NOT EXISTS " + dbconfig.tableUsers + "(id_user INT NOT NULL AUTO_INCREMENT, username VARCHAR (45) UNIQUE NOT NULL, password VARCHAR (200) NOT NULL, PRIMARY KEY (id_user))", function(err, rows, fields) {
+	connection.query("CREATE TABLE IF NOT EXISTS " + dbconfig.tableUsers + "(id_user INT NOT NULL AUTO_INCREMENT, username VARCHAR (45) UNIQUE NOT NULL, password VARCHAR (200) NOT NULL, email VARCHAR (100), inactive INT, isAdmin INT, PRIMARY KEY (id_user))", function(err, rows, fields) {
 		if (err) {
 			var d = new Date();
 			console.log(d + "Fehler beim erstellen der Tabelle '" + dbconfig.tableUsers + "' " + JSON.stringify(err));
