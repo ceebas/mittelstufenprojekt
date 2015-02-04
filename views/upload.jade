@@ -1,0 +1,11 @@
+include ./layout/head.jade
+body
+  .container
+    include ./layout/nav.jade 
+    p
+      h2 Was möchtest du tun?
+
+      a.btn.btn-default(href='/uploadDoneGame.html') Ein fertiges Spiel hochladen
+      br
+      a.btn.btn-primary(href='createGame.html') Ein Spiel jetzt selber gestalten
+  include ./layout/footer.jade

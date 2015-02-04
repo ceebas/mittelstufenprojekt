@@ -1,0 +1,33 @@
+include ./layout/head.jade
+body
+  .container
+    include ./layout/nav.jade
+    -if(message != "")
+      div.alert.alert-warning #{message} 
+    form.form-signin(role='form', action='/userSetting', method='post')
+      h2.form-signin-heading Account bearbeiten
+      .input-group
+        -if (edituser.id != undefined)
+          input#username.form-control(name='id_user', type='text', value='#{edituser.id}', required='required', autocomplete='off', autofocus='autofocus', readonly='readonly')
+        input#username.form-control(name='username', type='text', value='#{edituser.username}', required='required', autocomplete='off', autofocus='autofocus', readonly='readonly')
+        input#username.form-control(name='email', type='text', value='#{edituser.email}', required='required', autocomplete='off', autofocus='autofocus')
+        input#password.form-control(name='newPassword', type='password', placeholder='Neues Passwort', autocomplete='off')
+        input#password.form-control(name='passwordControl', type='password', placeholder='Passwort wiederholen', autocomplete='off')
+
+      button#loginButton.btn.btn-lg.btn-primary.btn-block(type='submit') Ändern
+
+    if (results[0] !== undefined)   
+      h2.form-signin-heading Deine Spiele
+      each data in results
+        .col-sm-6.col-md-4.gamePanel
+          .thumbnail.indexGameView
+            if(data.imageEnc !== null)
+              img.previewPics(src='uploads/#{data.user}/#{data.id_game}.#{data.gamename}/image.#{data.imageEnc}', alt='#{data.gamename}')
+            else 
+              img.previewPics(src='img/placeholder.png', alt='#{data.gamename}')
+            .caption
+              h3 #{data.gamename}
+              p #{data.description}
+              p
+                a.btn.btn-primary(href='/play?game=#{data.id_game}', role='button') Anzeigen
+  include ./layout/footer.jade

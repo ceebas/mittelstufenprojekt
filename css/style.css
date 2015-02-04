@@ -2,3 +2,144 @@ body {
 	padding-top: 40px;
 	padding-bottom: 40px;
 }
+.header {
+	margin-bottom: 20px;
+}
+.footer {
+	text-align: center;
+	margin-bottom: -30px;
+}
+
+.thumbnail {
+	margin: 0px -15px 20px -15px !important;
+}
+.userControl {
+	position: absolute;
+	right: 260px;
+	padding: 0px;
+	top: 8px;
+}
+#userMenu {
+	position: absolute;
+	left: 910px;
+	top: 8px;
+}
+
+#userDropdown {
+	right: -4px;
+	left: 914px;
+	top: 39px;
+}
+
+#userDropdown a {
+	padding: 3px 10px;
+}
+
+#login {
+	position: absolute;
+	right: 3px;
+	top: 8px;
+}
+
+#canvas {
+	margin: 0px auto;
+	display: block;
+}
+
+.indexGameView {
+	height: 490px;
+}
+
+.gamePanel {
+	height: 500px;
+}
+
+.btn {
+	margin: 0 5px;
+}
+
+.btn-primary {
+	margin: 10px 0;
+}
+
+.previewPics {
+	margin-top: 15px;
+}
+.caption {
+	margin-left: 40px;
+}
+.red {
+	color: red;
+}
+.form-signin {
+	max-width: 330px;
+	padding: 15px;
+	margin: 0 auto;
+}
+.form-signin .form-signin-heading,
+.form-signin .checkbox {
+	margin-bottom: 10px;
+}
+.form-signin .checkbox {
+	font-weight: normal;
+	padding-left: 20px;
+}
+.form-signin .form-control {
+	position: relative;
+	height: auto;
+	-webkit-box-sizing: border-box;
+	   -moz-box-sizing: border-box;
+	        box-sizing: border-box;
+	padding: 10px;
+	font-size: 16px;
+}
+.form-signin .form-control:focus {
+	z-index: 2;
+}
+.form-signin input[type="email"] {
+	margin-bottom: -1px;
+	border-bottom-right-radius: 0;
+	border-bottom-left-radius: 0;
+}
+.form-signin input[type="password"] {
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+}
+.signUpPanel {
+	max-width: 310px;
+	padding: 15px;
+	margin: 0 auto;
+	text-align: center;
+}
+.signUpButton{
+	text-align: center;
+}
+.panel-body {
+	text-align: center;
+}
+/* under construction label*/
+#construction {
+	text-align: center;
+}
+/* Hover fuer die beiden navbar nav´s [Login & Upload] */
+.navbar-default .navbar-nav > .active > a:hover {
+	color: #000 !important;
+    background-color: rgba(255,68,0,0.65) !important; /*#ff4400 : orange */
+}
+/* "Trennlinie" zwischen den beiden navbar nav´s [Login & Upload] */
+#seperator {
+	border-right-style: solid;
+	border-width: 1px;
+	border-color: #b3b3b3;
+}
+
+/* Hover fuer Buttons */
+.btn-default:hover {
+	background-color: rgba(255,68,0,0.65) !important; /* orange */
+}
+
+.textcount {
+	font-style: italic;
+	float: right;
+	color: #808080;
+}

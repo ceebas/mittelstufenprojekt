@@ -1,52 +1,58 @@
 /* Erforderliche Module */
-var morgan = require('morgan'),
-	flash = require('connect-flash'),
-	session = require('express-session');
-
-var express = require("express"),
+var flash = require('connect-flash'),
+	session = require('express-session'),
+	express = require("express"),
 	app = express(),
-	mysql = require('mysql'),
 	bodyParser = require('body-parser'),
 	cookieParser = require('cookie-parser'),
 	passport = require("passport"),
-	jade = require('jade'),
-	LocalStrategy = require("passport-local").Strategy,
     multiparty = require('multiparty'),
-    fs = require('fs');
-    //http = require('http'),
-    //util = require('util');
+    fs = require('fs'),
+    bcrypt = require('bcrypt-nodejs'),
+	mysql = require('mysql');
 
-app.use(morgan('dev'));
-app.use(flash());
 /*Authentifizierung*/
+app.use(flash());
 app.use(cookieParser());
-app.use(session({ secret: 'Alle Kinder springen über die Schlucht, nur nicht Peter - dem fehlt ein Meter'}));
+app.use(session({
+	secret: 'Alle Kinder springen über die Schlucht, nur nicht Peter - dem fehlt ein Meter',
+	resave: true,
+	saveUninitialized: true
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 
 /* Allgemeine Einstellungen */
 var port = 8081;
+app.use(bodyParser.urlencoded({ 
+	extended: true 
+}));
+app.use(bodyParser.json());
+require('./config/createDatatables')();
+require('./config/passport')(passport, fs, bcrypt, mysql);
+require('./app/routes.js')(app, passport, fs, multiparty, bcrypt, mysql);
 
 /* Statische Auslieferung */
-app.use(bodyParser());
-app.use(bodyParser.urlencoded({ extended: true }));
-
-require('./config/createDatatables')();
-require('./config/passport')(passport);
-require('./app/routes.js')(app, passport, fs, multiparty);
-
-/* Zugriffsrechte fuer express */
 app.use("/bootstrap-3.2.0", express.static(__dirname + "/bootstrap-3.2.0"));
 app.use("/css", express.static(__dirname + "/css"));
 app.use("/img", express.static(__dirname + "/img"));
 app.use("/js", express.static(__dirname + "/js"));
+app.use("/uploads", express.static(__dirname + "/uploads"));
 
-
-app.use(function(err, req, res, next) {
-	console.error(err.stack);
-	res.status(500).send('Es ist ein fehler aufgetreten');
+//500 Handler
+app.use(function(err, request, response, next) {
+	response.status(500);
+	response.render('500.jade', {
+		err: err
+	});
 });
-console.log('node.js  ---- Mittelstufenprojekt  ----  Webserver');
 
-app.listen(port);
-console.log('* Server läuft auf localhost: ' + port + ' * \n');
+//404 Handler
+app.use(function(request, response) {
+    response.render('404.jade', 404);
+});
+
+app.listen(port, function() {
+	console.log('node.js  ---- WE LOVE GAMES  ----  Webserver');
+	console.log('* Server läuft auf localhost: ' + port + ' * \n');
+});

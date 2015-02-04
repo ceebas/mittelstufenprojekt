@@ -1,4 +1,31 @@
-doctype html
-html(lang='de')
-  body
-    Hello World!
+include ./layout/head.jade
+body
+  .container
+    include ./layout/nav.jade
+    -if(user)
+        div.alert.alert-info Willkommen, #{user.username}
+    -if(message != undefined && message.length > 0)
+      div.alert.alert-warning #{message}
+    -if(search != undefined)
+      -if (results[0] != undefined)
+        div.alert.alert-success Deine Suche nach "#{search}" hat folgendes Ergeben:
+      -else
+        div.alert.alert-warning Deine Suche nach "#{search}" hatte leider keine Ergebnisse :(
+    //
+       Spielvorschau 
+    .row
+    each data in results
+      .col-sm-6.col-md-4.gamePanel
+        .thumbnail.indexGameView
+          if(data.imageEnc !== null)
+            a(href='/play?game=#{data.id_game}')
+              img.previewPics(src='uploads/#{data.user}/#{data.id_game}.#{data.gamename}/image.#{data.imageEnc}', alt='#{data.gamename}')
+          else 
+            a(href='/play?game=#{data.id_game}')
+              img.previewPics(src='img/placeholder.png', alt='#{data.gamename}')
+          .caption
+            h3 #{data.gamename}
+            p #{data.description}
+            p
+              a.btn.btn-primary(href='/play?game=#{data.id_game}', role='button') Play
+  include ./layout/footer.jade

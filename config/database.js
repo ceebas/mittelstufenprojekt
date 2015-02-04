@@ -1,9 +1,9 @@
 // config/database.js
 module.exports = {
     'connection': {
-        'host': '192.168.196.68',
-        'user': 'server',
-        'password': 'izwodm'
+        'host': 'localhost',
+        'user': 'root',
+        'password': 'i2dm'
     },
 	'database': 'browseagame_node',
     'tableUsers': "users",
