@@ -12,15 +12,20 @@ module.exports = function() {
 		if (err) {
 			var d = new Date();
 			console.log(d + "Fehler beim erstellen der Tabelle '" + dbconfig.tableUsers + "' " + JSON.stringify(err));
-		} else {
-			if (rows[0] == undefined) {
-				connection.query("INSERT INTO " + dbconfig.tableUsers + " ( username, email, password, isAdmin ) values ('admin','info@i2dm.de','$2a$10$Lh4XtzJW2UuTy/dacCQCR.kbXVpETvscQ8VGDufF5gICchOHpt0nW','1')", function(err, rows) {
-					if (err) {
-						console.log(JSON.stringify(err));
-					}
-				});
+		} 
+		connection.query("SELECT * FROM " + dbconfig.tableUsers, function(err, rows) {
+			if (err) {
+				console.log(JSON.stringify(err));
+			} else {
+				if (rows[0] == undefined) {
+					connection.query("INSERT INTO " + dbconfig.tableUsers + " ( username, email, password, isAdmin ) values ('admin','info@i2dm.de','$2a$10$Lh4XtzJW2UuTy/dacCQCR.kbXVpETvscQ8VGDufF5gICchOHpt0nW','1')", function(err, rows) {
+						if (err) {
+							console.log(JSON.stringify(err));
+						}
+					});
+				}
 			}
-		}
+		});
 	});
 	//Tabelle fuer Spiel
 	connection.query("CREATE TABLE IF NOT EXISTS " + dbconfig.tableGames + "(id_game INT NOT NULL AUTO_INCREMENT, gamename VARCHAR (45), description VARCHAR (300),  user INT, FOREIGN KEY (user) REFERENCES " + dbconfig.tableUsers + " (id_user), PRIMARY KEY (id_game))", function(err, rows, fields) {
