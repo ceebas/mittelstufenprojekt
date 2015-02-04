@@ -12,6 +12,14 @@ module.exports = function() {
 		if (err) {
 			var d = new Date();
 			console.log(d + "Fehler beim erstellen der Tabelle '" + dbconfig.tableUsers + "' " + JSON.stringify(err));
+		} else {
+			if (rows[0] == undefined) {
+				connection.query("INSERT INTO " + dbconfig.tableUsers + " ( username, email, password, isAdmin ) values ('admin','info@i2dm.de','$2a$10$Lh4XtzJW2UuTy/dacCQCR.kbXVpETvscQ8VGDufF5gICchOHpt0nW','1')", function(err, rows) {
+					if (err) {
+						console.log(JSON.stringify(err));
+					}
+				});
+			}
 		}
 	});
 	//Tabelle fuer Spiel
