@@ -28,7 +28,7 @@ module.exports = function() {
 		});
 	});
 	//Tabelle fuer Spiel
-	connection.query("CREATE TABLE IF NOT EXISTS " + dbconfig.tableGames + "(id_game INT NOT NULL AUTO_INCREMENT, gamename VARCHAR (45), description VARCHAR (300),  user INT, FOREIGN KEY (user) REFERENCES " + dbconfig.tableUsers + " (id_user), PRIMARY KEY (id_game))", function(err, rows, fields) {
+	connection.query("CREATE TABLE IF NOT EXISTS " + dbconfig.tableGames + "(id_game INT NOT NULL AUTO_INCREMENT, gamename VARCHAR (20), description VARCHAR (150),  user INT, imageEnc VARCHAR (5), javascript VARCHAR (30), inactive INT, FOREIGN KEY (user) REFERENCES " + dbconfig.tableUsers + " (id_user), PRIMARY KEY (id_game))", function(err, rows, fields) {
 		if (err) {
 			var d = new Date();
 			console.log(d + "Fehler beim erstellen der Tabelle '" + dbconfig.tableGames + "' " + JSON.stringify(err));
