@@ -214,7 +214,7 @@ module.exports = function(app, passport, fs, multiparty, bcrypt, mysql) {
 
     	form.parse(req, function(err, fieldsObject, filesObject, fieldsList, filesList) {
     		//Daten werden in DB gespeichert
-    		connection.query("INSERT INTO " + db.tableGames + "(gamename, description, user) VALUES (?, ?, ?)", [fieldsObject.gamename, fieldsObject.gamedescription, req.user.id_user], function(err, rows, fields) {			
+    		connection.query("INSERT INTO " + db.tableGames + "(gamename, description, user, inactive) VALUES (?, ?, ?, 0)", [fieldsObject.gamename, fieldsObject.gamedescription, req.user.id_user], function(err, rows, fields) {			
     			if (!err) {
 					// Gibt die ID des des zufor erstellten Datensatzes aus
 					connection.query("SELECT LAST_INSERT_ID() as id_game", function(err, rows, fields){
