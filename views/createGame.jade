@@ -5,6 +5,14 @@ body
 		.panel.panel-default
 			.panel-heading 
 				h3 Erstelle nun dein Spiel
-			| Hier wird dein Spiel erstellt
+			form(method='POST', action='self')
+				input(type='text', name='gamename', placeholder='Name des Spiels')
+				br
+				input(type='radio', name='type', value='horizontal', checked='checked')
+				| horizontal Scroller 
+				input(type='radio', name='type', value='vertical')
+				| vertikal Scroller 
+				br
+				input(type='submit', value='senden')
 	include ./layout/footer.jade
 
