@@ -9,7 +9,7 @@ var flash = require('connect-flash'),
     multiparty = require('multiparty'),
     fs = require('fs'),
     bcrypt = require('bcrypt-nodejs'),
-	mysql = require('mysql');
+	mysql = require('pg');
 
 /*Authentifizierung*/
 app.use(flash());
@@ -28,7 +28,7 @@ app.use(bodyParser.urlencoded({
 	extended: true 
 }));
 app.use(bodyParser.json());
-require('./config/createDatatables')();
+require('./config/createDatatables')(mysql);
 require('./config/passport')(passport, fs, bcrypt, mysql);
 require('./app/routes.js')(app, passport, fs, multiparty, bcrypt, mysql);
 
