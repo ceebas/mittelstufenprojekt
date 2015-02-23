@@ -387,6 +387,7 @@ module.exports = function(app, passport, fs, multiparty, bcrypt, mysql) {
 				});
 			}
 		});
+		
 
 		// Nutzer löschen
 		app.get('/removeUser', isLoggedIn, function(request, response) {
