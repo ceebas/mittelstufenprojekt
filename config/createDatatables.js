@@ -1,10 +1,9 @@
-var mysql = require('mysql');
 var dbconfig = require('./database');
 var connection = mysql.createConnection(dbconfig.connection);
 
 connection.query('USE ' + dbconfig.database);
 
-module.exports = function() {
+module.exports = function(mysql) {
 	/* Datenbank-Tabellen erstellen */
 	/* Datenbank-Tabellen erstellen */
 	//Tabelle fuer Benutzer
