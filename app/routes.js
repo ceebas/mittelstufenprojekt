@@ -155,6 +155,7 @@ module.exports = function(app, passport, fs, multiparty, bcrypt, mysql) {
 
 	/* Registrierung eines neuen Benutzers */
 	app.post('/signUp',isLoggedIn, passport.authenticate('local-signup', {
+		//request.flash('signUp', 'User erfolgreich angelegt!');
 		successRedirect : '/tableUsers.html',
 		failureRedirect : '/signUp.html',
 	}));
