@@ -28,7 +28,7 @@ app.use(bodyParser.urlencoded({
 	extended: true 
 }));
 app.use(bodyParser.json());
-require('./config/createDatatables')(mysql);
+require('./config/createDatatables')();
 require('./config/passport')(passport, fs, bcrypt, mysql);
 require('./app/routes.js')(app, passport, fs, multiparty, bcrypt, mysql);
 
