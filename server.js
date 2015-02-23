@@ -9,7 +9,7 @@ var flash = require('connect-flash'),
     multiparty = require('multiparty'),
     fs = require('fs'),
     bcrypt = require('bcrypt-nodejs'),
-	mysql = require('pg');
+	mysql = require('mysql');
 
 /*Authentifizierung*/
 app.use(flash());
