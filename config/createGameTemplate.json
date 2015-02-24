@@ -1,0 +1,45 @@
+{
+    "gamedata": {
+        "name": "",
+        "description": ""
+    },
+	"gameparameter": {
+		"horzontal": "",
+		"selfscroll": "",
+		"scrollspeed": "",
+		"borders": {
+			"bottom": "",
+			"top": "",
+			"left": "",
+			"right": 
+		},
+		"foes": {
+			"active": "",
+			"speed": "",
+			"gravity": "",
+			"size": {
+				"width": "",
+				"height": ""
+			},
+			"shape": "rund-eckig-bild",
+			"color": "",
+		},
+		"player": {
+			"active": "",
+			"speed": "",
+			"gravity": "",
+			"shoot": {
+				"enabled": "",
+				"speed": "",
+				"shape": "",
+				"color": ""
+			},
+			"size": {
+				"width": "",
+				"height": ""
+			},
+			"shape": "rund-eckig-bild",
+			"color": ""
+		}
+	}
+}
