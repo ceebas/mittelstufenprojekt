@@ -2,6 +2,12 @@ include ./layout/head.jade
 body
   .container
     include ./layout/nav.jade
+    .jumbotron
+     h1
+      | we
+      span.red ♥
+      | games
+     p.text-muted Deine Plattform für JavaScript-Spiele
     -if(user)
         div.alert.alert-info Willkommen, #{user.username}
     -if(message != undefined && message.length > 0)
