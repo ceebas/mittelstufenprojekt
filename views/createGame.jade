@@ -5,84 +5,83 @@ body
 		.panel.panel-default
 			.panel-heading 
 				h3 Erstelle nun dein Spiel
-			form(method='POST', action='self')
+			form(role='form', action='/createGame', method='post')
 
 				//Spieloptionen
-				input(type='text', name='game_name', placeholder='Name des Spiels')
-				input(type='text', name='game_description', placeholder='Beschreibung des Spiels')
+				input#gamename.form-control(type='text', name='game_name', placeholder='Name des Spiels')
+				input#description.form-control(type='text', name='game_description', placeholder='Beschreibung des Spiels')
 
-				input(type='radio', name='type', value='horizontal', checked='checked')
+				input#direction_horizontal.form-control(type='radio', name='type', value='horizontal', checked='checked')
 				| horizontal Scroller 
-				input(type='radio', name='type', value='vertical')
+				input#direction_vertical.form-control(type='radio', name='type', value='vertical')
 				| vertikal Scroller 
 				br
-				input(type='checkbox', name='selfscroll', value='true')
+				input#selfscroll.form-control(type='checkbox', name='selfscroll', value='true')
 				| Selbstscroller
 				//Wenn selbsscroller dann anzeigen
-				input(type='number', name='scroll_speed', placeholder='Scrollgeschwindigkeit')
+				input#scroll_speed.form-control(type='number', name='scroll_speed', placeholder='Scrollgeschwindigkeit')
 
 				//Borders
 
 				//Top
 				| Border Top
-				input(type='checkbox', name='border_top', value='true')
-				input(type='number', name='border_top_px', placeholder='Breite Border Top')
+				input#border_top.form-control(type='checkbox', name='border_top', value='true')
+				inputborder_top_width.form-control(type='number', name='border_top_px', placeholder='Breite Border Top')
 
 				//Bottom
 				| Border Botom
-				input(type='checkbox', name='border_bottom', value='true')
-				input(type='number', name='border_bottom_px', placeholder='Breite Border bottom')
+				input#border_bottom.form-control(type='checkbox', name='border_bottom', value='true')
+				input#border_bottom_width.form-control(type='number', name='border_bottom_px', placeholder='Breite Border bottom')
 
 				//left
 				| Border left
-				input(type='checkbox', name='border_left', value='true')
-				input(type='number', name='border_left_px', placeholder='Breite Border left')
+				input#border_left.form-control(type='checkbox', name='border_left', value='true')
+				input#border_left_width.form-control(type='number', name='border_left_px', placeholder='Breite Border left')
 
 				//Right
 				| Border right
-				input(type='checkbox', name='border_right', value='true')
-				input(type='number', name='border_right_px', placeholder='Breite Border right')												
-
+				input#border_right.form-control(type='checkbox', name='border_right', value='true')
+				input#border_right_width.form-control(type='number', name='border_right_px', placeholder='Breite Border right')
 
 				//PLayeroptionen
 				h4 Spieler
-				input(type='checkbox', name='active', value='true')
+				input#player_active.form-control(type='checkbox', name='active', value='true')
 				| kann sich bewegen
 
-				input(type='number', name='player_speed', placeholder='Geschwindigkeit')
-				input(type='number', name='player_gravity', placeholder='Gravitation')
-				input(type='number', name='player_width', placeholder='Breite in px')
-				input(type='number', name='player_height', placeholder='Hoehe in px')
-				input(type='number', name='player_color', placeholder='Farbe')
-				select(name='player_shape', size='1')
+				input#player_speed.form-control(type='number', name='player_speed', placeholder='Geschwindigkeit')
+				input#player_gravity.form-control(type='number', name='player_gravity', placeholder='Gravitation')
+				input#player_width.form-control(type='number', name='player_width', placeholder='Breite in px')
+				input#player_heigth.form-control(type='number', name='player_height', placeholder='Hoehe in px')
+				input#player_color.form-control.color(type='text', name='player_color', placeholder='Farbe')
+				select#player_shape.form-control(name='player_shape', size='1')
 					option Eckig
 					option Rund	
 					option eigen
 
 				// Schießen
-				input(type='checkbox', name='shoot', value='true')
+				input#player_shoot_enable.form-control(type='checkbox', name='shoot', value='true')
 				|  Schießen erlauben
 
 				//	Wenn an dann folgende werte zeigen
-				input(type='number', name='projectile_speed', placeholder='Geschwindigkeit')
-				input(type='number', name='projectile_color', placeholder='Farbe')
-				select(name='projectile_shape', size='1')
+				input#projectile_speed.form-control(type='number', name='projectile_speed', placeholder='Geschwindigkeit')
+				input#projectile_color.form-control.color(type='text', name='projectile_color', placeholder='Farbe')
+				select#prjectile_shape.form-control(name='projectile_shape', size='1')
 					option Eckig
 					option Rund	
 					option eigen
 
 				// Gegner optionen				
 				h4 Gegner
-				select(name='foes_shape', size='1')
+				select#foe_shape.form-control(name='foes_shape', size='1')
 					option Eckig
 					option Rund	
-				input(type='number', name='foes_width', placeholder='Breite in px')
-				input(type='number', name='foes_height', placeholder='Hoehe in px')
+				input#foe_width.form-control(type='number', name='foes_width', placeholder='Breite in px')
+				input#foe_heigth.form-control(type='number', name='foes_height', placeholder='Hoehe in px')
 				input(type='checkbox', name='foes_active', value='true')
 				| kann sich bewegen
-				input(type='number', name='foes_speed', placeholder='Geschwindigkeit')
-				input(type='number', name='foes_gravity', placeholder='Gravitation')
-				input(type='number', name='foes_color', placeholder='Farbe')				
-				input(type='submit', value='senden')
+				input#foe_active.form-control(type='number', name='foes_speed', placeholder='Geschwindigkeit')
+				input#foe_gravity.form-control(type='number', name='foes_gravity', placeholder='Gravitation')
+				input#foe_color.form-control.color(type='text', name='foes_color', placeholder='Farbe')				
+				button#loginButton.btn.btn-lg.btn-primary.btn-block(type='submit') senden
 	include ./layout/footer.jade
 
