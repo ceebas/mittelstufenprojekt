@@ -11,12 +11,12 @@ body
 				input#gamename.form-control(type='text', name='game_name', placeholder='Name des Spiels')
 				input#description.form-control(type='text', name='game_description', placeholder='Beschreibung des Spiels')
 
-				input#direction_horizontal.form-control(type='radio', name='type', value='horizontal', checked='checked')
+				input#direction_horizontal(type='radio', name='scroll_direction', value='horizontal', checked='checked')
 				| horizontal Scroller 
-				input#direction_vertical.form-control(type='radio', name='type', value='vertical')
+				input#direction_vertical(type='radio', name='scroll_direction', value='vertical')
 				| vertikal Scroller 
 				br
-				input#selfscroll.form-control(type='checkbox', name='selfscroll', value='true')
+				input#selfscroll(type='checkbox', name='selfscroll', value='true')
 				| Selbstscroller
 				//Wenn selbsscroller dann anzeigen
 				input#scroll_speed.form-control(type='number', name='scroll_speed', placeholder='Scrollgeschwindigkeit')
@@ -25,27 +25,27 @@ body
 
 				//Top
 				| Border Top
-				input#border_top.form-control(type='checkbox', name='border_top', value='true')
-				inputborder_top_width.form-control(type='number', name='border_top_px', placeholder='Breite Border Top')
+				input#border_top(type='checkbox', name='border_top', value='true')
+				input#border_top_width.form-control(type='number', name='border_top_px', placeholder='Breite Border Top')
 
 				//Bottom
-				| Border Botom
-				input#border_bottom.form-control(type='checkbox', name='border_bottom', value='true')
+				| Border Bottom
+				input#border_bottom(type='checkbox', name='border_bottom', value='true')
 				input#border_bottom_width.form-control(type='number', name='border_bottom_px', placeholder='Breite Border bottom')
 
 				//left
 				| Border left
-				input#border_left.form-control(type='checkbox', name='border_left', value='true')
+				input#border_left(type='checkbox', name='border_left', value='true')
 				input#border_left_width.form-control(type='number', name='border_left_px', placeholder='Breite Border left')
 
 				//Right
 				| Border right
-				input#border_right.form-control(type='checkbox', name='border_right', value='true')
+				input#border_right(type='checkbox', name='border_right', value='true')
 				input#border_right_width.form-control(type='number', name='border_right_px', placeholder='Breite Border right')
 
 				//PLayeroptionen
 				h4 Spieler
-				input#player_active.form-control(type='checkbox', name='active', value='true')
+				input#player_active(type='checkbox', name='active', value='true')
 				| kann sich bewegen
 
 				input#player_speed.form-control(type='number', name='player_speed', placeholder='Geschwindigkeit')
@@ -59,7 +59,7 @@ body
 					option eigen
 
 				// Schießen
-				input#player_shoot_enable.form-control(type='checkbox', name='shoot', value='true')
+				input#player_shoot_enable(type='checkbox', name='shoot', value='true')
 				|  Schießen erlauben
 
 				//	Wenn an dann folgende werte zeigen
