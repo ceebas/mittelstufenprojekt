@@ -60,13 +60,13 @@ body
 					option eigen
 
 				// Schießen
-				input#player_shoot_enable(type='checkbox', name='shoot', value='true')
+				input#player_shoot_enable(type='checkbox', name='player_shoot_enabled', value='true')
 				|  Schießen erlauben
 
 				//	Wenn an dann folgende werte zeigen
-				input#projectile_speed.form-control(type='number', name='projectile_speed', placeholder='Geschwindigkeit')
-				input#projectile_color.form-control.color(type='text', name='projectile_color', placeholder='Farbe')
-				select#prjectile_shape.form-control(name='projectile_shape', size='1')
+				input#shoot_speed.form-control(type='number', name='player_shoot_speed', placeholder='Geschwindigkeit')
+				input#shoot_color.form-control.color(type='text', name='player_shoot_color', placeholder='Farbe')
+				select#pshoot_shape.form-control(name='player_shoot_shape', size='1')
 					option Eckig
 					option Rund	
 					option eigen
