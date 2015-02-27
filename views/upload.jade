@@ -1,12 +1,14 @@
 include ./layout/head.jade
 body
-  .container
-    include ./layout/nav.jade 
-    p
-      h2 Was möchtest du tun?
-
-      a.btn.btn-primary.uploadBtn(href='/uploadDoneGame.html') Ein fertiges Spiel hochladen
-      br
-      br
-      a.btn.btn-primary.uploadBtn(href='createGame.html') Ein Spiel jetzt selber gestalten
-  include ./layout/footer.jade
+	.container
+		include ./layout/nav.jade 
+		.panel.panel-default
+			.panel-heading 
+				h2 Was möchtest du tun?
+			br
+			a.btn.btn-primary.uploadBtn(href='/uploadDoneGame.html') Ein fertiges Spiel hochladen
+			br
+			a.btn.btn-primary.uploadBtn(href='createGame.html') Ein Spiel jetzt selber gestalten
+			br
+			br
+	include ./layout/footer.jade
