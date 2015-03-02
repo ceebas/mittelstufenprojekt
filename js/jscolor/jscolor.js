@@ -447,7 +447,7 @@ var jscolor = {
 				var value = this.toString();
 				if(this.caps) { value = value.toUpperCase(); }
 				if(this.hash) { value = '#'+value; }
-				valueElement.value = '#'+value;
+				valueElement.value = value;
 			}
 			if(!(flags & leaveStyle) && styleElement) {
 				styleElement.style.backgroundImage = "none";
