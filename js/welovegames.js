@@ -66,6 +66,40 @@ $(document).keydown(function(e) {
     }
 });
 
+/* Angabe des aktuellen wertes bei Schiebereglern (CreateGame)*/
+function showValue(newValue, id)
+{
+    var elementID = id + "_span";
+    document.getElementById(elementID).innerHTML=' '+newValue;
+}
+
+function showDiv(id){
+    if (id == "shoot"){
+        if ($('input#player_shoot_enable').prop('checked')){
+            $('div#shoot_enabled').removeClass("hidden");
+        }else{
+            $('div#shoot_enabled').addClass("hidden");
+        }
+
+    }else if(id == "foes"){
+        if ($('input#foes_enabled').prop('checked')){
+            $('div#foes_enabled').removeClass("hidden");
+        }else{
+            $('div#foes_enabled').addClass("hidden");
+        }
+
+    }else if (id == "selfscroll"){
+        if ($('input#selfscroll').prop('checked')){
+            $('div#scroll').removeClass("hidden");
+        }else{
+            $('div#scroll').addClass("hidden");
+        }
+
+    }
+
+}
+
+
 /* EventListener */
 window.onload = function() {
     if (document.getElementById('files') != undefined) {

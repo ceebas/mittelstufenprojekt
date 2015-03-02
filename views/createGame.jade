@@ -17,40 +17,44 @@ body
 				input#direction_vertical(type='radio', name='scroll_direction', value='vertical')
 				| vertikal Scroller 
 				br
-				input#selfscroll(type='checkbox', name='selfscroll', value='true')
+				input#selfscroll(type='checkbox', name='selfscroll', value='true', onchange='showDiv("selfscroll")')
 				| Selbstscroller
 				//Wenn selbsscroller dann anzeigen
-				input#scroll_speed.form-control(type='number', name='scroll_speed', placeholder='Scrollgeschwindigkeit')
+				div#scroll.hidden
+					| Scrollgeschwindigkeit:
+					span#scroll_speed_span /
+					input#scroll_speed(type='range', name='scroll_speed', min='1', max='10', value='5', onchange='showValue(this.value, "scroll_speed")')					
 
 				//Borders
 
 				//Top
 				| Border Top
 				input#border_top(type='checkbox', name='border_top', value='true')
-				input#border_top_width.form-control(type='number', name='border_top_px', placeholder='Breite Border Top')
 
 				//Bottom
 				| Border Bottom
 				input#border_bottom(type='checkbox', name='border_bottom', value='true')
-				input#border_bottom_width.form-control(type='number', name='border_bottom_px', placeholder='Breite Border bottom')
 
 				//left
 				| Border left
 				input#border_left(type='checkbox', name='border_left', value='true')
-				input#border_left_width.form-control(type='number', name='border_left_px', placeholder='Breite Border left')
 
 				//Right
 				| Border right
 				input#border_right(type='checkbox', name='border_right', value='true')
-				input#border_right_width.form-control(type='number', name='border_right_px', placeholder='Breite Border right')
+
 
 				//PLayeroptionen
 				h4 Spieler
-				input#player_active(type='checkbox', name='player_active', value='true')
-				| kann sich bewegen
 
-				input#player_speed.form-control(type='number', name='player_speed', placeholder='Geschwindigkeit')
-				input#player_gravity.form-control(type='number', name='player_gravity', placeholder='Gravitation')
+				| Geschwindigkeit des Spielers:
+				span#player_speed_span /
+				input#player_speed(type='range', name='player_speed', min='1', max='10', value='5', onchange='showValue(this.value, "player_speed")')
+
+				| Gravitation des Spielers:
+				span#player_gravity_span /
+				input#player_gravity(type='range', name='player_gravity', min='1', max='10', value='5', onchange='showValue(this.value, "player_gravity")')
+
 				input#player_width.form-control(type='number', name='player_width', placeholder='Breite in px')
 				input#player_heigth.form-control(type='number', name='player_height', placeholder='Hoehe in px')
 				input#player_color.form-control.color(type='text', name='player_color', placeholder='Farbe')
@@ -60,32 +64,47 @@ body
 					option eigene
 
 				// Schießen
-				input#player_shoot_enable(type='checkbox', name='player_shoot_enabled', value='true')
+				input#player_shoot_enable(type='checkbox', name='player_shoot_enabled', value='true', onchange='showDiv("shoot")')
 				|  Schießen erlauben
+				br
 
 				//	Wenn an dann folgende werte zeigen
-				input#shoot_speed.form-control(type='number', name='player_shoot_speed', placeholder='Geschwindigkeit')
-				input#shoot_color.form-control.color(type='text', name='player_shoot_color', placeholder='Farbe')
-				select#pshoot_shape.form-control(name='player_shoot_shape', size='1')
-					option eckig
-					option rund	
-					option eigene
+				div#shoot_enabled.hidden
+
+					| Geschwindigkeit des geschosses:
+					span#shoot_speed_span /
+					input#shoot_speed(type='range', name='shoot_speed', min='1', max='10', value='5', onchange='showValue(this.value, "shoot_speed")')
+
+					input#shoot_color.form-control.color(type='text', name='player_shoot_color', placeholder='Farbe')
+					select#shoot_shape.form-control(name='player_shoot_shape', size='1')
+						option eckig
+						option rund	
+						option eigene
 
 				// Gegner optionen				
 				h4 Gegner
-				input#foes_enabled(type='checkbox', name='foes_enabled', value='true')
+				input#foes_enabled(type='checkbox', name='foes_enabled', value='true', onchange='showDiv("foes")')
 				| existieren Gegner?
 
-				select#foe_shape.form-control(name='foes_shape', size='1')
-					option Eckig
-					option Rund	
-				input#foe_width.form-control(type='number', name='foes_width', placeholder='Breite in px')
-				input#foe_heigth.form-control(type='number', name='foes_height', placeholder='Hoehe in px')
-				input#foes_active(type='checkbox', name='foes_active', value='true')
-				| kann sich bewegen
-				input#foe_speed.form-control(type='number', name='foes_speed', placeholder='Geschwindigkeit')
-				input#foe_gravity.form-control(type='number', name='foes_gravity', placeholder='Gravitation')
-				input#foe_color.form-control.color(type='text', name='foes_color', placeholder='Farbe')
+				div#foes_enabled.hidden
+					select#foe_shape.form-control(name='foes_shape', size='1')
+						option eckig
+						option rund
+						option eigene	
+					input#foe_width.form-control(type='number', name='foes_width', placeholder='Breite in px')
+					input#foe_heigth.form-control(type='number', name='foes_height', placeholder='Hoehe in px')
+					input#foes_active(type='checkbox', name='foes_active', value='true')
+					| kann sich bewegen
+
+					| Geschwindigkeit des Gegners:
+					span#foe_speed_span /
+					input#foe_speed(type='range', name='foe_speed', min='1', max='10', value='5', onchange='showValue(this.value, "foe_speed")')
+
+					| Gravitation des Spielers:
+					span#foe_gravity_span /
+					input#foe_gravity(type='range', name='foe_gravity', min='1', max='10', value='5', onchange='showValue(this.value, "foe_gravity")')
+					input#foe_color.form-control.color(type='text', name='foes_color', placeholder='Farbe')
+
 				button#loginButton.btn.btn-lg.btn-primary.btn-block(type='submit') senden
 	include ./layout/footer.jade
 

@@ -145,3 +145,9 @@ body {
 	float: right;
 	color: #808080;
 }
+
+/*Create a game*/
+
+.hidden{
+	display: none;
+}
