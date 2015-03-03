@@ -157,19 +157,19 @@ module.exports = function(app, passport, fs, multiparty, bcrypt, mysql, accessDb
 		if (requestObj.border_right) {
 			gameObj.gameparameter.borders.right = requestObj.border_right;
 		}
-			gameObj.gameparameter.foes = {
-				"active": requestObj.foes_active,
-				"speed": requestObj.foes_speed,
-				"gravity": requestObj.foes_gravity,
-				"size": {
-					"width": requestObj.foes_width,
-					"height": requestObj.foes_height
-				},
-				"shape": requestObj.foes_shape
-			}
-			if (requestObj.foes_shape != "eigene") {
-				gameObj.gameparameter.foes.color = requestObj.foes_color;
-			}
+		gameObj.gameparameter.foes = {
+			"active": requestObj.foes_active,
+			"speed": requestObj.foes_speed,
+			"gravity": requestObj.foes_gravity,
+			"size": {
+				"width": requestObj.foes_width,
+				"height": requestObj.foes_height
+			},
+			"shape": requestObj.foes_shape
+		}
+		if (requestObj.foes_shape != "eigene") {
+			gameObj.gameparameter.foes.color = requestObj.foes_color;
+		}
 		
 		if (requestObj.player_shoot_enabled) {
 			gameObj.gameparameter.player.shoot = {
