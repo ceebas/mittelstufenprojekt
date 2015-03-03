@@ -59,8 +59,8 @@ body
 					option eckig
 					option rund	
 					option eigene Form hochladen (im nächsten Schritt)
-				input#player_width.form-control(type='number', name='player_width', placeholder='Breite in px')
-				input#player_height.form-control(type='number', name='player_height', placeholder='Höhe in px')
+				input#player_width.form-control(type='number', min='1', name='player_width', placeholder='Breite in px')
+				input#player_height.form-control(type='number',min='1', name='player_height', placeholder='Höhe in px')
 				input#player_color.form-control.color(type='text', name='player_color', placeholder='Farbe')
 
 
@@ -92,8 +92,8 @@ body
 						option eckig
 						option rund
 						option eigene Form hochladen (im nächsten Schritt)	
-					input#foes_width.form-control(type='number', name='foes_width', placeholder='Breite in px')
-					input#foes_height.form-control(type='number', name='foes_height', placeholder='Hoehe in px')
+					input#foes_width.form-control(type='number', min='1', name='foes_width', placeholder='Breite in px')
+					input#foes_height.form-control(type='number', min='1', name='foes_height', placeholder='Hoehe in px')
 					input#foes_color.form-control.color(type='text', name='foes_color', placeholder='Farbe')
 					input#foes_active(type='checkbox', name='foes_active', value='true')
 					| kann sich bewegen
@@ -102,7 +102,7 @@ body
 					span#foes_speed_span /
 					input#foes_speed(type='range', name='foes_speed', min='1', max='10', value='5', onchange='showValue(this.value, "foe_speed")')
 
-					| Gravitation des Spielers:
+					| Gravitation des Gegners:
 					span#foes_gravity_span /
 					input#foes_gravity(type='range', name='foes_gravity', min='1', max='10', value='5', onchange='showValue(this.value, "foe_gravity")')
 
