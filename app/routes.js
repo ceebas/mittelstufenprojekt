@@ -130,7 +130,76 @@ module.exports = function(app, passport, fs, multiparty, bcrypt, mysql) {
 		});
 	});
 
-
+	app.post('/createGame', isLoggedIn, function(request, response) {
+		console.log(JSON.stringify(request.body));
+		var requestObj = request.body;
+		var gameObj = {
+	    	"gamedata": {
+	        	"name": requestObj.game_name,
+	        	"description": requestObj.game_description
+	    	},
+			"gameparameter": {
+				"scrolldirection": requestObj.scroll_direction,
+				"scrollspeed": requestObj.scroll_direction,
+				"borders": {},
+				"foes": {},
+				"player": {
+					"active": requestObj.player_active,
+					"speed": requestObj.player_speed,
+					"gravity": requestObj.player_gravitiy,
+					"shoot": {},
+					"size": {
+						"width": requestObj.player_width,
+						"height": requestObj.player_height
+					},
+					"shape": requestObj.player_shape,
+				}
+			}
+		}
+		if (requestObj.selfscroll) {
+			gameObj.gameparameter.selfscroll = requestObj.selfscroll;
+		}
+		if (requestObj.border_top) {
+			gameObj.gameparameter.borders.top = requestObj.border_top;
+		}
+		if (requestObj.border_bottom) {
+			gameObj.gameparameter.borders.bottom = requestObj.border_bottom;
+		}
+		if (requestObj.border_left) {
+			gameObj.gameparameter.borders.left = requestObj.border_left;
+		}
+		if (requestObj.border_right) {
+			gameObj.gameparameter.borders.right = requestObj.border_right;
+		}
+		if (requestObj.foes_enabled) {
+			gameObj.gameparameter.foes = {
+				"active": requestObj.foes_active,
+				"speed": requestObj.foes_speed,
+				"gravity": requestObj.foes_gravity,
+				"size": {
+					"width": requestObj.foes_width,
+					"height": requestObj.foes_height
+				},
+				"shape": requestObj.foes_shape
+			}
+			if (requestObj.foes_shape != "eigene") {
+				gameObj.gameparameter.foes.color = requestObj.foes_color;
+			}
+		}
+		if (requestObj.player_shoot_enabled) {
+			gameObj.gameparameter.player.shoot = {
+				"enabled": requestObj.player_shoot_enabled,
+				"speed": requestObj.player_shoot_speed,
+				"shape": requestObj.player_shoot_color,
+				"color": requestObj.player_shoot_shape
+			}
+		}
+		if (requestObj.player_shape != "eigene") {
+				gameObj.gameparameter.player.color = requestObj.player_color;
+		}
+		console.log(gameObj);
+		response.status(200).send(gameObj);
+	});
 
 
 	app.post('/submitScore', function(request, response) {
