@@ -106,6 +106,7 @@ function showDiv(id){
         if (kind_shape == "rund") {
             $('input#' + kind + '_height').addClass("hidden");
             $('input#' + kind + '_width').attr("placeholder", "Durchmesser in px");
+            $('input#' + kind + '_width').removeClass("hidden");
             $('input#' + kind + '_color').removeClass("hidden");
         } else if (kind_shape == "eigene Form hochladen (im nächsten Schritt)") {
             $('input#' + kind + '_height').addClass("hidden");
