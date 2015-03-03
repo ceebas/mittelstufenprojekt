@@ -82,7 +82,7 @@ function showDiv(id){
         }
 
     } else if (id == "foes") {
-        if ($('input#foes_enabled').prop('checked')) {
+        if ($('input#foes_active').prop('checked')) {
             $('div#foes_enabled').removeClass("hidden");
         } else {
             $('div#foes_enabled').addClass("hidden");
@@ -118,6 +118,36 @@ function showDiv(id){
             $('input#' + kind + '_width').attr("placeholder", "Breite in px");
         }
     }
+}
+
+function changePage(id) {
+if(id == 1){
+    $('div#seite1').removeClass("hidden");
+    $('div#seite2').addClass("hidden");
+    $('div#seite3').addClass("hidden");
+    $('div#seite4').addClass("hidden");
+} else if(id == 2){
+    $('div#seite1').addClass("hidden");
+    $('div#seite2').removeClass("hidden");
+    $('div#seite3').addClass("hidden");
+    $('div#seite4').addClass("hidden");
+} else if(id == 3){
+    $('div#seite1').addClass("hidden");
+    $('div#seite2').addClass("hidden");
+    $('div#seite3').removeClass("hidden");
+    $('div#seite4').addClass("hidden");
+}else if(id == 4){
+    $('div#seite1').addClass("hidden");
+    $('div#seite2').addClass("hidden");
+    $('div#seite3').addClass("hidden");
+    $('div#seite4').removeClass("hidden");
+} else {
+    $('div#seite1').removeClass("hidden");
+    $('div#seite2').addClass("hidden");
+    $('div#seite3').addClass("hidden");
+    $('div#seite4').addClass("hidden");
+}
+
 }
 
 

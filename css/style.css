@@ -60,6 +60,9 @@ body {
 .uploadBtn {
 	width: 230px;
 }
+.changePageBtn {
+	width: 75px;
+}
 .btn-primary {
 	margin: 10px 10px;
 }
