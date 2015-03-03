@@ -55,13 +55,14 @@ body
 				span#player_gravity_span /
 				input#player_gravity(type='range', name='player_gravity', min='1', max='10', value='5', onchange='showValue(this.value, "player_gravity")')
 
-				input#player_width.form-control(type='number', name='player_width', placeholder='Breite in px')
-				input#player_heigth.form-control(type='number', name='player_height', placeholder='Hoehe in px')
-				input#player_color.form-control.color(type='text', name='player_color', placeholder='Farbe')
-				select#player_shape.form-control(name='player_shape', size='1')
+				select#player_shape.form-control(name='player_shape', size='1', onchange='showDiv("player_shape")')
 					option eckig
 					option rund	
-					option eigene
+					option eigene Form hochladen (im nächsten Schritt)
+				input#player_width.form-control(type='number', name='player_width', placeholder='Breite in px')
+				input#player_height.form-control(type='number', name='player_height', placeholder='Höhe in px')
+				input#player_color.form-control.color(type='text', name='player_color', placeholder='Farbe')
+
 
 				// Schießen
 				input#player_shoot_enable(type='checkbox', name='player_shoot_enabled', value='true', onchange='showDiv("shoot")')
@@ -71,7 +72,7 @@ body
 				//	Wenn an dann folgende werte zeigen
 				div#shoot_enabled.hidden
 
-					| Geschwindigkeit des geschosses:
+					| Geschwindigkeit des Geschosses:
 					span#shoot_speed_span /
 					input#shoot_speed(type='range', name='shoot_speed', min='1', max='10', value='5', onchange='showValue(this.value, "shoot_speed")')
 
@@ -79,7 +80,7 @@ body
 					select#shoot_shape.form-control(name='player_shoot_shape', size='1')
 						option eckig
 						option rund	
-						option eigene
+						option eigene Form hochladen (im nächsten Schritt)
 
 				// Gegner optionen				
 				h4 Gegner
@@ -87,23 +88,23 @@ body
 				| existieren Gegner?
 
 				div#foes_enabled.hidden
-					select#foe_shape.form-control(name='foes_shape', size='1')
+					select#foes_shape.form-control(name='foes_shape', size='1', onchange='showDiv("foes_shape")')
 						option eckig
 						option rund
-						option eigene	
-					input#foe_width.form-control(type='number', name='foes_width', placeholder='Breite in px')
-					input#foe_heigth.form-control(type='number', name='foes_height', placeholder='Hoehe in px')
+						option eigene Form hochladen (im nächsten Schritt)	
+					input#foes_width.form-control(type='number', name='foes_width', placeholder='Breite in px')
+					input#foes_height.form-control(type='number', name='foes_height', placeholder='Hoehe in px')
+					input#foes_color.form-control.color(type='text', name='foes_color', placeholder='Farbe')
 					input#foes_active(type='checkbox', name='foes_active', value='true')
 					| kann sich bewegen
 
 					| Geschwindigkeit des Gegners:
-					span#foe_speed_span /
-					input#foe_speed(type='range', name='foe_speed', min='1', max='10', value='5', onchange='showValue(this.value, "foe_speed")')
+					span#foes_speed_span /
+					input#foes_speed(type='range', name='foes_speed', min='1', max='10', value='5', onchange='showValue(this.value, "foe_speed")')
 
 					| Gravitation des Spielers:
-					span#foe_gravity_span /
-					input#foe_gravity(type='range', name='foe_gravity', min='1', max='10', value='5', onchange='showValue(this.value, "foe_gravity")')
-					input#foe_color.form-control.color(type='text', name='foes_color', placeholder='Farbe')
+					span#foes_gravity_span /
+					input#foes_gravity(type='range', name='foes_gravity', min='1', max='10', value='5', onchange='showValue(this.value, "foe_gravity")')
 
 				button#loginButton.btn.btn-lg.btn-primary.btn-block(type='submit') senden
 	include ./layout/footer.jade

@@ -74,29 +74,50 @@ function showValue(newValue, id)
 }
 
 function showDiv(id){
-    if (id == "shoot"){
-        if ($('input#player_shoot_enable').prop('checked')){
+    if (id == "shoot") {
+        if ($('input#player_shoot_enable').prop('checked')) {
             $('div#shoot_enabled').removeClass("hidden");
-        }else{
+        } else {
             $('div#shoot_enabled').addClass("hidden");
         }
 
-    }else if(id == "foes"){
-        if ($('input#foes_enabled').prop('checked')){
+    } else if (id == "foes") {
+        if ($('input#foes_enabled').prop('checked')) {
             $('div#foes_enabled').removeClass("hidden");
-        }else{
+        } else {
             $('div#foes_enabled').addClass("hidden");
         }
 
-    }else if (id == "selfscroll"){
-        if ($('input#selfscroll').prop('checked')){
+    } else if (id == "selfscroll") {
+        if ($('input#selfscroll').prop('checked')) {
             $('div#scroll').removeClass("hidden");
-        }else{
+        } else {
             $('div#scroll').addClass("hidden");
         }
 
+    } else if (id  == "player_shape" || id == "foes_shape") {
+        var kind;
+        if (id == "player_shape") {
+            kind = "player";
+        } else if (id == "foes_shape") {
+            kind = "foes";
+        }
+        var kind_shape = $('select#' + kind + '_shape').val();
+        if (kind_shape == "rund") {
+            $('input#' + kind + '_height').addClass("hidden");
+            $('input#' + kind + '_width').attr("placeholder", "Durchmesser in px");
+            $('input#' + kind + '_color').removeClass("hidden");
+        } else if (kind_shape == "eigene Form hochladen (im nächsten Schritt)") {
+            $('input#' + kind + '_height').addClass("hidden");
+            $('input#' + kind + '_width').addClass("hidden");
+            $('input#' + kind + '_color').addClass("hidden");
+        } else if (kind_shape == "eckig") {
+            $('input#' + kind + '_height').removeClass("hidden");
+            $('input#' + kind + '_width').removeClass("hidden");
+            $('input#' + kind + '_color').removeClass("hidden");
+            $('input#' + kind + '_width').attr("placeholder", "Breite in px");
+        }
     }
-
 }
 
 
