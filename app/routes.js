@@ -2,24 +2,22 @@
 var db = require('../config/database.js');
 var userTemp = {};
 
-module.exports = function(app, passport, fs, multiparty, bcrypt, mysql) {
+module.exports = function(app, passport, fs, multiparty, bcrypt, mysql, accessDb) {
 	// Datenbankverbindung herstellen
 	var connection = mysql.createConnection(db.connection);
 	connection.config.database = db.database;
 
 	/* Index */
 	app.get('/', function(request, response) {
-		connection.query("select * from " + db.tableGames + " WHERE inactive = 0", function(err, rows, fields) {
-			if (err) {
-				console.log(JSON.stringify(err));
-			}
+		accessDb.getAllActiveGames(render);
+		function render(rows, err) {
 			response.render('index.jade', {
 				title: 'we♥games | Index',
 				user: request.user,
 				results: rows,
 				message: request.flash('message')
 			});
-		});
+		}
 	});
 
 	/* Einzelspielansicht */
@@ -28,29 +26,21 @@ module.exports = function(app, passport, fs, multiparty, bcrypt, mysql) {
 		if (request.user == undefined) {
 			request.flash('playMessage', 'Du musst angemeldet sein, damit dein Highscore gespeichert werden kann!');
 		}
-		connection.query("select * from " + db.tableGames + " WHERE id_game LIKE '" + gameId + "' AND inactive = 0", function(err, rowsGame, fields) {
-			if (err) {
-				console.log(JSON.stringify(err));
-				request.flash('message', err);
-				response.redirect('/')
-			} else if (rowsGame[0] == undefined) {
+		accessDb.getGameAndHighscores(gameId, render);
+		function render(rowsGame, rowsScore, err) {
+			if (rowsGame[0] == undefined) {
 				request.flash('message', 'Dieses Spiel wurde leider nicht gefunden!');
 				response.redirect('/');
 			} else {
-				connection.query("SELECT high.*, user.username FROM " + db.tableHighscores + " high left join " + db.tableUsers + " user ON high.user = user.id_user WHERE game LIKE '" + gameId + "'ORDER BY score DESC LIMIT 10", function(err, rowsScore, fileds) {
-					if (err) {
-						console.log(err);
-					}
-					response.render('game.jade', {
-						title: 'we♥games | ' + rowsGame[0].gamename,
-						user: request.user,
-						results: rowsGame[0],
-						message: request.flash('playMessage'),
-						scores: rowsScore
-					});
+				response.render('game.jade', {
+					title: 'we♥games | ' + rowsGame[0].gamename,
+					user: request.user,
+					results: rowsGame[0],
+					message: request.flash('playMessage'),
+					scores: rowsScore
 				});
-			}
-		});
+			}	
+		}
 	});
 	
 	/* Suche */
@@ -60,17 +50,15 @@ module.exports = function(app, passport, fs, multiparty, bcrypt, mysql) {
 			request.flash('message', 'Deine Suche nach: ´ ' + searchString + ' ´ hat leider keiner Ergenisse geliefert.');
 			response.redirect('/');
 		} else {
-			connection.query("SELECT * FROM " + db.tableGames + " WHERE (gamename LIKE '%" + searchString + "%' or description LIKE '%" + searchString + "%')", function(err, rows, fields) {
-				if (err) {
-					console.log(JSON.stringify(err));
-				}
+			accessDb.searchGames(searchString, render);
+			function render (rows, searchString, err) {
 				response.render('index.jade', {
 					title: 'we♥games | Suche',
 					user: request.user,
 					search: searchString,
 					results: rows
 				});
-			});
+			}
 		}
 	});
 
@@ -95,10 +83,8 @@ module.exports = function(app, passport, fs, multiparty, bcrypt, mysql) {
 	
 	/* Bearbeiten von Nutzerangaben */	
 	app.get('/userSetting.html',isLoggedIn, function(request, response) {
-		connection.query("select * from " + db.tableGames +" WHERE user='" + request.user.id_user +"'", function(err, rows, fields) {
-			if (err) {
-				console.log(JSON.stringify(err));
-			}
+		accessDb.getOwnUser(request, render);
+		function render(rows, request, err) {
 			response.render('userSetting.jade', { 
 				title: 'we♥games | Profil bearbeiten',
 				user: request.user,
@@ -106,7 +92,7 @@ module.exports = function(app, passport, fs, multiparty, bcrypt, mysql) {
 				results: rows,
 				message: request.flash('message')
 			});
-		});
+		}	
 	});
 
 	/* Seite zum hochladen */
@@ -199,7 +185,6 @@ module.exports = function(app, passport, fs, multiparty, bcrypt, mysql) {
 		console.log(gameObj);
 		response.status(200).send(gameObj);
 	});
-
 
 	app.post('/submitScore', function(request, response) {
 		if (request.user != undefined) {
