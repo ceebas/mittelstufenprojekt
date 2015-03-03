@@ -140,7 +140,7 @@ module.exports = function(app, passport, fs, multiparty, bcrypt, mysql) {
 	    	},
 			"gameparameter": {
 				"scrolldirection": requestObj.scroll_direction,
-				"scrollspeed": requestObj.scroll_direction,
+				"scrollspeed": requestObj.scroll_speed,
 				"borders": {},
 				"foes": {},
 				"player": {
@@ -171,7 +171,6 @@ module.exports = function(app, passport, fs, multiparty, bcrypt, mysql) {
 		if (requestObj.border_right) {
 			gameObj.gameparameter.borders.right = requestObj.border_right;
 		}
-		if (requestObj.foes_enabled) {
 			gameObj.gameparameter.foes = {
 				"active": requestObj.foes_active,
 				"speed": requestObj.foes_speed,
@@ -185,13 +184,13 @@ module.exports = function(app, passport, fs, multiparty, bcrypt, mysql) {
 			if (requestObj.foes_shape != "eigene") {
 				gameObj.gameparameter.foes.color = requestObj.foes_color;
 			}
-		}
+		
 		if (requestObj.player_shoot_enabled) {
 			gameObj.gameparameter.player.shoot = {
 				"enabled": requestObj.player_shoot_enabled,
 				"speed": requestObj.player_shoot_speed,
-				"shape": requestObj.player_shoot_color,
-				"color": requestObj.player_shoot_shape
+				"shape": requestObj.player_shoot_shape,
+				"color": requestObj.player_shoot_color
 			}
 		}
 		if (requestObj.player_shape != "eigene") {
