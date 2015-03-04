@@ -1,11 +1,6 @@
-/* Datenbank */
-var db = require('../config/database.js');
 var userTemp = {};
-
-module.exports = function(app, passport, fs, multiparty, bcrypt, mysql, accessDb) {
+module.exports = function(app, passport, fs, multiparty, accessDb) {
 	// Datenbankverbindung herstellen
-	var connection = mysql.createConnection(db.connection);
-	connection.config.database = db.database;
 
 	/* Index */
 	app.get('/', function(request, response) {

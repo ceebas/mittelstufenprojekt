@@ -1,7 +1,7 @@
 /* Datenbank */
 var db = require('../config/database.js');
 
-module.exports = function(app, passport, fs, multiparty, bcrypt, mysql) {
+module.exports = function(fs, bcrypt, mysql) {
 	// Datenbankverbindung herstellen
 	var connection = mysql.createConnection(db.connection);
 	connection.config.database = db.database;
