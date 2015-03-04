@@ -54,6 +54,143 @@ module.exports = function(app, passport, fs, multiparty, bcrypt, mysql) {
 					callback(rows, request, null);
 				}
 			});
+		},
+		setHighscore : function(request, callback) {
+			var gameData = request.body;
+			connection.query("INSERT INTO " + db.tableHighscores + " (user, game, score, tStamp) VALUES (?, ?, ?, NOW())", [request.user.id_user, gameData.gameId, gameData.score], function(err, rows, fields) {
+				if (err) {
+					console.log(JSON.stringify(err));
+					callback(500, err);
+				} else {
+					callback(200, null);
+				}
+			});
+		},
+		updateUser : function(request, callback) {
+			var newData = request.body;
+			var sqlUpdate = '';
+			var userString;
+			if (newData.passwordControl != newData.newPassword) {
+				request.flash('message', 'Passwörter stimmen nicht überein');
+				callback(request, 'back');
+			} else {
+				sqlUpdate = "UPDATE " + db.tableUsers + " SET email='" + newData.email + "'";
+				if (newData.newPassword !== '') {
+					newData.newPassword = bcrypt.hashSync(newData.newPassword, null, null);
+					sqlUpdate += ", password='" + newData.newPassword + "'";
+				}
+				if(newData.id_user != undefined && request.user.isAdmin == 1) {
+					sqlUpdate +=  " WHERE id_user='" + newData.id_user + "'";
+					userString = newData.id_user;
+				} else {
+					sqlUpdate += " WHERE id_user='" + request.user.id_user + "'";
+					userString = request.user.id_user;
+				}
+				connection.query("SELECT * FROM " + db.tableUsers + " WHERE username='" + userString + "'", function(err, rows, fields) {
+					if (err) {
+						console.log(JSON.stringify(err))
+					} else {
+						connection.query(sqlUpdate, function(err, rows, fields) {
+							if (err) {
+								console.log(JSON.stringify(err));
+								request.flash('message', err);
+								callback(request, '/tableUsers.html');
+							} else {
+								if (request.user.isAdmin == 0) {
+									request.logout();
+									request.flash('loginMessage', 'Melde dich mit deinen neuen Daten an!');
+									callback(response, '/login.html');
+								} else if (request.user.isAdmin == 1 && newData.id_user == undefined) {
+									callback(request, "/");
+								} else {
+									callback(request, '/tableUsers.html');
+								}
+							}
+						});
+					}
+				});
+			}
+		},
+		getAllUsers : function(callback) {
+			connection.query("SELECT * FROM " + db.tableUsers + " WHERE isAdmin NOT LIKE 1", function(err, rows, fields) {
+				if (err) {
+					console.log(JSON.stringify(err));
+					callback(null, err);
+				} else {
+					callback(rows, null);
+				}
+			});
+		},
+		getAllGames : function(callback) {
+			connection.query("SELECT * FROM " + db.tableGames, function(err, rows, fields) {
+				if (err) {
+					callback(null, err);
+				} else {
+					callback(rows, null);
+				}
+			});
+		},
+		getUser : function(request, callback) {
+			var editId = request.query.userId;
+			if (editId == undefined) {
+				editId = request.user.id_user;
+			}
+			connection.query("select * from " + db.tableUsers +" WHERE id_user='" + editId +"'", function(err, rows, fields) {
+				if (rows[0] == undefined || rows[0].id_user == undefined) {
+					callback(null, null, "User does not exist!");
+				} else if (err) {
+					console.log(JSON.stringify(err));
+					callback(null, null, err);
+				} else {
+					callback(rows, request, null);	
+				}
+			});	
+		},
+		removeGame : function(request, callback) {
+			var gameId = request.query.gameId;
+			connection.query("SELECT * FROM " + db.tableGames + " WHERE id_game=" + gameId, function(err, rows, fields) {
+				if (err) {
+					console.log(JSON.stringify(err));
+					callback("/", err);
+				} else {
+					var inactive = 0;
+					//wenn nicht inaktiv, dann auf inaktiv setzten
+					if (rows[0].inactive == 0) {
+						inactive = 1;
+					}
+					connection.query("UPDATE " + db.tableGames + " SET inactive='" + inactive + "' WHERE id_game='" + gameId + "'", function(err) {
+						if (err) {
+							console.log(JSON.stringify(err));
+							callback("/", err);
+						} else {
+							callback('/tableGames.html', null);
+						}
+					});
+				}
+			});
+		},
+		removeUser : function(request, callback) {
+			var userId = request.query.userId;
+			connection.query("SELECT * FROM " + db.tableUsers + " WHERE id_user=" + userId, function(err, rows, fields) {
+				if (err) {
+					console.log(JSON.stringify(err));
+					callback('/', err);
+				} else {
+					var inactive = 0;
+					//wenn nicht inaktiv, dann auf inaktiv setzten
+					if (rows[0].inactive == 0) {
+						inactive = 1;
+					}
+					connection.query("UPDATE " + db.tableUsers + " SET inactive='" + inactive + "' WHERE id_user='" + userId + "'", function(err) {
+						if (err) {
+							console.log(JSON.stringify(err));
+							callback('/', err);
+						} else {
+							callback('/tableUsers.html', null);
+						}
+					});
+				}
+			});
 		}
 	}
 

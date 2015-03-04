@@ -188,15 +188,10 @@ module.exports = function(app, passport, fs, multiparty, bcrypt, mysql, accessDb
 
 	app.post('/submitScore', function(request, response) {
 		if (request.user != undefined) {
-			var gameData = request.body;
-			connection.query("INSERT INTO " + db.tableHighscores + " (user, game, score, tStamp) VALUES (?, ?, ?, NOW())", [request.user.id_user, gameData.gameId, gameData.score], function(err, rows, fields) {
-				if (err) {
-					console.log(JSON.stringify(err));
-					response.status(500).send("Internal Server Error");
-				} else {
-					response.status(200).send("OK");
-				}
-			});
+			accessDb.setHighscore(request, render);
+			function render(status, err) {
+				response.status(status).send();
+			}
 		}
 	});
 
@@ -215,45 +210,10 @@ module.exports = function(app, passport, fs, multiparty, bcrypt, mysql, accessDb
 
 	/* Änderung von eigenen Benutzerdaten */
 	app.post('/userSetting', isLoggedIn, function(request,response) {
-		var newData = request.body;
-		var sqlUpdate = '';
-		if (newData.passwordControl != newData.newPassword) {
-			request.flash('message', 'Passwörter stimmen nicht überein');
-			response.redirect('back');
-		} else {
-			sqlUpdate = "UPDATE " + db.tableUsers + " SET email='" + newData.email + "'";
-			if (newData.newPassword !== '') {
-				newData.newPassword = bcrypt.hashSync(newData.newPassword, null, null);
-				sqlUpdate += ", password='" + newData.newPassword + "'";
-			}
-			if(newData.id_user != undefined) {
-				sqlUpdate +=  " WHERE id_user='" + newData.id_user + "'";
-			} else {
-				sqlUpdate += " WHERE id_user='" + request.user.id_user + "'";
-			}
-			connection.query("SELECT * FROM " + db.tableUsers + " WHERE username='" + newData.id_user + "'", function(err, rows, fields) {
-				if (err) {
-					request.flash('message', err);
-				} else {
-					connection.query(sqlUpdate, function(err, rows, fields) {
-						if (err) {
-							console.log(JSON.stringify(err));
-							request.flash('message', err);
-							response.redirect('/tableUsers.html');
-						} else {
-							if (request.user.isAdmin == 0) {
-								request.logout();
-								request.flash('loginMessage', 'Melde dich mit deinen neuen Daten an!');
-								response.redirect('/login.html');
-							} else if (request.user.isAdmin == 1 && newData.id_user == undefined) {
-								response.redirect("/");
-							} else {
-								response.redirect('/tableUsers.html');
-							}
-						}
-					});
-				}
-			});
+		accessDb.updateUser(request, render);
+		function render(request, redirect) {
+			request = this.request;
+			response.redirect(redirect);
 		}
 	});
 
@@ -347,18 +307,14 @@ module.exports = function(app, passport, fs, multiparty, bcrypt, mysql, accessDb
 	/*----- Admin Ansicht -----*/
 	app.get('/tableUsers.html', isLoggedIn, function(request, response) {
 		if (request.user.isAdmin == 1) {
-			connection.query("select * from " + db.tableUsers + " WHERE isAdmin NOT LIKE 1", function(err, rows, fields) {
-				if (err) {
-					console.log(JSON.stringify(err));
-					response.redirect('/');
-				} else {
-					response.render('tableUsers.jade', { 
-						title: 'we♥games | Alle Benutzer',
-						user: request.user,
-						results: rows
-					});
-				}
-			});
+			accessDb.getAllUsers(render);
+			function render(rows, err) {
+				response.render('tableUsers.jade', { 
+					title: 'we♥games | Alle Benutzer',
+					user: request.user,
+					results: rows
+				});
+			}
 		} else {
 			response.redirect('/userSetting.html');
 		}
@@ -374,17 +330,14 @@ module.exports = function(app, passport, fs, multiparty, bcrypt, mysql, accessDb
 	});
 	app.get('/tableGames.html', isLoggedIn, function(request, response) {
 		if (request.user.isAdmin == 1) {
-			connection.query("select * from " + db.tableGames, function(err, rows, fields) {
-				if (err) {
-					console.log(JSON.stringify(err));
-				}
+			accessDb.getAllGames(render);
+			function render(rows, err) {
 				response.render('tableGames.jade', {
-						title: 'we♥games | Alle Spiele',
-						games: rows,
-						user: request.user
-					});
-			});
-
+					title: 'we♥games | Alle Spiele',
+					games: rows,
+					user: request.user
+				});
+			}
 		} else {
 			response.redirect('/userSetting.html');
 		}
@@ -392,29 +345,20 @@ module.exports = function(app, passport, fs, multiparty, bcrypt, mysql, accessDb
 	// Nutzer editieren
 	app.get('/editUser.html', isLoggedIn, function(request, response) {
 		if (request.user.isAdmin == 1) {
-			var editId = request.query.userId;
-			if (editId == undefined) {
-				editId = request.user.id_user;
+			accessDb.getUser(request, render);
+			function render(rows, request, err) {
+				response.render('userSetting.jade', {
+					title: 'we♥games | Benutzer bearbeiten',
+					user: request.user,
+					edituser: {
+						id: rows[0].id_user,
+						username: rows[0].username,
+						email: rows[0].email,
+					},
+					message: request.flash('message'),
+					results: ''
+				});
 			}
-			connection.query("select * from " + db.tableUsers +" WHERE id_user='" + editId +"'", function(err, rows, fields) {
-				if (rows[0] == undefined || rows[0].id_user == undefined) {
-					response.redirect('/tableUsers.html');
-				} else if (err) {
-					console.log(JSON.stringify(err));
-				} else {
-						response.render('userSetting.jade', {
-						title: 'we♥games | Benutzer bearbeiten',
-						user: request.user,
-						edituser: {
-							id: rows[0].id_user,
-							username: rows[0].username,
-							email: rows[0].email,
-						},
-						message: request.flash('message'),
-						results: ''
-					});	
-				}
-			});	
 		} else {
 			response.redirect('/userSetting.html');
 		}
@@ -422,50 +366,20 @@ module.exports = function(app, passport, fs, multiparty, bcrypt, mysql, accessDb
 
 	app.get('/removeGame', isLoggedIn, function(request, response) {
 		if (request.user.isAdmin == 1) {
-			var gameId = request.query.gameId;
-			connection.query("SELECT * FROM " + db.tableGames + " WHERE id_game=" + gameId, function(err, rows, fields) {
-				if (err) {
-					console.log(JSON.stringify(err));
-					response.redirect('/');
-				} else {
-					var inactive = 0;
-					//wenn nicht inaktiv, dann auf inaktiv setzten
-					if (rows[0].inactive == 0) {
-						inactive = 1;
-					}
-					connection.query("UPDATE " + db.tableGames + " SET inactive='" + inactive + "' WHERE id_game='" + gameId + "'", function(err) {
-						if (err) {
-							console.log(JSON.stringify(err));
-						}
-						response.redirect('/tableGames.html');
-					});
-				}
-			});
+			accessDb.removeGame(request, render);
+			function render(redirect, err) {
+				response.redirect(redirect);
+			}
 		}
 	});
 
 	// Nutzer löschen
 	app.get('/removeUser', isLoggedIn, function(request, response) {
 		if (request.user.isAdmin == 1) {
-			var userId = request.query.userId;
-			connection.query("SELECT * FROM " + db.tableUsers + " WHERE id_user=" + userId, function(err, rows, fields) {
-				if (err) {
-					console.log(JSON.stringify(err));
-					response.redirect('/');
-				} else {
-					var inactive = 0;
-					//wenn nicht inaktiv, dann auf inaktiv setzten
-					if (rows[0].inactive == 0) {
-						inactive = 1;
-					}
-					connection.query("UPDATE " + db.tableUsers + " SET inactive='" + inactive + "' WHERE id_user='" + userId + "'", function(err) {
-						if (err) {
-							console.log(JSON.stringify(err));
-						}
-						response.redirect('/tableUsers.html');
-					});
-				}
-			});
+			accessDb.removeUser(request, render);
+			function render(redirect, err) {
+				response.redirect(redirect);
+			}
 		}
 	});
 };
