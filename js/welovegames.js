@@ -122,6 +122,11 @@ function showDiv(id){
 }
 
 function changePage(id) {
+if ($('input#gamename').val() != ''){
+    $('h3#createCaption').text('Erstelle jetzt ' + $('input#gamename').val());
+}else {
+    $('h3#createCaption').text('Erstelle nun dein eigenes Spiel');
+}
 if(id == 1){
     $('div#seite1').removeClass("hidden");
     $('div#seite2').addClass("hidden");
@@ -149,6 +154,19 @@ if(id == 1){
     $('div#seite4').addClass("hidden");
 }
 
+}
+
+function changePreviewDirection(id){
+    if (id == "vertical"){
+        $('canvas#gamePreview').removeClass("horizontal");
+        $('canvas#gamePreview').addClass("vertical");
+    }else if(id == "horizontal"){
+        $('canvas#gamePreview').removeClass("vertical");
+        $('canvas#gamePreview').addClass("horizontal");
+    }else{
+        $('canvas#gamePreview').removeClass("vertical");
+        $('canvas#gamePreview').addClass("horizontal");
+    }
 }
 
 

@@ -5,125 +5,137 @@ body
 		include ./layout/nav.jade
 		.panel.panel-default
 			.panel-heading 
-				h3 Erstelle nun dein Spiel
-			form(role='form', action='/createGame', method='post')
+				h3#createCaption Erstelle nun dein eigenes Spiel
+			.panel-body
+				div#preview
+					canvas#gamePreview.horizontal
+				div#options
+					form(role='form', action='/createGame', method='post')
 
-				//Divs für Wizzard
-				//Spieloptionen
-				div#seite1
+						//Divs für Wizzard
+						//Spieloptionen
+						div#seite1
 
-					//Spieloptionen
-					input#gamename.form-control(type='text', name='game_name', placeholder='Name des Spiels', required='required')
-					input#description.form-control(type='text', name='game_description', placeholder='Beschreibung des Spiels', required='required')
+							//Spieloptionen
+							input#gamename.form-control(name='gamename', onkeyup='inputLimiter()', type='text', placeholder='Name deines Spiels', maxlength='20', required='required')
+							div#titleletters.textcount 20
+							br
 
-					input#direction_horizontal(type='radio', name='scroll_direction', value='horizontal', checked='checked')
-					| horizontal Scroller 
-					input#direction_vertical(type='radio', name='scroll_direction', value='vertical')
-					| vertikal Scroller 
-					br
-					input#selfscroll(type='checkbox', name='selfscroll', onchange='showDiv("selfscroll")')
-					| Selbstscroller
-					//Wenn selbsscroller dann anzeigen
-					div#scroll.hidden
-						| Scrollgeschwindigkeit:
-						span#scroll_speed_span /
-						input#scroll_speed(type='range', name='scroll_speed', min='1', max='10', value='5', onchange='showValue(this.value, "scroll_speed")')
+							div.form-group
+							textarea#gamedescription.form-control(name='game-description', onkeyup='textareaLimiter()' type='textarea', placeholder='Beschreibe dein Spiel', required='required', maxlength='150')
+							div#descletters.textcount 150
 
-					a.btn.btn-primary.changePageBtn(href='#', onclick='changePage(2)') weiter	
+							| Wie soll dein Spiel sich verhalten?
+							br
+							input#direction_horizontal(type='radio', name='scroll_direction', value='horizontal', checked='checked', onchange='changePreviewDirection("horizontal")')
+							img#horizontal(src='img/horizontal.png', alt='horizontal', width='100px')
+							input#direction_vertical(type='radio', name='scroll_direction', value='vertical', onchange='changePreviewDirection("vertical")')
+							img#vertical(src='img/vertical.png', alt='vertical', height='100px')
+							br
+							input#selfscroll(type='checkbox', name='selfscroll', onchange='showDiv("selfscroll")')
+							| Selbstscroller
+							//Wenn selbsscroller dann anzeigen
+							div#scroll.hidden
+								| Scrollgeschwindigkeit:
+								span#scroll_speed_span /
+								input#scroll_speed(type='range', name='scroll_speed', min='1', max='10', value='5', onchange='showValue(this.value, "scroll_speed")')
+							br
+							a.btn.btn-primary.changePageBtn(href='#', onclick='changePage(2)') weiter	
 
-				//Borders
-				div#seite2.hidden
+						//Borders
+						div#seite2.hidden
 
-					h4 Grenzen
-					//Top
-					| Border Top
-					input#border_top(type='checkbox', name='border_top', value='true')
+							h4 Grenzen
+							//Top
+							| Oben: 
+							input#border_top(type='checkbox', name='border_top', value='true')
+							br
 
-					//Bottom
-					| Border Bottom
-					input#border_bottom(type='checkbox', name='border_bottom', value='true')
+							//Bottom
+							| Unten: 
+							input#border_bottom(type='checkbox', name='border_bottom', value='true')
+							br
 
-					//left
-					| Border left
-					input#border_left(type='checkbox', name='border_left', value='true')
+							//left
+							| Links: 
+							input#border_left(type='checkbox', name='border_left', value='true')
+							br
 
-					//Right
-					| Border right
-					input#border_right(type='checkbox', name='border_right', value='true')
-
-					a.btn.btn-primary.changePageBtn(href='#', onclick='changePage(1)') zurück	
-					a.btn.btn-primary.changePageBtn(href='#', onclick='changePage(3)') weiter	
-
-
-
-				//PLayeroptionen
-				div#seite3.hidden
-					h4 Spieler
-
-					| Geschwindigkeit des Spielers:
-					span#player_speed_span /
-					input#player_speed(type='range', name='player_speed', min='1', max='10', value='5', onchange='showValue(this.value, "player_speed")', required='required')
-
-					| Gravitation des Spielers:
-					span#player_gravity_span /
-					input#player_gravity(type='range', name='player_gravity', min='1', max='10', value='5', onchange='showValue(this.value, "player_gravity")', required='required')
-
-					select#player_shape.form-control(name='player_shape', size='1', onchange='showDiv("player_shape")')
-						option eckig
-						option rund	
-						option eigene Form hochladen (im nächsten Schritt)
-					input#player_width.form-control(type='number', min='1', name='player_width', placeholder='Breite in px')
-					input#player_height.form-control(type='number',min='1', name='player_height', placeholder='Höhe in px')
-					input#player_color.form-control.color(type='text', name='player_color', placeholder='Farbe')
+							//Right
+							| Rechts: 
+							input#border_right(type='checkbox', name='border_right', value='true')
+							br
+							a.btn.btn-primary.changePageBtn(href='#', onclick='changePage(1)') zurück	
+							a.btn.btn-primary.changePageBtn(href='#', onclick='changePage(3)') weiter	
 
 
-					// Schießen
-					input#player_shoot_enable(type='checkbox', name='player_shoot_enabled', value='true', onchange='showDiv("shoot")')
-					|  Schießen erlauben
-					br
 
-					//	Wenn an dann folgende werte zeigen
-					div#shoot_enabled.hidden
+						//PLayeroptionen
+						div#seite3.hidden
+							h4 Spieler
 
-						| Geschwindigkeit des Geschosses:
-						span#shoot_speed_span /
-						input#shoot_speed(type='range', name='shoot_speed', min='1', max='10', value='5', onchange='showValue(this.value, "shoot_speed")')
+							| Geschwindigkeit des Spielers:
+							span#player_speed_span /
+							input#player_speed(type='range', name='player_speed', min='1', max='10', value='5', onchange='showValue(this.value, "player_speed")', required='required')
 
-						input#shoot_color.form-control.color(type='text', name='player_shoot_color', placeholder='Farbe')
-						select#shoot_shape.form-control(name='player_shoot_shape', size='1')
-							option eckig
-							option rund	
-							option eigene Form hochladen (im nächsten Schritt)
+							| Gravitation des Spielers:
+							span#player_gravity_span /
+							input#player_gravity(type='range', name='player_gravity', min='1', max='10', value='5', onchange='showValue(this.value, "player_gravity")', required='required')
 
-					a.btn.btn-primary.changePageBtn(href='#', onclick='changePage(2)') zurück
-					a.btn.btn-primary.changePageBtn(href='#', onclick='changePage(4)') weiter		
-
-				// Gegner optionen				
-				div#seite4.hidden
-					h4 Gegner
-						select#foes_shape.form-control(name='foes_shape', size='1', onchange='showDiv("foes_shape")')
-							option eckig
-							option rund
-							option eigene Form hochladen (im nächsten Schritt)	
-					input#foes_width.form-control(type='number', min='1', name='foes_width', placeholder='Breite in px')
-					input#foes_height.form-control(type='number', min='1', name='foes_height', placeholder='Hoehe in px')
-					input#foes_color.form-control.color(type='text', name='foes_color', placeholder='Farbe')
-					input#foes_active(type='checkbox', name='foes_active', value='true', onchange='showDiv("foes")')
-					| kann sich bewegen
-
-					div#foes_enabled.hidden
-						| Geschwindigkeit des Gegners:
-						span#foes_speed_span /
-						input#foes_speed(type='range', name='foes_speed', min='1', max='10', value='5', onchange='showValue(this.value, "foe_speed")')
-
-						| Gravitation des Gegners:
-						span#foes_gravity_span /
-						input#foes_gravity(type='range', name='foes_gravity', min='1', max='10', value='5', onchange='showValue(this.value, "foe_gravity")')
+							select#player_shape.form-control(name='player_shape', size='1', onchange='showDiv("player_shape")')
+								option eckig
+								option rund	
+								option eigene Form hochladen (im nächsten Schritt)
+							input#player_width.form-control(type='number', min='1', name='player_width', placeholder='Breite in px')
+							input#player_height.form-control(type='number',min='1', name='player_height', placeholder='Höhe in px')
+							input#player_color.form-control.color(type='text', name='player_color', placeholder='Farbe')
 
 
-					a.btn.btn-primary.changePageBtn(href='#', onclick='changePage(3)') zurück	
-					button#loginButton.btn.btn-lg.btn-primary.btn-block(type='submit') senden
-					
-						
+							// Schießen
+							input#player_shoot_enable(type='checkbox', name='player_shoot_enabled', value='true', onchange='showDiv("shoot")')
+							|  Schießen erlauben
+							br
+
+							//	Wenn an dann folgende werte zeigen
+							div#shoot_enabled.hidden
+
+								| Geschwindigkeit des Geschosses:
+								span#shoot_speed_span /
+								input#shoot_speed(type='range', name='shoot_speed', min='1', max='10', value='5', onchange='showValue(this.value, "shoot_speed")')
+
+								input#shoot_color.form-control.color(type='text', name='player_shoot_color', placeholder='Farbe')
+								select#shoot_shape.form-control(name='player_shoot_shape', size='1')
+									option eckig
+									option rund	
+									option eigene Form hochladen (im nächsten Schritt)
+
+							a.btn.btn-primary.changePageBtn(href='#', onclick='changePage(2)') zurück
+							a.btn.btn-primary.changePageBtn(href='#', onclick='changePage(4)') weiter		
+
+						// Gegner optionen				
+						div#seite4.hidden
+							h4 Gegner
+								select#foes_shape.form-control(name='foes_shape', size='1', onchange='showDiv("foes_shape")')
+									option eckig
+									option rund
+									option eigene Form hochladen (im nächsten Schritt)	
+							input#foes_width.form-control(type='number', min='1', name='foes_width', placeholder='Breite in px')
+							input#foes_height.form-control(type='number', min='1', name='foes_height', placeholder='Hoehe in px')
+							input#foes_color.form-control.color(type='text', name='foes_color', placeholder='Farbe')
+							input#foes_active(type='checkbox', name='foes_active', value='true', onchange='showDiv("foes")')
+							| kann sich bewegen
+
+							div#foes_enabled.hidden
+								| Geschwindigkeit des Gegners:
+								span#foes_speed_span /
+								input#foes_speed(type='range', name='foes_speed', min='1', max='10', value='5', onchange='showValue(this.value, "foe_speed")')
+
+								| Gravitation des Gegners:
+								span#foes_gravity_span /
+								input#foes_gravity(type='range', name='foes_gravity', min='1', max='10', value='5', onchange='showValue(this.value, "foe_gravity")')
+
+
+							a.btn.btn-primary.changePageBtn(href='#', onclick='changePage(3)') zurück	
+							button#loginButton.btn.btn-lg.btn-primary.btn-block(type='submit') senden
 	include ./layout/footer.jade
 

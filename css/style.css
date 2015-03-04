@@ -60,9 +60,6 @@ body {
 .uploadBtn {
 	width: 230px;
 }
-.changePageBtn {
-	width: 75px;
-}
 .btn-primary {
 	margin: 10px 10px;
 }
@@ -93,8 +90,8 @@ body {
 	position: relative;
 	height: auto;
 	-webkit-box-sizing: border-box;
-	   -moz-box-sizing: border-box;
-	        box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
 	padding: 10px;
 	font-size: 16px;
 }
@@ -129,7 +126,7 @@ body {
 /* Hover fuer die beiden navbar nav´s [Login & Upload] */
 .navbar-default .navbar-nav > .active > a:hover {
 	color: #000 !important;
-    background-color: rgba(255,68,0,0.65) !important; /*#ff4400 : orange */
+	background-color: rgba(255,68,0,0.65) !important; /*#ff4400 : orange */
 }
 /* "Trennlinie" zwischen den beiden navbar nav´s [Login & Upload] */
 #seperator {
@@ -143,6 +140,10 @@ body {
 	background-color: rgba(255,68,0,0.65) !important; /* orange */
 }
 
+textarea{
+	resize: none;
+}
+
 .textcount {
 	font-style: italic;
 	float: right;
@@ -154,3 +155,29 @@ body {
 .hidden{
 	display: none;
 }
+.changePageBtn {
+	width: 75px;
+}
+#preview {
+	float: right;
+	height: 100%;
+	width: 30%
+}
+#options{
+	padding: 10px;
+	float: left;
+	width: 70%;
+	height: 100%;
+}
+canvas#gamePreview {
+	margin: auto;
+	border: 1px solid #000;
+}
+canvas.horizontal{
+	width: 100%;
+}
+canvas.vertical{
+	width: 70%;
+	height: 300px;
+}
+
