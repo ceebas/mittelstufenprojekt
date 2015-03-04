@@ -191,6 +191,76 @@ module.exports = function(app, passport, fs, multiparty, bcrypt, mysql) {
 					});
 				}
 			});
+		},
+		/*-- UPLOAD OBJEKTE --*/
+		uploadGame : function(request, err, fieldsObject, filesObject, fieldsList, filesList, callback) {
+			connection.query("INSERT INTO " + db.tableGames + "(gamename, description, user, inactive) VALUES (?, ?, ?, 0)", [fieldsObject.gamename, fieldsObject.gamedescription, request.user.id_user], function(err, rows, fields) {			
+    			if (!err) {
+					// Gibt die ID des des zufor erstellten Datensatzes aus
+					connection.query("SELECT LAST_INSERT_ID() as id_game", function(err, rows, fields){
+						if (!err) {
+							// ID für das Spiel wird in der Datenbank festgelegt und Pfad vervollständigt
+							gameId = rows[0].id_game;
+							var path = "uploads/" + request.user.id_user + "/" + gameId + "." + fieldsObject.gamename;
+	    					// Ordner für das Spiel wird erstellt
+							if(typeof fieldsObject.gamename != undefined) {
+			    				fs.mkdir(path, 0777, function (err) {
+									if (err) {
+										console.log(JSON.stringify(err));
+										callback("/", err);
+									} else {
+										//Alle hochgeladenen Dateien werden verarbeitet
+										for (var i = 0; i < filesObject.datei.length; i++) {
+											var originalFilename = filesObject.datei[i].originalFilename;
+											var fileName = originalFilename.substr(0,5);
+											//für das Anzeigebild wird der Datensatz ergänzt
+											if (fileName == "image") {
+												var fileEnc = originalFilename.substr(originalFilename.length - 3);
+												connection.query("UPDATE " + db.tableGames + " SET imageEnc='" + fileEnc + "' WHERE id_game='" + gameId + "'", function(err, rows, fields) {
+													if (err) {
+														console.log(JSON.stringify(err));
+													}
+												});
+												fs.rename(filesObject.datei[i].path, path + "/image." + fileEnc , function(err) {
+													if (err) {
+														console.log(JSON.stringify(err));
+													};
+												});
+											//JS Datei wird ebenfalls in Dtansatz gebracht
+											} else if (originalFilename.substr(originalFilename.length - 2) == "js") {
+												connection.query("UPDATE " + db.tableGames + " SET javascript='" + originalFilename + "' WHERE id_game='" + gameId + "'", function(err, rows, fields) {
+													if (err) {
+														console.log(JSON.stringify(err));
+													}
+												});
+												fs.rename(filesObject.datei[i].path, path + "/" + originalFilename , function(err) {
+													if (err) {
+														console.log(JSON.stringify(err));
+													};
+												});
+											//Alles andere wird einfach gespeichert
+											} else {
+												fs.rename(filesObject.datei[i].path, path + "/" + originalFilename , function(err) {
+													if (err) {
+														console.log(JSON.stringify(err));
+													};
+												});
+											}
+										}
+										callback("/play?game=" + gameId, null);
+									}
+								});
+							}
+						} else {
+							console.log("SubmitError " + JSON.stringify(err));
+							return;
+						}
+					});
+				} else {
+					console.log("INSERT ERROR ------ " + JSON.stringify(err));
+					callback("upload.html", err);
+				}
+			});
 		}
 	}
 

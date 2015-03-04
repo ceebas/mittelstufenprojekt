@@ -218,90 +218,30 @@ module.exports = function(app, passport, fs, multiparty, bcrypt, mysql, accessDb
 	});
 
 	/* Uploadhandling */
-	app.post('/uploads',isLoggedIn, function(req, res) {
+	app.post('/uploads',isLoggedIn, function(request, response) {
 		var form = new multiparty.Form();
 		var gameId;
 
 		form.on('close', function() {
-			//res.redirect('/play?game=' + gameId);
+			//response.redirect('/play?game=' + gameId);
 		});
 
-    	form.parse(req, function(err, fieldsObject, filesObject, fieldsList, filesList) {
-    		//Daten werden in DB gespeichert
-    		connection.query("INSERT INTO " + db.tableGames + "(gamename, description, user, inactive) VALUES (?, ?, ?, 0)", [fieldsObject.gamename, fieldsObject.gamedescription, req.user.id_user], function(err, rows, fields) {			
-    			if (!err) {
-					// Gibt die ID des des zufor erstellten Datensatzes aus
-					connection.query("SELECT LAST_INSERT_ID() as id_game", function(err, rows, fields){
-						if (!err) {
-							// ID für das Spiel wird in der Datenbank festgelegt und Pfad vervollständigt
-							gameId = rows[0].id_game;
-							var path = "uploads/" + req.user.id_user + "/" + gameId + "." + fieldsObject.gamename;
-	    					// Ordner für das Spiel wird erstellt
-							if(typeof fieldsObject.gamename != undefined) {
-			    				fs.mkdir(path, 0777, function (err) {
-									if (err) {
-										console.log(JSON.stringify(err));
-										res.status(500).end();
-									} else {
-										//Alle hochgeladenen Dateien werden verarbeitet
-										for (var i = 0; i < filesObject.datei.length; i++) {
-											var originalFilename = filesObject.datei[i].originalFilename;
-											var fileName = originalFilename.substr(0,5);
-											//für das Anzeigebild wird der Datensatz ergänzt
-											if (fileName == "image") {
-												var fileEnc = originalFilename.substr(originalFilename.length - 3);
-												connection.query("UPDATE " + db.tableGames + " SET imageEnc='" + fileEnc + "' WHERE id_game='" + gameId + "'", function(err, rows, fields) {
-													if (err) {
-														console.log(JSON.stringify(err));
-													}
-												});
-												fs.rename(filesObject.datei[i].path, path + "/image." + fileEnc , function(err) {
-													if (err) {
-														console.log(JSON.stringify(err));
-													};
-												});
-											//JS Datei wird ebenfalls in Dtansatz gebracht
-											} else if (originalFilename.substr(originalFilename.length - 2) == "js") {
-												connection.query("UPDATE " + db.tableGames + " SET javascript='" + originalFilename + "' WHERE id_game='" + gameId + "'", function(err, rows, fields) {
-													if (err) {
-														console.log(JSON.stringify(err));
-													}
-												});
-												fs.rename(filesObject.datei[i].path, path + "/" + originalFilename , function(err) {
-													if (err) {
-														console.log(JSON.stringify(err));
-													};
-												});
-											//Alles andere wird einfach gespeichert
-											} else {
-												fs.rename(filesObject.datei[i].path, path + "/" + originalFilename , function(err) {
-													if (err) {
-														console.log(JSON.stringify(err));
-													};
-												});
-											}
-										}
-										res.status(200).send("/play?game=" + gameId);
-									}
-								});
-							}
-						} else {
-							console.log("SubmitError " + JSON.stringify(err));
-							return;
-						}
-					});
-				} else {
-					console.log("INSERT ERROR ------ " + JSON.stringify(err));
-					res.status(500).send("Internal Server Error");
-				}
-			});
+    	form.parse(request, function(err, fieldsObject, filesObject, fieldsList, filesList) {
+    		accessDb.uploadGame(request, err, fieldsObject, filesObject, fieldsList, filesList, render);
+    		function render(redirect, err) {
+    			if (err) {
+    				response.status(500).send(redirect);
+    			} else {
+    				response.status(200).send(redirect);
+    			}
+    		}
     	});
 	});
 
 	/* Logout */
-	app.get('/logout', function(req, res){
-		req.logout();
-		res.redirect('/');
+	app.get('/logout', function(request, response){
+		request.logout();
+		response.redirect('/');
 	});
 
 	/*----- Admin Ansicht -----*/
