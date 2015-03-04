@@ -30,7 +30,7 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 var accessDb = require('./database/sqlaccess.js')(fs, bcrypt, mysql);
 require('./config/createDatatables')();
-require('./config/passport')(passport, fs, bcrypt, mysql);
+require('./config/passport')(passport, fs, bcrypt, mysql, accessDb);
 require('./app/routes.js')(app, passport, fs, multiparty, accessDb);
 
 /* Statische Auslieferung */

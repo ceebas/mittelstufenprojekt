@@ -6,44 +6,93 @@ module.exports = function(fs, bcrypt, mysql) {
 	var connection = mysql.createConnection(db.connection);
 	connection.config.database = db.database;
 
+	//Objekte nach Anwendungsfall zurückgeben
 	return {
-		getAllActiveGames : function(callback) {
-			connection.query("SELECT * FROM " + db.tableGames + " WHERE inactive = 0", function(err, rows, fields) {
-				if (err) {
-					console.log(JSON.stringify(err));
-					callback(null, err);
-				} else {
-					callback(rows, null);
-				}
-			});
+		/*-- Passport und User Abfragen --*/
+		deserializeUser : function(id, callback) {
+			connection.query("SELECT * FROM " + db.tableUsers + " WHERE id_user = "+ id, function(err, rows){
+            	callback(err, rows[0]);
+        	});
 		},
-		getGameAndHighscores : function(gameId, callback) {
-			connection.query("SELECT * FROM " + db.tableGames + " WHERE id_game LIKE '" + gameId + "' AND inactive = 0", function(err, rowsGame, fields) {
+		login : function(username, password, fs, callback) {
+			connection.query("SELECT * FROM " + db.tableUsers + " WHERE username = '" + username + "'",function(err, rows){
+                if (err) {
+                    return callback(err);
+                }
+                if (!rows.length) {
+                    return callback(null, false, request.flash('loginMessage', 'Falscher Benutzername oder falsches Passwort!'));
+                }
+                if (!bcrypt.compareSync(password, rows[0].password)) {
+                    return callback(null, false, request.flash('loginMessage', 'Falscher Benutzername oder falsches Passwort!'));
+                }
+                if (rows[0].inactive == 1) {
+                    return callback(null, false, request.flash('loginMessage', 'Dein Account ist inaktiv, bitte wende dich an einen Admin!'))
+                }
+                //Benutzerordner wird erstellt, wenn nicht vorhanden
+                    var userid = rows[0].id_user;
+                    var path = "uploads/" + userid;
+                    fs.exists(path, function(exists) {
+                        if(!exists) {
+                            fs.mkdir(path, 0777, function (err) {
+                                if (err) {
+                                    console.log(err);
+                                }
+                            });
+                        }
+                    });
+                return callback(null, rows[0]);
+            });
+		},
+		signup : function(request, username, password, fs, callback) {
+			connection.query("SELECT * FROM " + db.tableUsers + " WHERE username = '" + username + "'", function(err, rows) {
 				if (err) {
+			    	return callback(err);
+				}
+                if (rows.length) {
+                    return callback(null, false, request.flash('signUpMessage', 'Benutzername schon vergeben!'));
+                } else {
+                    // Neuen Benutzer erstellen, falls noch nicht vorhanden
+                    var newUser = {
+                        username: username,
+                        email: request.body.email,
+                        password: bcrypt.hashSync(password, null, null)
+                    };
+                    var insertQuery = "INSERT INTO " + db.tableUsers + " ( username, email, password ) values ('" + newUser.username + "','" + newUser.email +"','" + newUser.password + "')";
+
+                    connection.query(insertQuery,function(err, rows) {
+                        if (err) {
+                            return callback(err);
+                        } 
+                        //Ordner für Uploads wird erstellt
+                        connection.query("SELECT LAST_INSERT_ID() as userid", function(err, rows, fields){
+                            var userid = rows[0].userid;
+                            var path = "uploads/" + userid;
+                            fs.mkdir(path, 0777, function (err) {
+                                if (err) {
+                                    console.log(err);
+                                }
+                            });
+                        });
+                        return callback(null);
+                    });
+                }
+            });
+		},
+		getUser : function(request, callback) {
+			var editId = request.query.userId;
+			if (editId == undefined) {
+				editId = request.user.id_user;
+			}
+			connection.query("select * from " + db.tableUsers +" WHERE id_user='" + editId +"'", function(err, rows, fields) {
+				if (rows[0] == undefined || rows[0].id_user == undefined) {
+					callback(null, null, "User does not exist!");
+				} else if (err) {
 					console.log(JSON.stringify(err));
 					callback(null, null, err);
 				} else {
-					connection.query("SELECT high.*, user.username FROM " + db.tableHighscores + " high left join " + db.tableUsers + " user ON high.user = user.id_user WHERE game LIKE '" + gameId + "'ORDER BY score DESC LIMIT 10", function(err, rowsScore, fileds) {
-						if (err) {
-							console.log(err);
-							callback(null, null, err);
-						} else {
-							callback(rowsGame, rowsScore, null);
-						}
-					});
+					callback(rows, request, null);	
 				}
-			});
-		},
-		searchGames : function(searchString, callback) {
-			connection.query("SELECT * FROM " + db.tableGames + " WHERE (gamename LIKE '%" + searchString + "%' or description LIKE '%" + searchString + "%')", function(err, rows, fields) {
-				if (err) {
-					console.log(JSON.stringify(err));
-					callback(null, err);
-				} else {
-					callback(rows, searchString, null);
-				}
-				
-			});
+			});	
 		},
 		getOwnUser : function(request, callback) {
 			connection.query("select * from " + db.tableGames +" WHERE user='" + request.user.id_user +"'", function(err, rows, fields) {
@@ -52,17 +101,6 @@ module.exports = function(fs, bcrypt, mysql) {
 					callback(null, err);
 				} else {
 					callback(rows, request, null);
-				}
-			});
-		},
-		setHighscore : function(request, callback) {
-			var gameData = request.body;
-			connection.query("INSERT INTO " + db.tableHighscores + " (user, game, score, tStamp) VALUES (?, ?, ?, NOW())", [request.user.id_user, gameData.gameId, gameData.score], function(err, rows, fields) {
-				if (err) {
-					console.log(JSON.stringify(err));
-					callback(500, err);
-				} else {
-					callback(200, null);
 				}
 			});
 		},
@@ -121,6 +159,56 @@ module.exports = function(fs, bcrypt, mysql) {
 				}
 			});
 		},
+		/*-- Content Abfragen --*/
+		getAllActiveGames : function(callback) {
+			connection.query("SELECT * FROM " + db.tableGames + " WHERE inactive = 0", function(err, rows, fields) {
+				if (err) {
+					console.log(JSON.stringify(err));
+					callback(null, err);
+				} else {
+					callback(rows, null);
+				}
+			});
+		},
+		getGameAndHighscores : function(gameId, callback) {
+			connection.query("SELECT * FROM " + db.tableGames + " WHERE id_game LIKE '" + gameId + "' AND inactive = 0", function(err, rowsGame, fields) {
+				if (err) {
+					console.log(JSON.stringify(err));
+					callback(null, null, err);
+				} else {
+					connection.query("SELECT high.*, user.username FROM " + db.tableHighscores + " high left join " + db.tableUsers + " user ON high.user = user.id_user WHERE game LIKE '" + gameId + "'ORDER BY score DESC LIMIT 10", function(err, rowsScore, fileds) {
+						if (err) {
+							console.log(err);
+							callback(null, null, err);
+						} else {
+							callback(rowsGame, rowsScore, null);
+						}
+					});
+				}
+			});
+		},
+		searchGames : function(searchString, callback) {
+			connection.query("SELECT * FROM " + db.tableGames + " WHERE (gamename LIKE '%" + searchString + "%' or description LIKE '%" + searchString + "%')", function(err, rows, fields) {
+				if (err) {
+					console.log(JSON.stringify(err));
+					callback(null, err);
+				} else {
+					callback(rows, searchString, null);
+				}
+				
+			});
+		},
+		setHighscore : function(request, callback) {
+			var gameData = request.body;
+			connection.query("INSERT INTO " + db.tableHighscores + " (user, game, score, tStamp) VALUES (?, ?, ?, NOW())", [request.user.id_user, gameData.gameId, gameData.score], function(err, rows, fields) {
+				if (err) {
+					console.log(JSON.stringify(err));
+					callback(500, err);
+				} else {
+					callback(200, null);
+				}
+			});
+		},
 		getAllGames : function(callback) {
 			connection.query("SELECT * FROM " + db.tableGames, function(err, rows, fields) {
 				if (err) {
@@ -129,22 +217,6 @@ module.exports = function(fs, bcrypt, mysql) {
 					callback(rows, null);
 				}
 			});
-		},
-		getUser : function(request, callback) {
-			var editId = request.query.userId;
-			if (editId == undefined) {
-				editId = request.user.id_user;
-			}
-			connection.query("select * from " + db.tableUsers +" WHERE id_user='" + editId +"'", function(err, rows, fields) {
-				if (rows[0] == undefined || rows[0].id_user == undefined) {
-					callback(null, null, "User does not exist!");
-				} else if (err) {
-					console.log(JSON.stringify(err));
-					callback(null, null, err);
-				} else {
-					callback(rows, request, null);	
-				}
-			});	
 		},
 		removeGame : function(request, callback) {
 			var gameId = request.query.gameId;
