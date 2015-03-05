@@ -124,38 +124,43 @@ function showDiv(id){
 }
 
 function changePage(id) {
-if ($('input#gamename').val() != ''){
-    $('h3#createCaption').text('Erstelle jetzt ' + $('input#gamename').val());
-}else {
-    $('h3#createCaption').text('Erstelle nun dein eigenes Spiel');
-}
-if(id == 1){
-    $('div#seite1').removeClass("hidden");
-    $('div#seite2').addClass("hidden");
-    $('div#seite3').addClass("hidden");
-    $('div#seite4').addClass("hidden");
-} else if(id == 2){
-    $('div#seite1').addClass("hidden");
-    $('div#seite2').removeClass("hidden");
-    $('div#seite3').addClass("hidden");
-    $('div#seite4').addClass("hidden");
-} else if(id == 3){
-    $('div#seite1').addClass("hidden");
-    $('div#seite2').addClass("hidden");
-    $('div#seite3').removeClass("hidden");
-    $('div#seite4').addClass("hidden");
-}else if(id == 4){
-    $('div#seite1').addClass("hidden");
-    $('div#seite2').addClass("hidden");
-    $('div#seite3').addClass("hidden");
-    $('div#seite4').removeClass("hidden");
-} else {
-    $('div#seite1').removeClass("hidden");
-    $('div#seite2').addClass("hidden");
-    $('div#seite3').addClass("hidden");
-    $('div#seite4').addClass("hidden");
-}
+    if ($('input#gamename').val() != ''){
+        $('h3#createCaption').text('Erstelle jetzt ' + $('input#gamename').val());
+    }else {
+        $('h3#createCaption').text('Erstelle nun dein eigenes Spiel');
+    }
+    if ($('textarea#gamedescription').val() != ''){
+        $('p#createDescription').text($('textarea#gamedescription').val());
+    }else {
+        $('p#createDescription').text('');
+    }
 
+    if(id == 1){
+        $('div#seite1').removeClass("hidden");
+        $('div#seite2').addClass("hidden");
+        $('div#seite3').addClass("hidden");
+        $('div#seite4').addClass("hidden");
+    } else if(id == 2){
+        $('div#seite1').addClass("hidden");
+        $('div#seite2').removeClass("hidden");
+        $('div#seite3').addClass("hidden");
+        $('div#seite4').addClass("hidden");
+    } else if(id == 3){
+        $('div#seite1').addClass("hidden");
+        $('div#seite2').addClass("hidden");
+        $('div#seite3').removeClass("hidden");
+        $('div#seite4').addClass("hidden");
+    }else if(id == 4){
+        $('div#seite1').addClass("hidden");
+        $('div#seite2').addClass("hidden");
+        $('div#seite3').addClass("hidden");
+        $('div#seite4').removeClass("hidden");
+    } else {
+        $('div#seite1').removeClass("hidden");
+        $('div#seite2').addClass("hidden");
+        $('div#seite3').addClass("hidden");
+        $('div#seite4').addClass("hidden");
+    }
 }
 
 function changePreviewDirection(id){
@@ -171,11 +176,10 @@ function changePreviewDirection(id){
     }
 }
 
-
 /* EventListener */
 window.onload = function() {
     if (document.getElementById('files') != undefined) {
         document.getElementById('files').addEventListener('change',
-        handleFileSelect, false);
+            handleFileSelect, false);
     }
 }

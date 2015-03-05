@@ -6,6 +6,7 @@ body
 		.panel.panel-default
 			.panel-heading 
 				h3#createCaption Erstelle nun dein eigenes Spiel
+				p#createDescription
 			.panel-body
 				div#preview
 					canvas#gamePreview.horizontal
@@ -27,18 +28,18 @@ body
 
 							| Wie soll dein Spiel sich verhalten?
 							br
-							input#direction_horizontal(type='radio', name='scroll_direction', value='horizontal', checked='checked', onchange='changePreviewDirection("horizontal")')
+							input#direction_horizontal(type='radio', name='scroll_direction', value='horizontal', checked='checked', onchange='changePreviewDirection("horizontal"); changePreviewCanvas("horizontal")')
 							img#horizontal(src='img/horizontal.png', alt='horizontal', width='100px')
-							input#direction_vertical(type='radio', name='scroll_direction', value='vertical', onchange='changePreviewDirection("vertical")')
+							input#direction_vertical(type='radio', name='scroll_direction', value='vertical', onchange='changePreviewDirection("vertical"); changePreviewCanvas("vertical")')
 							img#vertical(src='img/vertical.png', alt='vertical', height='100px')
 							br
-							input#selfscroll(type='checkbox', name='selfscroll', onchange='showDiv("selfscroll")')
+							input#selfscroll(type='checkbox', name='selfscroll', onchange='showDiv("selfscroll"); setSelfscroll()')
 							| Selbstscroller
 							//Wenn selbsscroller dann anzeigen
 							div#scroll.hidden
 								| Scrollgeschwindigkeit:
 								span#scroll_speed_span /
-								input#scroll_speed(type='range', name='scroll_speed', min='1', max='10', value='5', oninput='showValue(this.value, "scroll_speed")', onchange='showValue(this.value, "scroll_speed")')
+								input#scroll_speed(type='range', name='scroll_speed', min='1', max='10', value='5', oninput='showValue(this.value, "scroll_speed"); setSelfscroll()', onchange='showValue(this.value, "scroll_speed")')
 							br
 							a.btn.btn-primary.changePageBtn(href='#', onclick='changePage(2)') weiter	
 
@@ -48,22 +49,22 @@ body
 							h4 Grenzen
 							//Top
 							| Oben: 
-							input#border_top(type='checkbox', name='border_top', value='true')
+							input#border_top(type='checkbox', name='border_top', value='true', onchange='changeBorder("top")')
 							br
 
 							//Bottom
 							| Unten: 
-							input#border_bottom(type='checkbox', name='border_bottom', value='true')
+							input#border_bottom(type='checkbox', name='border_bottom', value='true', onchange='changeBorder("bottom")')
 							br
 
 							//left
 							| Links: 
-							input#border_left(type='checkbox', name='border_left', value='true')
+							input#border_left(type='checkbox', name='border_left', value='true', onchange='changeBorder("left")')
 							br
 
 							//Right
 							| Rechts: 
-							input#border_right(type='checkbox', name='border_right', value='true')
+							input#border_right(type='checkbox', name='border_right', value='true', onchange='changeBorder("right")')
 							br
 							a.btn.btn-primary.changePageBtn(href='#', onclick='changePage(1)') zurück	
 							a.btn.btn-primary.changePageBtn(href='#', onclick='changePage(3)') weiter	
@@ -135,7 +136,22 @@ body
 								input#foes_gravity(type='range', name='foes_gravity', min='1', max='10', value='5', oninput='showValue(this.value, "foes_gravity")',onchange='showValue(this.value, "foes_gravity")')
 
 
-							a.btn.btn-primary.changePageBtn(href='#', onclick='changePage(3)') zurück	
+							a.btn.btn-primary.changePageBtn(href='#', onclick='changePage(3)') zurück
 							button#loginButton.btn.btn-lg.btn-primary.btn-block(type='submit') senden
 	include ./layout/footer.jade
+	script.
+		var vertical = false,
+		selfScroll = true,
+		borders = {
+			top: false,
+			bottom: false,
+			left: false,
+			right: false
+		}
+		foes = {
+			moving: false,
+			width: 50,
+			height: 50
+		}
+	script(src='js/gamePreview.js')
 
