@@ -59,7 +59,7 @@ module.exports = function(fs, bcrypt, mysql) {
             	callback(err, rows[0]);
         	});
 		},
-		login : function(username, password, callback) {
+		login : function(request, username, password, callback) {
 			connection.query("SELECT * FROM " + db.tableUsers + " WHERE username = '" + username + "'",function(err, rows){
                 if (err) {
                     return callback(err);

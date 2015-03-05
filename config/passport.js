@@ -19,7 +19,7 @@ module.exports = function(passport, accessDb) {
                 passReqToCallback : true
             },
             function(request, username, password, done) {
-                accessDb.login(username, password, done); 
+                accessDb.login(request, username, password, done); 
             }
         )
     );
