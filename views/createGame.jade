@@ -38,7 +38,7 @@ body
 							div#scroll.hidden
 								| Scrollgeschwindigkeit:
 								span#scroll_speed_span /
-								input#scroll_speed(type='range', name='scroll_speed', min='1', max='10', value='5', onchange='showValue(this.value, "scroll_speed")')
+								input#scroll_speed(type='range', name='scroll_speed', min='1', max='10', value='5', oninput='showValue(this.value, "scroll_speed")', onchange='showValue(this.value, "scroll_speed")')
 							br
 							a.btn.btn-primary.changePageBtn(href='#', onclick='changePage(2)') weiter	
 
@@ -76,11 +76,11 @@ body
 
 							| Geschwindigkeit des Spielers:
 							span#player_speed_span /
-							input#player_speed(type='range', name='player_speed', min='1', max='10', value='5', onchange='showValue(this.value, "player_speed")', required='required')
+							input#player_speed(type='range', name='player_speed', min='1', max='10', value='5', oninput='showValue(this.value, "player_speed")', onchange='showValue(this.value, "player_speed")', required='required')
 
 							| Gravitation des Spielers:
 							span#player_gravity_span /
-							input#player_gravity(type='range', name='player_gravity', min='1', max='10', value='5', onchange='showValue(this.value, "player_gravity")', required='required')
+							input#player_gravity(type='range', name='player_gravity', min='1', max='10', value='5',oninput='showValue(this.value, "player_gravity")', onchange='showValue(this.value, "player_gravity")', required='required')
 
 							select#player_shape.form-control(name='player_shape', size='1', onchange='showDiv("player_shape")')
 								option eckig
@@ -101,7 +101,7 @@ body
 
 								| Geschwindigkeit des Geschosses:
 								span#shoot_speed_span /
-								input#shoot_speed(type='range', name='shoot_speed', min='1', max='10', value='5', onchange='showValue(this.value, "shoot_speed")')
+								input#shoot_speed(type='range', name='shoot_speed', min='1', max='10', value='5', oninput='showValue(this.value, "shoot_speed")',onchange='showValue(this.value, "shoot_speed")')
 
 								input#shoot_color.form-control.color(type='text', name='player_shoot_color', placeholder='Farbe')
 								select#shoot_shape.form-control(name='player_shoot_shape', size='1')
@@ -128,11 +128,11 @@ body
 							div#foes_enabled.hidden
 								| Geschwindigkeit des Gegners:
 								span#foes_speed_span /
-								input#foes_speed(type='range', name='foes_speed', min='1', max='10', value='5', onchange='showValue(this.value, "foe_speed")')
+								input#foes_speed(type='range', name='foes_speed', min='1', max='10', value='5', oninput='showValue(this.value, "foes_speed")',onchange='showValue(this.value, "foes_speed")')
 
 								| Gravitation des Gegners:
 								span#foes_gravity_span /
-								input#foes_gravity(type='range', name='foes_gravity', min='1', max='10', value='5', onchange='showValue(this.value, "foe_gravity")')
+								input#foes_gravity(type='range', name='foes_gravity', min='1', max='10', value='5', oninput='showValue(this.value, "foes_gravity")',onchange='showValue(this.value, "foes_gravity")')
 
 
 							a.btn.btn-primary.changePageBtn(href='#', onclick='changePage(3)') zurück	
