@@ -14,7 +14,7 @@ module.exports = function(fs, bcrypt, mysql) {
             	callback(err, rows[0]);
         	});
 		},
-		login : function(username, password, fs, callback) {
+		login : function(username, password, callback) {
 			connection.query("SELECT * FROM " + db.tableUsers + " WHERE username = '" + username + "'",function(err, rows){
                 if (err) {
                     return callback(err);
@@ -43,7 +43,7 @@ module.exports = function(fs, bcrypt, mysql) {
                 return callback(null, rows[0]);
             });
 		},
-		signup : function(request, username, password, fs, callback) {
+		signup : function(request, username, password, callback) {
 			connection.query("SELECT * FROM " + db.tableUsers + " WHERE username = '" + username + "'", function(err, rows) {
 				if (err) {
 			    	return callback(err);

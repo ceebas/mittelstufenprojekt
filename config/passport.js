@@ -1,11 +1,7 @@
 // config/passport.js
 var LocalStrategy = require('passport-local').Strategy;
-var db = require('./database.js');
 
-module.exports = function(passport, fs, bcrypt, mysql, accessDb) {
-    // Datenbankverbindung herstellen
-    var connection = mysql.createConnection(db.connection);
-    connection.query('USE ' + db.database);
+module.exports = function(passport, accessDb) {
     
     // used to serialize the user for the session
     passport.serializeUser(function(user, done) {
@@ -23,7 +19,7 @@ module.exports = function(passport, fs, bcrypt, mysql, accessDb) {
                 passReqToCallback : true
             },
             function(request, username, password, done) {
-                accessDb.login(username, password, fs, done); 
+                accessDb.login(username, password, done); 
             }
         )
     );
@@ -34,7 +30,7 @@ module.exports = function(passport, fs, bcrypt, mysql, accessDb) {
                 passReqToCallback : true 
             }, 
             function(request, username, password, done) {
-                accessDb.signup(request, username, password, fs, done);
+                accessDb.signup(request, username, password, done);
             }
         )
     );

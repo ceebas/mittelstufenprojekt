@@ -30,8 +30,8 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 var accessDb = require('./database/sqlaccess.js')(fs, bcrypt, mysql);
 require('./config/createDatatables')();
-require('./config/passport')(passport, fs, bcrypt, mysql, accessDb);
-require('./app/routes.js')(app, passport, fs, multiparty, accessDb);
+require('./config/passport')(passport, accessDb);
+require('./app/routes.js')(app, passport, multiparty, accessDb);
 
 /* Statische Auslieferung */
 app.use("/bootstrap-3.2.0", express.static(__dirname + "/bootstrap-3.2.0"));

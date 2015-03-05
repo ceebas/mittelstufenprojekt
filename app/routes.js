@@ -1,5 +1,5 @@
 var userTemp = {};
-module.exports = function(app, passport, fs, multiparty, accessDb) {
+module.exports = function(app, passport, multiparty, accessDb) {
 	// Datenbankverbindung herstellen
 
 	/* Index */
