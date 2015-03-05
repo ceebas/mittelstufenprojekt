@@ -4,8 +4,6 @@ var db = require('../config/database.js');
 module.exports = function(fs, bcrypt, mysql) {
 	// Datenbankverbindung herstellen
 	var connection = mysql.createConnection(db.connection);
-	//connection.config.database = db.database;
-
 	/* Datenbank erstellen */
 	connection.query("CREATE DATABASE IF NOT EXISTS " + db.database, function(err, rows, fields) {
 		if (err) {
@@ -19,7 +17,8 @@ module.exports = function(fs, bcrypt, mysql) {
 				if (err) {
 					var d = new Date();
 					console.log(d + "Fehler beim erstellen der Tabelle '" + db.tableUsers + "' " + JSON.stringify(err));
-				} 
+				}
+				//Prüfen ob Usertabelle leer ist - wenn leer: Erstellung von Standarduser 'admin' 
 				connection.query("SELECT * FROM " + db.tableUsers, function(err, rows) {
 					if (err) {
 						console.log(JSON.stringify(err));

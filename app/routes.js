@@ -1,7 +1,5 @@
 var userTemp = {};
 module.exports = function(app, passport, multiparty, accessDb) {
-	// Datenbankverbindung herstellen
-
 	/* Index */
 	app.get('/', function(request, response) {
 		accessDb.getAllActiveGames(render);
