@@ -33,6 +33,9 @@ require('./config/passport')(passport, accessDb);
 require('./app/routes.js')(app, passport, multiparty, accessDb);
 
 /* Statische Auslieferung */
+app.set('views', __dirname + '/views');
+app.set('view engine', 'jade');
+
 app.use("/bootstrap-3.2.0", express.static(__dirname + "/bootstrap-3.2.0"));
 app.use("/css", express.static(__dirname + "/css"));
 app.use("/img", express.static(__dirname + "/img"));
