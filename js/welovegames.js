@@ -70,7 +70,9 @@ $(document).keydown(function(e) {
 function showValue(newValue, id)
 {
     var elementID = id + "_span";
-    document.getElementById(elementID).innerHTML=' '+newValue;
+    //document.getElementById(elementID).innerHTML=' '+newValue;
+    $('span#'+elementID).text(" " +newValue);
+
 }
 
 function showDiv(id){
