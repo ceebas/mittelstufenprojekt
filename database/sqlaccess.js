@@ -74,17 +74,26 @@ module.exports = function(fs, bcrypt, mysql) {
                     return callback(null, false, request.flash('loginMessage', 'Dein Account ist inaktiv, bitte wende dich an einen Admin!'))
                 }
                 //Benutzerordner wird erstellt, wenn nicht vorhanden
-                    var userid = rows[0].id_user;
-                    var path = "uploads/" + userid;
-                    fs.exists(path, function(exists) {
-                        if(!exists) {
-                            fs.mkdir(path, 0777, function (err) {
-                                if (err) {
-                                    console.log(err);
-                                }
-                            });
-                        }
-                    });
+                fs.exists("uploads", function(exists) {
+                	if (!exists) {
+                		fs.mkdir("uploads", 0777, function (err) {
+                            if (err) {
+                                console.log(err);
+                            }
+                        });
+                	}
+                });
+                var userid = rows[0].id_user;
+                var path = "uploads/" + userid;
+                fs.exists(path, function(exists) {
+                    if(!exists) {
+                        fs.mkdir(path, 0777, function (err) {
+                            if (err) {
+                                console.log(err);
+                            }
+                        });
+                    }
+                });
                 return callback(null, rows[0]);
             });
 		},
