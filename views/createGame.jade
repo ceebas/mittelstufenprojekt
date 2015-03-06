@@ -25,8 +25,9 @@ body
 							div.form-group
 							textarea#gamedescription.form-control(name='game-description', onkeyup='textareaLimiter()' type='textarea', placeholder='Beschreibe dein Spiel', required='required', maxlength='150')
 							div#descletters.textcount 150
-
+							br
 							| Wie soll dein Spiel sich verhalten?
+							br
 							br
 							input#direction_horizontal(type='radio', name='scroll_direction', value='horizontal', checked='checked', onchange='changePreviewDirection("horizontal"); changePreviewCanvas("horizontal")')
 							img#horizontal(src='img/horizontal.png', alt='horizontal', width='100px')
@@ -34,7 +35,7 @@ body
 							img#vertical(src='img/vertical.png', alt='vertical', height='100px')
 							br
 							input#selfscroll(type='checkbox', name='selfscroll', onchange='showDiv("selfscroll"); setSelfscroll()')
-							| Selbstscroller
+							| 	Selbstscroller
 							//Wenn selbsscroller dann anzeigen
 							div#scroll.hidden
 								| Scrollgeschwindigkeit:
@@ -91,7 +92,7 @@ body
 							input#player_height.form-control(type='number',min='1', name='player_height', placeholder='Höhe in px')
 							input#player_color.form-control.color(type='text', name='player_color', placeholder='Farbe')
 
-
+							br
 							// Schießen
 							input#player_shoot_enable(type='checkbox', name='player_shoot_enabled', value='true', onchange='showDiv("shoot")')
 							|  Schießen erlauben
@@ -124,8 +125,8 @@ body
 							input#foes_height.form-control(type='number', min='1', name='foes_height', placeholder='Hoehe in px')
 							input#foes_color.form-control.color(type='text', name='foes_color', placeholder='Farbe')
 							input#foes_active(type='checkbox', name='foes_active', value='true', onchange='showDiv("foes")')
-							| kann sich bewegen
-
+							| 	Kann sich bewegen
+							br
 							div#foes_enabled.hidden
 								| Geschwindigkeit des Gegners:
 								span#foes_speed_span /

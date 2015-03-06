@@ -55,14 +55,20 @@ body {
 }
 
 .btn {
-	margin: 0 5px;
+	
 }
 .uploadBtn {
 	width: 230px;
+	margin-left: 10px;
 }
 .btn-primary {
-	margin: 10px 10px;
+	margin-top: 10px;	
 }
+
+.btn-default {
+	margin-left: 5px;	
+}
+
 
 .previewPics {
 	margin-top: 15px;
@@ -86,6 +92,7 @@ body {
 	font-weight: normal;
 	padding-left: 20px;
 }
+
 .form-signin .form-control {
 	position: relative;
 	height: auto;
@@ -94,6 +101,7 @@ body {
 	box-sizing: border-box;
 	padding: 10px;
 	font-size: 16px;
+	margin-top: 5px;
 }
 .form-signin .form-control:focus {
 	z-index: 2;
@@ -118,7 +126,14 @@ body {
 }
 .panel-body {
 	text-align: center;
+	
 }
+
+.panel-default {
+	text-align: center;
+}
+
+
 /* under construction label*/
 #construction {
 	text-align: center;
@@ -157,6 +172,7 @@ textarea{
 }
 .changePageBtn {
 	width: 75px;
+	margin-left: 10px;
 }
 #preview {
 	float: right;
