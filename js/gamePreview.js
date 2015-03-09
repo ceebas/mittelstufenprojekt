@@ -58,6 +58,29 @@ function setSelfscroll(){
     }
 }
 
+function getPlayerOptions(){
+    player_speed = $('input#player_speed').val();
+    player_gravity = $('input#player_gravity').val();
+    player_shape = $('input#player_shape').val();
+    if ($('input#player_width').val() != ''){
+        player_width = $('input#player_width').val();
+    }else{
+        player_width = 20;
+    }
+
+    if ($('input#player_height').val() != ''){
+        player_height = $('input#player_height').val();
+    }else{
+        player_height = 30;
+    }
+    player_color = $('input#player_color').val();
+}
+
+
+
+
+
+
 // Parameter die generisch seinen müssen
 var gameStarted = false,
 selfScroll = selfScrollState,
