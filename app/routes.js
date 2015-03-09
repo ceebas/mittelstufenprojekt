@@ -63,6 +63,12 @@ module.exports = function(app, passport, multiparty, accessDb) {
 			user: request.user
 		});
 	});
+	
+	/* Login */
+	app.post('/login', passport.authenticate('login-local', {
+		successRedirect: '/loginSuccess', 
+		failureRedirect: '/login.html' 
+	}));
 
 	/* Wenn Nutzer vor Login auf bestimmter Seite war, wird er daruf zurückgebracht */
 	app.get('/loginSuccess', isLoggedIn, function(request, response) {
@@ -187,12 +193,6 @@ module.exports = function(app, passport, multiparty, accessDb) {
 			}
 		}
 	});
-
-	/* Login */
-	app.post('/login', passport.authenticate('login-local', {
-		successRedirect: '/loginSuccess', 
-		failureRedirect: '/login.html' 
-	}));
 
 	/* Registrierung eines neuen Benutzers */
 	app.post('/signUp',isLoggedIn, passport.authenticate('local-signup', {

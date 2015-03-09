@@ -2,7 +2,7 @@
   "name": "welovegames",
   "description": "welovegames is super awesome!",
   "private": true,
-  "version": "0.0.1",
+  "version": "0.1.1",
   "dependencies": {
     "bcrypt-nodejs": "0.x",
     "body-parser": "1.x",
