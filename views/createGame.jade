@@ -18,12 +18,12 @@ body
 						div#seite1
 
 							//Spieloptionen
-							input#gamename.form-control(name='gamename', onkeyup='inputLimiter()', type='text', placeholder='Name deines Spiels', maxlength='20', required='required')
+							input#gamename.form-control(name='gamename', onkeyup='inputLimiter()', type='text', placeholder='Name deines Spiels', maxlength='20')
 							div#titleletters.textcount 20
 							br
 
 							div.form-group
-							textarea#gamedescription.form-control(name='game-description', onkeyup='textareaLimiter()' type='textarea', placeholder='Beschreibe dein Spiel', required='required', maxlength='150')
+							textarea#gamedescription.form-control(name='game-description', onkeyup='textareaLimiter()' type='textarea', placeholder='Beschreibe dein Spiel', maxlength='150')
 							div#descletters.textcount 150
 							br
 							| Wie soll dein Spiel sich verhalten?
@@ -78,16 +78,16 @@ body
 
 							| Geschwindigkeit des Spielers:
 							span#player_speed_span /
-							input#player_speed(type='range', name='player_speed', min='1', max='10', value='5', oninput='showValue(this.value, "player_speed")', onchange='showValue(this.value, "player_speed"); getPlayerOptions()', required='required')
+							input#player_speed(type='range', name='player_speed', min='1', max='10', value='5', oninput='showValue(this.value, "player_speed")', onchange='showValue(this.value, "player_speed"); getPlayerOptions()')
 
 							| Gravitation des Spielers:
 							span#player_gravity_span /
-							input#player_gravity(type='range', name='player_gravity', min='1', max='10', value='5',oninput='showValue(this.value, "player_gravity")', onchange='showValue(this.value, "player_gravity"); getPlayerOptions()', required='required')
+							input#player_gravity(type='range', name='player_gravity', min='1', max='10', value='5',oninput='showValue(this.value, "player_gravity")', onchange='showValue(this.value, "player_gravity"); getPlayerOptions()')
 
-							select#player_shape.form-control(name='player_shape', size='1', onchange='showDiv("player_shape"); getPlayerOptions()')
-								option eckig
-								option rund	
-								option eigene Form hochladen (im nächsten Schritt)
+							select#player_shape.form-control(name='player_shape', size='1', onchange='showDiv("player_shape"); getPlayerOptions("shape", this.value)')
+								option(value='eckig') eckig
+								option(value='rund') rund	
+								option(value='eigene') eigene Form hochladen (im nächsten Schritt)
 							input#player_width.form-control(type='number', min='1', name='player_width', placeholder='Breite in px', onchange='getPlayerOptions()')
 							input#player_height.form-control(type='number',min='1', name='player_height', placeholder='Höhe in px', onchange='getPlayerOptions()')
 							input#player_color.form-control.color(type='text', name='player_color', placeholder='Farbe', onchange='getPlayerOptions()')
@@ -105,11 +105,11 @@ body
 								span#shoot_speed_span /
 								input#shoot_speed(type='range', name='shoot_speed', min='1', max='10', value='5', oninput='showValue(this.value, "shoot_speed")',onchange='showValue(this.value, "shoot_speed")')
 
-								input#shoot_color.form-control.color(type='text', name='player_shoot_color', placeholder='Farbe')
-								select#shoot_shape.form-control(name='player_shoot_shape', size='1')
-									option eckig
-									option rund	
-									option eigene Form hochladen (im nächsten Schritt)
+								input#shoot_color.form-control.color(type='text', name='player_shoot_color', placeholder='Farbe', onchange='getFoeOptions()')
+								select#shoot_shape.form-control(name='player_shoot_shape', size='1', onchange='getPlayerOptions("shoot", this.value)')
+									option(value='eckig') eckig
+									option(value='rund') rund	
+									option(value='eigene') eigene Form hochladen (im nächsten Schritt)
 
 							a.btn.btn-primary.changePageBtn(href='#', onclick='changePage(2)') zurück
 							a.btn.btn-primary.changePageBtn(href='#', onclick='changePage(4)') weiter		
@@ -117,24 +117,24 @@ body
 						// Gegner optionen				
 						div#seite4.hidden
 							h4 Gegner
-								select#foes_shape.form-control(name='foes_shape', size='1', onchange='showDiv("foes_shape")')
+								select#foes_shape.form-control(name='foes_shape', size='1', onchange='showDiv("foes_shape"); getFoeOptions(this.value)')
 									option eckig
 									option rund
 									option eigene Form hochladen (im nächsten Schritt)	
-							input#foes_width.form-control(type='number', min='1', name='foes_width', placeholder='Breite in px')
-							input#foes_height.form-control(type='number', min='1', name='foes_height', placeholder='Hoehe in px')
-							input#foes_color.form-control.color(type='text', name='foes_color', placeholder='Farbe')
-							input#foes_active(type='checkbox', name='foes_active', value='true', onchange='showDiv("foes")')
+							input#foes_width.form-control(type='number', min='1', name='foes_width', placeholder='Breite in px', onchange='getFoeOptions()')
+							input#foes_height.form-control(type='number', min='1', name='foes_height', placeholder='Hoehe in px', onchange='getFoeOptions()')
+							input#foes_color.form-control.color(type='text', name='foes_color', placeholder='Farbe', onchange='getFoeOptions()')
+							input#foes_active(type='checkbox', name='foes_active', value='true', onchange='showDiv("foes"); getFoeOptions()')
 							| 	Kann sich bewegen
 							br
 							div#foes_enabled.hidden
 								| Geschwindigkeit des Gegners:
 								span#foes_speed_span /
-								input#foes_speed(type='range', name='foes_speed', min='1', max='10', value='5', oninput='showValue(this.value, "foes_speed")',onchange='showValue(this.value, "foes_speed")')
+								input#foes_speed(type='range', name='foes_speed', min='1', max='10', value='5', oninput='showValue(this.value, "foes_speed")',onchange='showValue(this.value, "foes_speed"); getFoeOptions()')
 
 								| Gravitation des Gegners:
 								span#foes_gravity_span /
-								input#foes_gravity(type='range', name='foes_gravity', min='1', max='10', value='5', oninput='showValue(this.value, "foes_gravity")',onchange='showValue(this.value, "foes_gravity")')
+								input#foes_gravity(type='range', name='foes_gravity', min='1', max='10', value='5', oninput='showValue(this.value, "foes_gravity")',onchange='showValue(this.value, "foes_gravity"); getFoeOptions()')
 
 
 							a.btn.btn-primary.changePageBtn(href='#', onclick='changePage(3)') zurück

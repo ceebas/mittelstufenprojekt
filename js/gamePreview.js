@@ -1,48 +1,86 @@
 var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
 var canvas = document.getElementById('gamePreview');
 var ctx = canvas.getContext('2d');
-var selfScrollState, scrollSpeedValue, border_top, border_bottom, border_left, border_right,horizontal, CanvasHeight, canvasWidth;
+var CanvasHeight, canvasWidth;
+
+// Parameter die generisch seinen müssen
+var gameStarted = false;
+var gameOptions = {
+    horizontal: true,
+    selfScroll: false,
+    scrollspeed: 1,
+    borders: {
+        top: false,
+        bottom: false,
+        left: false,
+        right: false
+    },
+    foes: {
+      moving: false,
+      speed: 0,
+      gravity: 0,
+      width: 20,
+      height: 30,
+      shape: "eckig",
+      color: "#88FF00"
+    },
+    player: {
+        speed: 1,
+        gravity: 1,
+        width: 20,
+        height: 30,
+        shape: "eckig",
+        color: "#000000",
+        shoot: {
+            enabled: false,
+            speed: 0,
+            shape: "eckig",
+            color: "#FF0000"
+        }
+    }
+};
+
 
 
 function changeBorder(id){
     if (id == "top"){
         if ($('input#border_top').prop("checked")){
-            border_top = true;
+           gameOptions.borders.top = true;
         }else{
-            border_top = false;
+            gameOptions.borders.top = false;
         }
     } else if (id == "bottom"){
         if ($('input#border_bottom').prop("checked")){
-            border_bottom = true;
+            gameOptions.borders.bottom = true;
         }else{
-            border_bottom = false;
+            gameOptions.borders.bottom = false;
         }
     } else if (id == "left"){
         if ($('input#border_left').prop("checked")){
-            border_left = true;
+            gameOptions.borders.left = true;
         }else{
-            border_left = false;
+            gameOptions.borders.left = false;
         }
     } else if (id == "right"){
         if ($('input#border_right').prop("checked")){
-            border_right = true;
+            gameOptions.borders.right = true;
         }else{
-            border_right = false;
+            gameOptions.borders.right = false;
         }
     }
 }
 
 function changePreviewCanvas(id){
     if (id == "vertical"){
-        horizontal = false;
+        gameOptions.horizontal = false;
         canvasWidth = 230;
         CanvasHeight = 300;
     }else if(id == "horizontal"){
-        horizontal = true;
+        gameOptions.horizontal = true;
         canvasWidth = 300;
         CanvasHeight = 150;
     }else{
-        horizontal = true;
+        gameOptions.horizontal = true;
         canvasWidth = 300;
         CanvasHeight = 150;
     }
@@ -50,72 +88,50 @@ function changePreviewCanvas(id){
 
 function setSelfscroll(){
     if ($('input#selfscroll').prop("checked")){
-        selfScrollState = true;
-        scrollSpeedValue = $('input#scroll_speed').val();
+        gameOptions.selfScroll = true;
+        gameOptions.scrollSpeedValue = $('input#scroll_speed').val();
     }else{
-        selfScrollState = false;
-        scrollSpeedValue = 0;
+        gameOptions.selfScroll= false;
+        gameOptions.scrollSpeedValue = 0;
     }
 }
 
-function getPlayerOptions(){
-    player_speed = $('input#player_speed').val();
-    player_gravity = $('input#player_gravity').val();
-    player_shape = $('input#player_shape').val();
+function getPlayerOptions(kind, value){
+    gameOptions.player.speed = $('input#player_speed').val();
+    gameOptions.player.gravity = $('input#player_gravity').val();
+    if (kind == "shape"){
+        gameOptions.player.shape = value;
+    } else if (kind == "shoot"){
+        if ($('input#player_shoot_enable').prop("checked")){
+            gameOptions.player.shoot.enabled = true;
+            gameOptions.player.shoot.shape = value;
+        } 
+    }
     if ($('input#player_width').val() != ''){
-        player_width = $('input#player_width').val();
-    }else{
-        player_width = 20;
+        gameOptions.player.width = $('input#player_width').val();
     }
 
     if ($('input#player_height').val() != ''){
-        player_height = $('input#player_height').val();
-    }else{
-        player_height = 30;
+        gameOptions.player.height = $('input#player_height').val();
     }
-    player_color = $('input#player_color').val();
+    gameOptions.player.color = $('input#player_color').val();
+
 }
 
-
-
-
-
-
-// Parameter die generisch seinen müssen
-var gameStarted = false,
-selfScroll = selfScrollState,
-scrollspeed = scrollSpeedValue;
-borders = {
-    top: border_top,
-    bottom: border_bottom,
-    left: border_left,
-    right: border_right
-}
-foes = {
-  moving: false,
-  speed: 0,
-  gravity: 0,
-  width: 50,
-  height: 50,
-  shape: "eckig",
-  color: "#123456"
-}
-player = {
-    speed: 1,
-    gravity: 1,
-    width: 50,
-    height: 75,
-    shape: "eckig",
-    color: "#123456",
-    shoot: {
-        enabled: false,
-        speed: 0,
-        shape: "eckig",
-        color: "#123456"
+function getFoeOptions(value){
+    gameOptions.foes.speed = $('input#foes_speed').val();
+    gameOptions.foes.gravity = $('input#foes_gravity').val();
+    console.log("FOE shape: " + value);
+    gameOptions.foes.shape = value;
+    if ($('input#foes_width').val() != ''){
+        gameOptions.foes.width = $('input#foes_width').val();
     }
-};
 
-
+    if ($('input#foes_height').val() != ''){
+        gameOptions.foes.height = $('input#foes_height').val();
+    }
+    gameOptions.foes.color = $('input#foes_color').val();
+}
 
 
 
@@ -143,7 +159,7 @@ window.addEventListener("load", function(){
 });
 
 function update() {
-	//update gameparameter, Frame by Frame
+	//update gameOptions, Frame by Frame
 }
 
 function render() {
