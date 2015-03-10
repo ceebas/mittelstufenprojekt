@@ -189,12 +189,7 @@ textarea{
 canvas#gamePreview {
 	margin: auto;
 	border: 1px solid #000;
-}
-canvas.horizontal{
-	width: 100%;
-}
-canvas.vertical{
-	width: 70%;
-	height: 300px;
+	width: 300px;
+	height: : 230px;
 }
 

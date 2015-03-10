@@ -1,59 +1,59 @@
-var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
-var canvas = document.getElementById('gamePreview');
-var ctx = canvas.getContext('2d');
-var CanvasHeight, canvasWidth;
-var scoreSend;
-
-// Parameter die generisch seinen müssen
-var gameStarted = false;
-var gameOptions = {
-    horizontal: true,
-    selfScroll: false,
-    scrollspeed: 1,
-    borders: {
-        top: false,
-        bottom: false,
-        left: false,
-        right: false
-    },
-    foes: {
-      moving: false,
-      speed: 0,
-      gravity: 0,
-      width: 20,
-      height: 30,
-      shape: "eckig",
-      color: "#88FF00"
-    },
-    player: {
-        x: 0,
-        y: 30,
-        dead: false,
-        speed: 1,
-        gravity: 1,
-        width: 20,
-        height: 30,
-        shape: "eckig",
-        color: "#000000",
-        shoot: {
-            enabled: false,
-            speed: 0,
-            shape: "eckig",
-            color: "#FF0000"
+var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame,
+    canvas = document.getElementById('gamePreview'),
+    ctx = canvas.getContext('2d'),
+    canvasHeight = 300, 
+    canvasWidth = 150,
+    scoreSend,
+    // Parameter die generisch seinen müssen
+    gameStarted = false,
+    gameOptions = {
+        horizontal: true,
+        selfScroll: false,
+        scrollspeed: 0.5,
+        borders: {
+            top: false,
+            bottom: false,
+            left: false,
+            right: false
         },
-        images : {
-            normal : "new Image()",
-            dead : "new Image()",
-        }
+        foes: {
+          moving: false,
+          speed: 0,
+          gravity: 0,
+          width: 20,
+          height: 30,
+          shape: "eckig",
+          color: "#88FF00"
+        },
+        player: {
+            x: 0,
+            y: 30,
+            dead: false,
+            speed: 1,
+            gravity: 1,
+            width: 20,
+            height: 30,
+            shape: "eckig",
+            color: "#000000",
+            shoot: {
+                enabled: false,
+                speed: 0,
+                shape: "eckig",
+                color: "#FF0000"
+            },
+            images : {
+                normal : "new Image()",
+                dead : "new Image()",
+            }
+        },
     },
-};
+    background = new Image(),
+    backX = 0,
+    backY = 0;
+background.src = "./img/horizontal_preview.png";
 
-var background = new Image(),
-    backX = 0;
-    background.src = "http://placehold.it/"+canvasWidth+"x"+CanvasHeight;
 
-
-function changeBorder(id){
+function changeBorder(id) {
     if (id == "top"){
         if ($('input#border_top').prop("checked")){
            gameOptions.borders.top = true;
@@ -81,37 +81,42 @@ function changeBorder(id){
     }
 }
 
-function changePreviewCanvas(id){
+function changePreviewCanvas(id) {
     if (id == "vertical"){
         gameOptions.horizontal = false;
         canvasWidth = 230;
-        CanvasHeight = 300;
+        canvasHeight = 300;
         gameOptions.player.x = canvasWidth/2;
-        gameOptions.player.y = CanvasHeight - gameOptions.player.height;
-    }else if(id == "horizontal"){
+        gameOptions.player.y = canvasHeight - gameOptions.player.height;
+    } else if (id == "horizontal") {
         gameOptions.horizontal = true;
         canvasWidth = 300;
-        CanvasHeight = 150;
+        canvasHeight = 150;
         gameOptions.player.x = gameOptions.player.width;
-        gameOptions.player.y = CanvasHeight - gameOptions.player.height;
-    }else{
+        gameOptions.player.y = canvasHeight - gameOptions.player.height;
+    } else {
         gameOptions.horizontal = true;
         canvasWidth = 300;
-        CanvasHeight = 150;
+        canvasHeight = 150;
     }
+    backX = 0;
+    backY = 0;
+    canvas.width = canvasWidth;
+    canvas.height = canvasHeight;
 }
-
-function setSelfscroll(){
-    if ($('input#selfscroll').prop("checked")){
+ 
+function setSelfscroll(value) {
+    if ($('input#selfscroll').prop("checked")) {
         gameOptions.selfScroll = true;
-        gameOptions.scrollSpeedValue = $('input#scroll_speed').val();
-    }else{
+        if (value != undefined) {
+            gameOptions.scrollspeed = value / 10;
+        }
+    } else {
         gameOptions.selfScroll= false;
-        gameOptions.scrollSpeedValue = 0;
     }
 }
 
-function getPlayerOptions(kind, value){
+function getPlayerOptions(kind, value) {
     gameOptions.player.speed = $('input#player_speed').val();
     gameOptions.player.gravity = $('input#player_gravity').val();
     if (kind == "shape"){
@@ -134,7 +139,7 @@ function getPlayerOptions(kind, value){
 
 }
 
-function getFoeOptions(value){
+function getFoeOptions(value) {
     gameOptions.foes.speed = $('input#foes_speed').val();
     gameOptions.foes.gravity = $('input#foes_gravity').val();
     gameOptions.foes.shape = value;
@@ -169,7 +174,7 @@ function mainLoop() {
 }
 
 
-function renderMenu(){
+function renderMenu() {
 
 
 };
@@ -180,31 +185,49 @@ window.addEventListener("load", function(){
 });
 
 function update() {
+    if (gameOptions.selfScroll) {
+        var multiplier = gameOptions.scrollspeed * 2;
+
+        if (gameOptions.horizontal) {
+            backX -= multiplier;
+        } else {
+            backY += multiplier;
+        }
+    }
 	//update gameOptions, Frame by Frame
 }
 
 function render() {
 	//overwrite canvas with new parameter - clear out before!
 
-    ctx.clearRect(0, 0, canvasWidth, CanvasHeight);
+    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
     // Erstmal Canvas sauber machen ... alles leer
-    background.onload = function() {
-        ctx.drawImage(background, backX, 0, 640, 400);
+    //background.onload = function() {
+        ctx.drawImage(background, backX, backY, canvasWidth, canvasHeight);
+        if (gameOptions.horizontal) {
+            ctx.drawImage(background, backX + canvasWidth - 1, backY, canvasWidth, canvasHeight);
+        } else {
+            ctx.drawImage(background, backX, backY + canvasHeight - 1, canvasWidth, canvasHeight);
+            ctx.drawImage(background, backX, backY - canvasHeight + 1, canvasWidth, canvasHeight);
+        }
         // Hintergrundbild das bei Start zu sehen ist
-        ctx.drawImage(background, backX + canvasWidth, 0, 640, 400);
     
         // Hintergrundbild rechts neben Startbild
         if (Math.abs(backX) > canvasWidth) {// Wurden die Bilder mehr als die Canvas Breite verschoben (egal welche Richtung (abs))
             backX = 0;
             // Dann resetten
         }
+        if (Math.abs(backY) > canvasHeight) {// Wurden die Bilder mehr als die Canvas Breite verschoben (egal welche Richtung (abs))
+            backY = 0;
+            // Dann resetten
+        }
 
-        if (!gameOptions.player.dead) {
+        /*if (!gameOptions.player.dead) {
             ctx.drawImage(gameOptions.player.images.normal, gameOptions.player.x, gameOptions.player.y, gameOptions.player.width, gameOptions.player.height);
         } else {
             ctx.drawImage(gameOptions.player.images.dead, gameOptions.player.x, gameOptions.player.y, gameOptions.player.width, gameOptions.player.height);
-        }
-    }    
+        }*/
+    //}    
 }
 
 function sendScoreRequest() {

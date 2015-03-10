@@ -40,7 +40,7 @@ body
 							div#scroll.hidden
 								| Scrollgeschwindigkeit:
 								span#scroll_speed_span /
-								input#scroll_speed(type='range', name='scroll_speed', min='1', max='10', value='5', oninput='showValue(this.value, "scroll_speed"); setSelfscroll()', onchange='showValue(this.value, "scroll_speed")')
+								input#scroll_speed(type='range', name='scroll_speed', min='1', max='20', value='10', oninput='showValue(this.value, "scroll_speed"); setSelfscroll(this.value)', onchange='showValue(this.value, "scroll_speed")')
 							br
 							a.btn.btn-primary.changePageBtn(href='#', onclick='changePage(2); mainLoop();') weiter	
 
@@ -140,19 +140,5 @@ body
 							a.btn.btn-primary.changePageBtn(href='#', onclick='changePage(3); mainLoop();') zurück
 							button#loginButton.btn.btn-lg.btn-primary.btn-block(type='submit') senden
 	include ./layout/footer.jade
-	script.
-		var vertical = false,
-		selfScroll = true,
-		borders = {
-			top: false,
-			bottom: false,
-			left: false,
-			right: false
-		}
-		foes = {
-			moving: false,
-			width: 50,
-			height: 50
-		}
 	script(src='js/gamePreview.js')
 
