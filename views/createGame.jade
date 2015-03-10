@@ -42,7 +42,7 @@ body
 								span#scroll_speed_span /
 								input#scroll_speed(type='range', name='scroll_speed', min='1', max='20', value='10', oninput='showValue(this.value, "scroll_speed"); setSelfscroll(this.value)', onchange='showValue(this.value, "scroll_speed")')
 							br
-							a.btn.btn-primary.changePageBtn(href='#', onclick='changePage(2); mainLoop();') weiter	
+							a.btn.btn-primary.changePageBtn(href='#', onclick='changePage(2);') weiter	
 
 						//Borders
 						div#seite2.hidden
@@ -67,8 +67,8 @@ body
 							| Rechts: 
 							input#border_right(type='checkbox', name='border_right', value='true', onchange='changeBorder("right")')
 							br
-							a.btn.btn-primary.changePageBtn(href='#', onclick='changePage(1); mainLoop();') zurück	
-							a.btn.btn-primary.changePageBtn(href='#', onclick='changePage(3); mainLoop();') weiter	
+							a.btn.btn-primary.changePageBtn(href='#', onclick='changePage(1);') zurück	
+							a.btn.btn-primary.changePageBtn(href='#', onclick='changePage(3);') weiter	
 
 
 
@@ -111,8 +111,8 @@ body
 									option(value='rund') rund	
 									option(value='eigene') eigene Form hochladen (im nächsten Schritt)
 
-							a.btn.btn-primary.changePageBtn(href='#', onclick='changePage(2); mainLoop();') zurück
-							a.btn.btn-primary.changePageBtn(href='#', onclick='changePage(4); mainLoop();') weiter		
+							a.btn.btn-primary.changePageBtn(href='#', onclick='changePage(2);') zurück
+							a.btn.btn-primary.changePageBtn(href='#', onclick='changePage(4);') weiter		
 
 						// Gegner optionen				
 						div#seite4.hidden
@@ -137,7 +137,7 @@ body
 								input#foes_gravity(type='range', name='foes_gravity', min='1', max='10', value='5', oninput='showValue(this.value, "foes_gravity")',onchange='showValue(this.value, "foes_gravity"); getFoeOptions()')
 
 
-							a.btn.btn-primary.changePageBtn(href='#', onclick='changePage(3); mainLoop();') zurück
+							a.btn.btn-primary.changePageBtn(href='#', onclick='changePage(3);') zurück
 							button#loginButton.btn.btn-lg.btn-primary.btn-block(type='submit') senden
 	include ./layout/footer.jade
 	script(src='js/gamePreview.js')
