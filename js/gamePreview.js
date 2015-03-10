@@ -2,6 +2,7 @@ var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAni
 var canvas = document.getElementById('gamePreview');
 var ctx = canvas.getContext('2d');
 var CanvasHeight, canvasWidth;
+var scoreSend;
 
 // Parameter die generisch seinen müssen
 var gameStarted = false;
@@ -25,6 +26,9 @@ var gameOptions = {
       color: "#88FF00"
     },
     player: {
+        x: 0,
+        y: 30,
+        dead: false,
         speed: 1,
         gravity: 1,
         width: 20,
@@ -36,10 +40,17 @@ var gameOptions = {
             speed: 0,
             shape: "eckig",
             color: "#FF0000"
+        },
+        images : {
+            normal : new Image(),
+            dead : new Image(),
         }
-    }
+    },
 };
 
+var background = new Image(),
+    backX = 0;
+    background.src = "http://placehold.it/"+canvasWidth+"x"+CanvasHeight;
 
 
 function changeBorder(id){
@@ -75,10 +86,14 @@ function changePreviewCanvas(id){
         gameOptions.horizontal = false;
         canvasWidth = 230;
         CanvasHeight = 300;
+        gameOptions.player.x = canvasWidth/2;
+        gameOptions.player.y = CanvasHeight - gameOptions.player.height;
     }else if(id == "horizontal"){
         gameOptions.horizontal = true;
         canvasWidth = 300;
         CanvasHeight = 150;
+        gameOptions.player.x = gameOptions.player.width;
+        gameOptions.player.y = CanvasHeight - gameOptions.player.height;
     }else{
         gameOptions.horizontal = true;
         canvasWidth = 300;
@@ -115,13 +130,13 @@ function getPlayerOptions(kind, value){
         gameOptions.player.height = $('input#player_height').val();
     }
     gameOptions.player.color = $('input#player_color').val();
+    gameOptions.player.images.normal.src = "http://placehold.it/"+gameOptions.player.width+"x"+gameOptions.player.height;
 
 }
 
 function getFoeOptions(value){
     gameOptions.foes.speed = $('input#foes_speed').val();
     gameOptions.foes.gravity = $('input#foes_gravity').val();
-    console.log("FOE shape: " + value);
     gameOptions.foes.shape = value;
     if ($('input#foes_width').val() != ''){
         gameOptions.foes.width = $('input#foes_width').val();
@@ -141,17 +156,23 @@ function getFoeOptions(value){
 //Spielbeginn
 
 function mainLoop() {
-	if (!gameStarted) {
+	/*if (!gameStarted) {
 		renderMenu();
 		if (!scoreSend) {
 			sendScoreRequest();
 		}
-	} else {
+	} else {*/
 		update();
 		render();
-	}
+	//}
 	requestAnimationFrame(mainLoop);
 }
+
+
+function renderMenu(){
+
+
+};
 
 //Schleife wird aufgerufen, wenn Seite fertig geladen
 window.addEventListener("load", function(){
@@ -164,6 +185,26 @@ function update() {
 
 function render() {
 	//overwrite canvas with new parameter - clear out before!
+
+    ctx.clearRect(0, 0, canvasWidth, CanvasHeight);
+    // Erstmal Canvas sauber machen ... alles leer
+    background.onload = function() {
+        ctx.drawImage(background, backX, 0, 640, 400);
+        // Hintergrundbild das bei Start zu sehen ist
+        ctx.drawImage(background, backX + canvasWidth, 0, 640, 400);
+    
+        // Hintergrundbild rechts neben Startbild
+        if (Math.abs(backX) > canvasWidth) {// Wurden die Bilder mehr als die Canvas Breite verschoben (egal welche Richtung (abs))
+            backX = 0;
+            // Dann resetten
+        }
+
+        if (!gameOptions.player.dead) {
+            ctx.drawImage(gameOptions.player.images.normal, gameOptions.player.x, gameOptions.player.y, gameOptions.player.width, gameOptions.player.height);
+        } else {
+            ctx.drawImage(gameOptions.player.images.dead, gameOptions.player.x, gameOptions.player.y, gameOptions.player.width, gameOptions.player.height);
+        }
+    }    
 }
 
 function sendScoreRequest() {
