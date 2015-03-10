@@ -241,7 +241,7 @@ module.exports = function(fs, bcrypt, mysql) {
 			});
 		},
 		searchGames : function(searchString, callback) {
-			connection.query("SELECT * FROM " + db.tableGames + " WHERE (gamename LIKE '%" + searchString + "%' or description LIKE '%" + searchString + "%')", function(err, rows, fields) {
+			connection.query("SELECT * FROM " + db.tableGames + " WHERE (gamename LIKE '%" + searchString + "%' or description LIKE '%" + searchString + "%') AND inactive LIKE 0", function(err, rows, fields) {
 				if (err) {
 					console.log(JSON.stringify(err));
 					callback(null, err);

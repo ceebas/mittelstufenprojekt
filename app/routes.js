@@ -39,7 +39,7 @@ module.exports = function(app, passport, multiparty, accessDb) {
 	/* Suche */
 	app.post('/search', function(request, response) {
 		var searchString = request.body.search;
-		if (searchString == "" || searchString == "'" || searchString == " ") {
+		if (searchString == "" || searchString == "'" || searchString == " " || searchString.indexOf("´") != -1) {
 			request.flash('message', 'Deine Suche nach: ´ ' + searchString + ' ´ hat leider keiner Ergenisse geliefert.');
 			response.redirect('/');
 		} else {
@@ -64,7 +64,6 @@ module.exports = function(app, passport, multiparty, accessDb) {
 		});
 	});
 	
-	/* Login */
 	app.post('/login', passport.authenticate('login-local', {
 		successRedirect: '/loginSuccess', 
 		failureRedirect: '/login.html' 
