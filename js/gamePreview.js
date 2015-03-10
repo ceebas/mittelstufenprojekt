@@ -42,8 +42,8 @@ var gameOptions = {
             color: "#FF0000"
         },
         images : {
-            normal : new Image(),
-            dead : new Image(),
+            normal : "new Image()",
+            dead : "new Image()",
         }
     },
 };
@@ -214,33 +214,33 @@ function sendScoreRequest() {
 
 //Kollisionsabfrage
 function collision(shapeA, shapeB) {
-  if (shapeA !== undefined && shapeB !== undefined) {
-    var vX = (shapeA.x + (shapeA.width / 2)) - (shapeB.x + (shapeB.width / 2)),
-    vY = (shapeA.y + (shapeA.height / 2)) - (shapeB.y + (shapeB.height / 2)),
-    hWidths = (shapeA.width / 2) + (shapeB.width / 2),
-    hHeights = (shapeA.height / 2) + (shapeB.height / 2),
-    colDir = null;
-    if (Math.abs(vX) < hWidths && Math.abs(vY) < hHeights) {
-      var oX = hWidths - Math.abs(vX),
-      oY = hHeights - Math.abs(vY);
-      if (oX >= oY) {
-        if (vY > 0) {
-          colDir = "t";
-          shapeA.y += oY;
-      } else {
-          colDir = "b";
-          shapeA.y -= oY;
-      }
-  } else {
-    if (vX > 0) {
-      colDir = "l";
-      shapeA.x += oX;
-  } else {
-      colDir = "r";
-      shapeA.x -= oX;
-  }
-}
-return colDir;
-}
-}
+    if (shapeA !== undefined && shapeB !== undefined) {
+        var vX = (shapeA.x + (shapeA.width / 2)) - (shapeB.x + (shapeB.width / 2)),
+            vY = (shapeA.y + (shapeA.height / 2)) - (shapeB.y + (shapeB.height / 2)),
+            hWidths = (shapeA.width / 2) + (shapeB.width / 2),
+            hHeights = (shapeA.height / 2) + (shapeB.height / 2),
+            colDir = null;
+        if (Math.abs(vX) < hWidths && Math.abs(vY) < hHeights) {
+            var oX = hWidths - Math.abs(vX),
+                oY = hHeights - Math.abs(vY);
+            if (oX >= oY) {
+                if (vY > 0) {
+                    colDir = "t";
+                    shapeA.y += oY;
+                } else {
+                    colDir = "b";
+                    shapeA.y -= oY;
+                }
+            } else {
+                if (vX > 0) {
+                    colDir = "l";
+                    shapeA.x += oX;
+                } else {
+                    colDir = "r";
+                    shapeA.x -= oX;
+                }
+            }
+            return colDir;
+        }
+    }
 }
