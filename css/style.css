@@ -193,3 +193,9 @@ canvas#gamePreview {
 	height: : 230px;
 }
 
+.previewtext {
+	font-size: 5px;
+	color: grey;
+	font-style: italic;
+}
+
