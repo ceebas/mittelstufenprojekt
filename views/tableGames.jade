@@ -1,41 +1,44 @@
 include ./layout/head.jade
 body
 	.container
-		include ./layout/nav.jade
-		table.table.table-striped
-			tablehead
-				tr
-					td ID
-					td Spielname
-					td Uploader
-					td Beschreibung
-					td JS Datei
-					td Anzeigebild
-					td Aktionen
-			tablebody
-				each data in games
-					-if (data.inactive == 1)
-						tr.danger
-							td #{data.id_game}
-							td #{data.gamename}
-							td #{data.user}
-							td #{data.description}
-							td #{data.javascript}
-							td 
-								a(href='uploads/#{data.user}/#{data.id_game}.#{data.gamename}/image.#{data.imageEnc}') image.#{data.imageEnc}
-							td
-								a(href='/removeGame?gameId=#{data.id_game}', title='Spiel aktivieren')
-									span.glyphicon.glyphicon-ok
-					-else
-						tr
-							td #{data.id_game}
-							td #{data.gamename}
-							td #{data.user}
-							td #{data.description}
-							td #{data.javascript}
-							td 
-								a(href='uploads/#{data.user}/#{data.id_game}.#{data.gamename}/image.#{data.imageEnc}') image.#{data.imageEnc}
-							td
-								a(href='/removeGame?gameId=#{data.id_game}', title='Spiel deaktivieren')
-									span.glyphicon.glyphicon-remove
+		include ./layout/nav.jade 
+		.panel.panel-default
+			.panel-heading 
+				h2 Spiele
+			table.table.table-striped
+				tablehead
+					tr
+						td ID
+						td Spielname
+						td Uploader
+						td Beschreibung
+						td JS Datei
+						td Anzeigebild
+						td Aktionen
+				tablebody
+					each data in games
+						-if (data.inactive == 1)
+							tr.danger
+								td #{data.id_game}
+								td #{data.gamename}
+								td #{data.user}
+								td #{data.description}
+								td #{data.javascript}
+								td 
+									a(href='uploads/#{data.user}/#{data.id_game}.#{data.gamename}/image.#{data.imageEnc}') image.#{data.imageEnc}
+								td
+									a(href='/removeGame?gameId=#{data.id_game}', title='Spiel aktivieren')
+										span.glyphicon.glyphicon-ok
+						-else
+							tr
+								td #{data.id_game}
+								td #{data.gamename}
+								td #{data.user}
+								td #{data.description}
+								td #{data.javascript}
+								td 
+									a(href='uploads/#{data.user}/#{data.id_game}.#{data.gamename}/image.#{data.imageEnc}') image.#{data.imageEnc}
+								td
+									a(href='/removeGame?gameId=#{data.id_game}', title='Spiel deaktivieren')
+										span.glyphicon.glyphicon-remove
 	include ./layout/footer.jade
