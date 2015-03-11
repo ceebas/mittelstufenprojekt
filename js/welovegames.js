@@ -111,7 +111,7 @@ function showDiv(id){
             $('input#' + kind + '_width').attr("onchange", "getPlayerOptions()");
             $('input#' + kind + '_width').removeClass("hidden");
             $('input#' + kind + '_color').removeClass("hidden");
-        } else if (kind_shape == "eigene Form hochladen (im nächsten Schritt)") {
+        } else if (kind_shape == "eigene") {
             $('input#' + kind + '_height').addClass("hidden");
             $('input#' + kind + '_width').addClass("hidden");
             $('input#' + kind + '_color').addClass("hidden");

@@ -80,14 +80,7 @@ body
 						div#seite3.hidden
 							h4 Spieler
 
-							| Geschwindigkeit des Spielers:
-							span#player_speed_span /
-							input#player_speed(type='range', name='player_speed', min='1', max='10', value='5', oninput='showValue(this.value, "player_speed")', onchange='showValue(this.value, "player_speed"); getPlayerOptions()')
-
-							| Gravitation des Spielers:
-							span#player_gravity_span /
-							input#player_gravity(type='range', name='player_gravity', min='1', max='10', value='5',oninput='showValue(this.value, "player_gravity")', onchange='showValue(this.value, "player_gravity"); getPlayerOptions()')
-
+							| Form des Spielers
 							select#player_shape.form-control(name='player_shape', size='1', onchange='showDiv("player_shape"); getPlayerOptions("shape", this.value)')
 								option(value='eckig') eckig
 								option(value='rund') rund	
@@ -95,6 +88,15 @@ body
 							input#player_width.form-control(type='number', min='1', name='player_width', placeholder='Breite in px', onchange='getPlayerOptions()')
 							input#player_height.form-control(type='number',min='1', name='player_height', placeholder='Höhe in px', onchange='getPlayerOptions()')
 							input#player_color.form-control.color(type='text', name='player_color', placeholder='Farbe', onchange='getPlayerOptions()')
+
+							| Geschwindigkeit des Spielers:
+							span#player_speed_span /
+							input#player_speed(type='range', name='player_speed', min='1', max='10', value='5', oninput='showValue(this.value, "player_speed");gameOptions.player.speed = parseInt(this.value);', onchange='showValue(this.value, "player_speed"); gameOptions.player.speed = parseInt(this.value);')
+
+							| Gravitation des Spielers:
+							span#player_gravity_span /
+							input#player_gravity(type='range', name='player_gravity', min='1', max='10', value='5',oninput='showValue(this.value, "player_gravity"); gameOptions.player.gravity = parseInt(this.value);', onchange='showValue(this.value, "player_gravity");gameOptions.player.speed = parseInt(this.value);')
+
 
 							br
 							// Schießen
@@ -122,9 +124,9 @@ body
 						div#seite4.hidden
 							h4 Gegner
 								select#foes_shape.form-control(name='foes_shape', size='1', onchange='showDiv("foes_shape"); getFoeOptions(this.value)')
-									option eckig
-									option rund
-									option eigene Form hochladen (im nächsten Schritt)	
+									option(value='eckig') eckig
+									option(value='rund') rund
+									option(value='eigene') eigene Form hochladen (im nächsten Schritt)	
 							input#foes_width.form-control(type='number', min='1', name='foes_width', placeholder='Breite in px', onchange='getFoeOptions()')
 							input#foes_height.form-control(type='number', min='1', name='foes_height', placeholder='Hoehe in px', onchange='getFoeOptions()')
 							input#foes_color.form-control.color(type='text', name='foes_color', placeholder='Farbe', onchange='getFoeOptions()')

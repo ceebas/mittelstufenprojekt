@@ -1,13 +1,14 @@
 var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame,
     canvas = document.getElementById('gamePreview'),
     ctx = canvas.getContext('2d'),
+    keys = {},
     canvasHeight = 300, 
-    canvasWidth = 150,
+    canvasWidth = 230,
     scoreSend,
     // Parameter die generisch seinen müssen
     gameStarted = false,
     gameOptions = {
-        horizontal: true,
+        horizontal: false,
         selfScroll: false,
         scrollspeed: 0.5,
         borders: {
@@ -26,15 +27,15 @@ var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAni
           color: "#88FF00"
         },
         player: {
-            x: 0,
-            y: 30,
+            x : canvasWidth/2,
+            y : canvasHeight - 30,
             dead: false,
             speed: 1,
             gravity: 1,
             width: 20,
             height: 30,
             shape: "eckig",
-            color: "#000000",
+            color: "#FFFFFF",
             shoot: {
                 enabled: false,
                 speed: 0,
@@ -50,8 +51,16 @@ var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAni
     background = new Image(),
     backX = 0,
     backY = 0,
-    borders = [];
+    borders = [{
+                position: "bottom",
+                x: 0,
+                y: canvasHeight - 5,
+                width: canvasWidth,
+                height: 5
+           }];
 background.src = "./img/horizontal_preview.png";
+canvas.width = canvasWidth;
+canvas.height = canvasHeight;
 
 
 function changeBorder(id) {
@@ -169,14 +178,14 @@ function getPlayerOptions(kind, value) {
         } 
     }
     if ($('input#player_width').val() != ''){
-        gameOptions.player.width = $('input#player_width').val();
+        gameOptions.player.width = parseInt($('input#player_width').val()) + 11;
     }
 
     if ($('input#player_height').val() != ''){
-        gameOptions.player.height = $('input#player_height').val();
+        gameOptions.player.height = parseInt($('input#player_height').val()) + 11;
     }
     gameOptions.player.color = $('input#player_color').val();
-    gameOptions.player.images.normal.src = "http://placehold.it/"+gameOptions.player.width+"x"+gameOptions.player.height;
+    //gameOptions.player.images.normal.src = "http://placehold.it/"+gameOptions.player.width+"x"+gameOptions.player.height;
 
 }
 
@@ -235,51 +244,107 @@ function update() {
             backY += multiplier;
         }
     }
-	//update gameOptions, Frame by Frame
+    if (gameOptions.horizontal) {
+        gameOptions.player.y += gameOptions.player.gravity * gameOptions.player.speed * 5; 
+    } else {
+        gameOptions.player.y += gameOptions.player.gravity * gameOptions.player.speed * 5;
+    }
+    //Tastaturabfragen
+    if (keys[87] || keys[38]) {    //up
+        gameOptions.player.y -= 8;
+        gameOptions.player.velY = -gameOptions.player.speed * 50;
+    }
+    if (keys[83] || keys[40]) {    //down
+        gameOptions.player.y += 8;
+        gameOptions.player.velY = gameOptions.player.speed * 50;
+    }
+    if (keys[65] || keys[37]) {    //left
+        gameOptions.player.x -= 8;
+        gameOptions.player.velY = gameOptions.player.speed * 50;
+    }
+    if (keys[68] || keys[39]) {    //right
+        gameOptions.player.x += 8;
+        gameOptions.player.velY = -gameOptions.player.speed * 50;
+    }
+    // Kollision mit der Grenze?
+    for (var j = 0, l = borders.length; j < l; j++) { 
+        var dir = collision(gameOptions.player, borders[j]);
+        if (dir === "l" || dir === "r" || dir === "b" || dir ===  "t") {
+            gameOptions.player.velX = 0;
+            gameOptions.player.velY = 0;
+        }
+    }
+
 }
 
 function render() {
 	//overwrite canvas with new parameter - clear out before!
-
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
     // Erstmal Canvas sauber machen ... alles leer
-    //background.onload = function() {
-        ctx.drawImage(background, backX, backY, canvasWidth, canvasHeight);
-        if (gameOptions.horizontal) {
-            ctx.drawImage(background, backX + canvasWidth - 1, backY, canvasWidth, canvasHeight);
-        } else {
-            ctx.drawImage(background, backX, backY + canvasHeight - 1, canvasWidth, canvasHeight);
-            ctx.drawImage(background, backX, backY - canvasHeight + 1, canvasWidth, canvasHeight);
-        }
+    ctx.drawImage(background, backX, backY, canvasWidth, canvasHeight);
+    if (gameOptions.horizontal) {
+        ctx.drawImage(background, backX + canvasWidth - 1, backY, canvasWidth, canvasHeight);
+    } else {
+        ctx.drawImage(background, backX, backY + canvasHeight - 1, canvasWidth, canvasHeight);
+        ctx.drawImage(background, backX, backY - canvasHeight + 1, canvasWidth, canvasHeight);
+    }
 
-        for (var s = 0; s < borders.length; s++) {
-            ctx.fillStyle = "red";
-            ctx.fillRect(borders[s].x, borders[s].y, borders[s].width, borders[s].height);
-        }
-        // Hintergrundbild das bei Start zu sehen ist
-    
-        // Hintergrundbild rechts neben Startbild
-        if (Math.abs(backX) > canvasWidth) {// Wurden die Bilder mehr als die Canvas Breite verschoben (egal welche Richtung (abs))
-            backX = 0;
-            // Dann resetten
-        }
-        if (Math.abs(backY) > canvasHeight) {// Wurden die Bilder mehr als die Canvas Breite verschoben (egal welche Richtung (abs))
-            backY = 0;
-            // Dann resetten
-        }
+    for (var s = 0; s < borders.length; s++) {
+        ctx.fillStyle = "red";
+        ctx.fillRect(borders[s].x, borders[s].y, borders[s].width, borders[s].height);
+    }
 
-        /*if (!gameOptions.player.dead) {
-            ctx.drawImage(gameOptions.player.images.normal, gameOptions.player.x, gameOptions.player.y, gameOptions.player.width, gameOptions.player.height);
-        } else {
-            ctx.drawImage(gameOptions.player.images.dead, gameOptions.player.x, gameOptions.player.y, gameOptions.player.width, gameOptions.player.height);
-        }*/
-    //}    
+    if (Math.abs(backX) > canvasWidth) {
+        // Wurden die Bilder mehr als die Canvas Breite verschoben (egal welche Richtung (abs))
+        backX = 0;
+        // Dann resetten
+    }
+    if (Math.abs(backY) > canvasHeight) {
+        // Wurden die Bilder mehr als die Canvas Höhe verschoben (egal welche Richtung (abs))
+        backY = 0;
+        // Dann resetten
+    }
+    if (gameOptions.player.shape == "eckig") {
+        ctx.beginPath();
+        ctx.lineWidth = 0.1;
+        ctx.strokeStyle = '#003300';
+        ctx.rect(gameOptions.player.x, gameOptions.player.y, gameOptions.player.width, gameOptions.player.height);
+        ctx.stroke();
+        ctx.fillStyle = gameOptions.player.color;
+        ctx.fillRect(gameOptions.player.x, gameOptions.player.y, gameOptions.player.width, gameOptions.player.height);
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = '#003300';
+        ctx.stroke();
+    } else if (gameOptions.player.shape == "rund") {
+        var radius = gameOptions.player.width;
+        ctx.beginPath();
+        ctx.arc(gameOptions.player.x - (gameOptions.player.width / 2), gameOptions.player.y + (gameOptions.player.width / 2), radius, 0, 2 * Math.PI, false);
+        ctx.fillStyle = gameOptions.player.color;
+        ctx.fill();
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = '#003300';
+        ctx.stroke();
+    } else {
+        //ctx.drawImage(gameOptions.player.images.normal, gameOptions.player.x, gameOptions.player.y, gameOptions.player.width, gameOptions.player.height);  
+    }
 }
 
 function sendScoreRequest() {
 	//post request with score object
 	scoreSend = true;
 }
+
+//Tastaturanschläge abfangen
+document.body.addEventListener("keydown", function(e) {
+  if (gameStarted) {
+    e.preventDefault();
+  }
+  keys[e.keyCode] = true;
+}, false);
+
+document.body.addEventListener("keyup", function(e) {
+  keys[e.keyCode] = false;
+}, false);
 
 //Kollisionsabfrage
 function collision(shapeA, shapeB) {
