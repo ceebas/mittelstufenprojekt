@@ -177,6 +177,9 @@ function changePreviewDirection(id){
     }
 }
 
+//Disable input-cache
+$("form :input").attr("autocomplete", "off");
+
 /* EventListener */
 window.onload = function() {
     if (document.getElementById('files') != undefined) {
