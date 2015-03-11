@@ -49,34 +49,75 @@ var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAni
     },
     background = new Image(),
     backX = 0,
-    backY = 0;
+    backY = 0,
+    borders = [];
 background.src = "./img/horizontal_preview.png";
 
 
 function changeBorder(id) {
+    //Betreffende Border suchen und aus Array entfernen
+    function popBorder() {
+        for (var i = 0; i < borders.length; i++) {
+            if (borders[i].position == id) {
+                borders.splice(i,1);
+            }
+        }
+    }
     if (id == "top"){
         if ($('input#border_top').prop("checked")){
-           gameOptions.borders.top = true;
+            gameOptions.borders.top = true;
+            borders.push({
+                position: "top",
+                x: 0,
+                y: 0,
+                width: canvasWidth,
+                height: 5
+            });
         }else{
             gameOptions.borders.top = false;
+            popBorder();
         }
     } else if (id == "bottom"){
         if ($('input#border_bottom').prop("checked")){
             gameOptions.borders.bottom = true;
+            borders.push({
+                position: "bottom",
+                x: 0,
+                y: canvasHeight - 5,
+                width: canvasWidth,
+                height: 5
+           });
         }else{
             gameOptions.borders.bottom = false;
+            popBorder();
         }
     } else if (id == "left"){
         if ($('input#border_left').prop("checked")){
             gameOptions.borders.left = true;
+            borders.push({ //left
+                position: "left",
+                x: 0,
+                y: 0,
+                width: 5,
+                height: canvasHeight
+            });
         }else{
             gameOptions.borders.left = false;
+            popBorder();
         }
     } else if (id == "right"){
         if ($('input#border_right').prop("checked")){
             gameOptions.borders.right = true;
+            borders.push({ //right
+                position: "right",
+                x: canvasWidth - 5,
+                y: 5,
+                width: 5,
+                height: canvasHeight
+            });
         }else{
             gameOptions.borders.right = false;
+            popBorder();
         }
     }
 }
@@ -209,6 +250,11 @@ function render() {
         } else {
             ctx.drawImage(background, backX, backY + canvasHeight - 1, canvasWidth, canvasHeight);
             ctx.drawImage(background, backX, backY - canvasHeight + 1, canvasWidth, canvasHeight);
+        }
+
+        for (var s = 0; s < borders.length; s++) {
+            ctx.fillStyle = "red";
+            ctx.fillRect(borders[s].x, borders[s].y, borders[s].width, borders[s].height);
         }
         // Hintergrundbild das bei Start zu sehen ist
     
