@@ -2,6 +2,7 @@ var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAni
     canvas = document.getElementById('gamePreview'),
     ctx = canvas.getContext('2d'),
     keys = {},
+    shots = [],
     canvasHeight = 300, 
     canvasWidth = 230,
     scoreSend,
@@ -38,7 +39,7 @@ var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAni
             color: "#FFFFFF",
             shoot: {
                 enabled: false,
-                speed: 0,
+                speed: 1,
                 shape: "eckig",
                 color: "#FF0000"
             },
@@ -266,6 +267,11 @@ function update() {
         gameOptions.player.x += 8;
         gameOptions.player.velY = -gameOptions.player.speed * 50;
     }
+    if (keys[32] ) {    //Leertaste
+        if (gameOptions.player.shoot.enabled) {
+            shot();
+        }
+    }
     // Kollision mit der Grenze?
     for (var j = 0, l = borders.length; j < l; j++) { 
         var dir = collision(gameOptions.player, borders[j]);
@@ -327,6 +333,30 @@ function render() {
     } else {
         //ctx.drawImage(gameOptions.player.images.normal, gameOptions.player.x, gameOptions.player.y, gameOptions.player.width, gameOptions.player.height);  
     }
+    //Schüsse werden gezeichnet
+    for (var s = 0; s < shots.length; s++) {
+        ctx.fillStyle = gameOptions.player.shoot.color;
+        if (gameOptions.player.shoot.shape == "eckig") {
+            ctx.fillRect(shots[s].x, shots[s].y, shots[s].width, shots[s].height);
+        } else if (gameOptions.player.shoot.shape == "rund") {
+            var radius = shots[s].width / 2;
+            ctx.beginPath();
+            ctx.arc(shots[s].x - (shots[s].width / 2), shots[s].y + (shots[s].width / 2), radius, 0, 2 * Math.PI, false);
+            ctx.fill();
+        }
+        shots[s].y -= gameOptions.player.shoot.speed + 7;
+        if (shots[s].y < (-50)) {
+            shots.splice(s,1);
+        }
+    }
+}
+function shot() {
+  shots.push({
+    x: gameOptions.player.x + gameOptions.player.width / 2 - 6,
+    y: gameOptions.player.y - 20,
+    width: 10,
+    height: 10
+  });
 }
 
 function sendScoreRequest() {
