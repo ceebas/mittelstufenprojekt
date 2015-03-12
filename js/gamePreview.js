@@ -3,6 +3,7 @@ var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAni
     ctx = canvas.getContext('2d'),
     keys = {},
     shots = [],
+    shotVar = 10,
     canvasHeight = 300, 
     canvasWidth = 230,
     scoreSend,
@@ -269,9 +270,15 @@ function update() {
     }
     if (keys[32] ) {    //Leertaste
         if (gameOptions.player.shoot.enabled) {
-            shot();
+            if (shotVar == 10) {
+                shot();
+                shotVar = 0;
+            } else {
+                shotVar++;
+            }
         }
     }
+
     // Kollision mit der Grenze?
     for (var j = 0, l = borders.length; j < l; j++) { 
         var dir = collision(gameOptions.player, borders[j]);
