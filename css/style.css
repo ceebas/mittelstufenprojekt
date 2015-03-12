@@ -133,12 +133,20 @@ body {
 	text-align: center;
 }
 
+.panel-default {
+	text-align: center;
+}
+
 .signUpButton {
 	text-align: center;
 }
 
 .panel-body {
 	text-align: center;	
+}
+
+.table {
+	text-align: left;
 }
 
 /* Hover fuer die beiden navbar nav´s [Login & Upload] */
