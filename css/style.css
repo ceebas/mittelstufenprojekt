@@ -2,9 +2,11 @@ body {
 	padding-top: 40px;
 	padding-bottom: 40px;
 }
+
 .header {
 	margin-bottom: 20px;
 }
+
 .footer {
 	text-align: center;
 	margin-bottom: -30px;
@@ -13,12 +15,14 @@ body {
 .thumbnail {
 	margin: 0px -15px 20px -15px !important;
 }
+
 .userControl {
 	position: absolute;
 	right: 260px;
 	padding: 0px;
 	top: 8px;
 }
+
 #userMenu {
 	position: absolute;
 	left: 910px;
@@ -54,13 +58,11 @@ body {
 	height: 500px;
 }
 
-.btn {
-	
-}
 .uploadBtn {
 	width: 230px;
 	margin-left: 10px;
 }
+
 .btn-primary {
 	margin-top: 10px;	
 }
@@ -70,25 +72,29 @@ body {
 	margin-right: 10px;	
 }
 
-
 .previewPics {
 	margin-top: 15px;
 }
+
 .caption {
 	margin-left: 40px;
 }
+
 .red {
 	color: red;
 }
+
 .form-signin {
 	max-width: 330px;
 	padding: 15px;
 	margin: 0 auto;
 }
+
 .form-signin .form-signin-heading,
 .form-signin .checkbox {
 	margin-bottom: 10px;
 }
+
 .form-signin .checkbox {
 	font-weight: normal;
 	padding-left: 20px;
@@ -104,46 +110,43 @@ body {
 	font-size: 16px;
 	margin-top: 1px;
 }
+
 .form-signin .form-control:focus {
 	z-index: 2;
 }
+
 .form-signin input[type="email"] {
 	margin-bottom: -1px;
 	border-bottom-right-radius: 0;
 	border-bottom-left-radius: 0;
 }
+
 .form-signin input[type="password"] {
 	border-top-left-radius: 0;
 	border-top-right-radius: 0;
 }
+
 .signUpPanel {
 	max-width: 310px;
 	padding: 15px;
 	margin: 0 auto;
 	text-align: center;
 }
-.signUpButton{
+
+.signUpButton {
 	text-align: center;
 }
+
 .panel-body {
-	text-align: center;
-	
+	text-align: center;	
 }
 
-.panel-default {
-	text-align: center;
-}
-
-
-/* under construction label*/
-#construction {
-	text-align: center;
-}
 /* Hover fuer die beiden navbar nav´s [Login & Upload] */
 .navbar-default .navbar-nav > .active > a:hover {
 	color: #000 !important;
 	background-color: rgba(255,68,0,0.65) !important; /*#ff4400 : orange */
 }
+
 /* "Trennlinie" zwischen den beiden navbar nav´s [Login & Upload] */
 #seperator {
 	border-right-style: solid;
@@ -156,7 +159,7 @@ body {
 	background-color: rgba(255,68,0,0.65) !important; /* orange */
 }
 
-textarea{
+textarea {
 	resize: none;
 }
 
@@ -167,25 +170,28 @@ textarea{
 }
 
 /*Create a game*/
-
-.hidden{
+.hidden {
 	display: none;
 }
+
 .changePageBtn {
 	width: 75px;
 	margin-left: 10px;
 }
+
 #preview {
 	float: right;
 	height: 100%;
 	width: 30%
 }
-#options{
+
+#options {
 	padding: 10px;
 	float: left;
 	width: 70%;
 	height: 100%;
 }
+
 canvas#gamePreview {
 	margin: auto;
 	border: 1px solid #000;
@@ -198,4 +204,3 @@ canvas#gamePreview {
 	color: grey;
 	font-style: italic;
 }
-
