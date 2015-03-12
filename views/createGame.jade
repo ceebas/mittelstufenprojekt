@@ -94,8 +94,7 @@ body
 							input#player_speed(type='range', name='player_speed', min='1', max='10', value='5', oninput='showValue(this.value, "player_speed");gameOptions.player.speed = parseInt(this.value);', onchange='showValue(this.value, "player_speed"); gameOptions.player.speed = parseInt(this.value);')
 
 							| Gravitation des Spielers:
-							span#player_gravity_span /
-							input#player_gravity(type='range', name='player_gravity', min='0', max='10', value='0',oninput='showValue(this.value, "player_gravity"); gameOptions.player.gravity = parseInt(this.value);', onchange='showValue(this.value, "player_gravity");gameOptions.player.speed = parseInt(this.value);')
+							input#player_gravity(type='checkbox', name='player_gravity', onchange='getPlayerOptions()')
 
 
 							br
