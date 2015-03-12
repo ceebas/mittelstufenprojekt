@@ -31,7 +31,7 @@ var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAni
             y : canvasHeight - 30,
             dead: false,
             speed: 1,
-            gravity: 1,
+            gravity: 0,
             width: 20,
             height: 30,
             shape: "eckig",

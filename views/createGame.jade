@@ -59,7 +59,7 @@ body
 
 							//Bottom
 							| Unten: 
-							input#border_bottom(type='checkbox', name='border_bottom', value='true', onchange='changeBorder("bottom")')
+							input#border_bottom(type='checkbox', name='border_bottom', value='true', checked='checked',onchange='changeBorder("bottom")')
 							br
 
 							//left
@@ -95,7 +95,7 @@ body
 
 							| Gravitation des Spielers:
 							span#player_gravity_span /
-							input#player_gravity(type='range', name='player_gravity', min='1', max='10', value='5',oninput='showValue(this.value, "player_gravity"); gameOptions.player.gravity = parseInt(this.value);', onchange='showValue(this.value, "player_gravity");gameOptions.player.speed = parseInt(this.value);')
+							input#player_gravity(type='range', name='player_gravity', min='0', max='10', value='0',oninput='showValue(this.value, "player_gravity"); gameOptions.player.gravity = parseInt(this.value);', onchange='showValue(this.value, "player_gravity");gameOptions.player.speed = parseInt(this.value);')
 
 
 							br
@@ -140,7 +140,7 @@ body
 
 								| Gravitation des Gegners:
 								span#foes_gravity_span /
-								input#foes_gravity(type='range', name='foes_gravity', min='1', max='10', value='5', oninput='showValue(this.value, "foes_gravity")',onchange='showValue(this.value, "foes_gravity"); getFoeOptions()')
+								input#foes_gravity(type='range', name='foes_gravity', min='0', max='10', value='5', oninput='showValue(this.value, "foes_gravity")',onchange='showValue(this.value, "foes_gravity"); getFoeOptions()')
 
 
 							a.btn.btn-primary.changePageBtn(href='#', onclick='changePage(3);') zurück
