@@ -83,11 +83,11 @@ body
 							| Form des Spielers
 							select#player_shape.form-control(name='player_shape', size='1', onchange='showDiv("player_shape"); getPlayerOptions("shape", this.value)')
 								option(value='eckig') eckig
-								option(value='rund') rund	
+								option(value='rund') rund
 								option(value='eigene') eigene Form hochladen (im nächsten Schritt)
 							input#player_width.form-control(type='number', min='1', name='player_width', placeholder='Breite in px', onchange='getPlayerOptions()')
 							input#player_height.form-control(type='number',min='1', name='player_height', placeholder='Höhe in px', onchange='getPlayerOptions()')
-							input#player_color.form-control.color(type='text', name='player_color', placeholder='Farbe', onchange='getPlayerOptions()')
+							input#player_color.form-control.color(type='text', name='player_color', placeholder='Farbe', onchange='getPlayerOptions()', value='#B4D455')
 
 							| Geschwindigkeit des Spielers:
 							span#player_speed_span /
@@ -110,8 +110,7 @@ body
 								| Geschwindigkeit des Geschosses:
 								span#shoot_speed_span /
 								input#shoot_speed(type='range', name='shoot_speed', min='1', max='10', value='5', oninput='showValue(this.value, "shoot_speed")',onchange='showValue(this.value, "shoot_speed"); gameOptions.player.shoot.speed=parseInt(this.value);')
-
-								input#shoot_color.form-control.color(type='text', name='player_shoot_color', placeholder='Farbe', onchange='getFoeOptions(); gameOptions.player.shoot.color=this.value')
+								input#shoot_color.form-control.color(type='text', name='player_shoot_color', placeholder='Farbe', onchange='getFoeOptions(); gameOptions.player.shoot.color=this.value', value='#FF0000')
 								select#shoot_shape.form-control(name='player_shoot_shape', size='1', onchange='getPlayerOptions("shoot", this.value); gameOptions.player.shoot.shape=this.value')
 									option(value='eckig') eckig
 									option(value='rund') rund	
@@ -129,7 +128,7 @@ body
 									option(value='eigene') eigene Form hochladen (im nächsten Schritt)	
 							input#foes_width.form-control(type='number', min='1', name='foes_width', placeholder='Breite in px', onchange='getFoeOptions()')
 							input#foes_height.form-control(type='number', min='1', name='foes_height', placeholder='Hoehe in px', onchange='getFoeOptions()')
-							input#foes_color.form-control.color(type='text', name='foes_color', placeholder='Farbe', onchange='getFoeOptions()')
+							input#foes_color.form-control.color(type='text', name='foes_color', placeholder='Farbe', onchange='getFoeOptions()', value='#88ff00')
 							input#foes_active(type='checkbox', name='foes_active', value='true', onchange='showDiv("foes"); getFoeOptions()')
 							| 	Kann sich bewegen
 							br
@@ -144,7 +143,7 @@ body
 
 
 							a.btn.btn-primary.changePageBtn(href='#', onclick='changePage(3);') zurück
-							button#loginButton.btn.btn-lg.btn-primary.btn-block(type='submit') senden
+							button#loginButton.btn.btn-lg.btn-primary.btn-block(type='submit',onclick='uploadFile();') senden
 	include ./layout/footer.jade
 	script(src='js/gamePreview.js')
 

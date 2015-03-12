@@ -208,7 +208,7 @@ canvas#gamePreview {
 }
 
 .previewtext {
-	font-size: 5px;
+	font-size: 10px;
 	color: grey;
 	font-style: italic;
 }
