@@ -66,6 +66,9 @@ $(document).keydown(function(e) {
     }
 });
 
+
+
+//CreateGame Stuff
 /* Angabe des aktuellen wertes bei Schiebereglern (CreateGame)*/
 function showValue(newValue, id)
 {

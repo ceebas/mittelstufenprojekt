@@ -245,9 +245,9 @@ function update() {
         }
     }
     if (gameOptions.horizontal) {
-        gameOptions.player.y += gameOptions.player.gravity * gameOptions.player.speed * 5; 
+        gameOptions.player.y += gameOptions.player.gravity * gameOptions.player.speed /** 5*/; 
     } else {
-        gameOptions.player.y += gameOptions.player.gravity * gameOptions.player.speed * 5;
+        gameOptions.player.y += gameOptions.player.gravity * gameOptions.player.speed /** 5*/;
     }
     //Tastaturabfragen
     if (keys[87] || keys[38]) {    //up
