@@ -60,7 +60,7 @@ function inputLimiter() {
 // Gibt es ein Canvas, wird scrolling deaktiviert
 $(document).keydown(function(e) {
     if(e.keyCode == 32) {
-        if($('#canvas').length) {
+        if($('#canvas').length || $('gamePreview').length) {
             return false;
         }
     }
