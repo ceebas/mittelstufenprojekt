@@ -1,10 +1,10 @@
 var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame,
-canvas = document.getElementById('gamePreview'),
-ctx = canvas.getContext('2d'),
-keys = {},
-canvasHeight = 300, 
-canvasWidth = 230,
-scoreSend,
+    canvas = document.getElementById('gamePreview'),
+    ctx = canvas.getContext('2d'),
+    keys = {},
+    canvasHeight = 300, 
+    canvasWidth = 230,
+    scoreSend,
     // Parameter die generisch seinen müssen
     gameStarted = false,
     gameOptions = {
@@ -25,39 +25,39 @@ scoreSend,
           height: 30,
           shape: "eckig",
           color: "#88FF00"
-      },
-      player: {
-        x : canvasWidth/2,
-        y : canvasHeight - 30,
-        dead: false,
-        speed: 1,
-        gravity: 0,
-        width: 20,
-        height: 30,
-        shape: "eckig",
-        color: "#FFFFFF",
-        shoot: {
-            enabled: false,
-            speed: 0,
-            shape: "eckig",
-            color: "#FF0000"
         },
-        images : {
-            normal : "new Image()",
-            dead : "new Image()",
-        }
+        player: {
+            x : canvasWidth/2,
+            y : canvasHeight - 30,
+            dead: false,
+            speed: 1,
+            gravity: 0,
+            width: 20,
+            height: 30,
+            shape: "eckig",
+            color: "#FFFFFF",
+            shoot: {
+                enabled: false,
+                speed: 0,
+                shape: "eckig",
+                color: "#FF0000"
+            },
+            images : {
+                normal : "new Image()",
+                dead : "new Image()",
+            }
+        },
     },
-},
-background = new Image(),
-backX = 0,
-backY = 0,
-borders = [{
-    position: "bottom",
-    x: 0,
-    y: canvasHeight - 5,
-    width: canvasWidth,
-    height: 5
-}];
+    background = new Image(),
+    backX = 0,
+    backY = 0,
+    borders = [{
+                position: "bottom",
+                x: 0,
+                y: canvasHeight - 5,
+                width: canvasWidth,
+                height: 5
+           }];
 background.src = "./img/horizontal_preview.png";
 canvas.width = canvasWidth;
 canvas.height = canvasHeight;
@@ -95,7 +95,7 @@ function changeBorder(id) {
                 y: canvasHeight - 5,
                 width: canvasWidth,
                 height: 5
-            });
+           });
         }else{
             gameOptions.borders.bottom = false;
             popBorder();
@@ -154,7 +154,7 @@ function changePreviewCanvas(id) {
     canvas.width = canvasWidth;
     canvas.height = canvasHeight;
 }
-
+ 
 function setSelfscroll(value) {
     if ($('input#selfscroll').prop("checked")) {
         gameOptions.selfScroll = true;
@@ -185,12 +185,7 @@ function getPlayerOptions(kind, value) {
         gameOptions.player.height = parseInt($('input#player_height').val()) + 11;
     }
     gameOptions.player.color = $('input#player_color').val();
-    if ($('input#player_gravity').prop("checked")){
-        gameOptions.player.gravity = 0.15;
-    }else{
-        gameOptions.player.gravity = 0;
-    }
-
+    //gameOptions.player.images.normal.src = "http://placehold.it/"+gameOptions.player.width+"x"+gameOptions.player.height;
 
 }
 
@@ -343,8 +338,8 @@ function sendScoreRequest() {
 document.body.addEventListener("keydown", function(e) {
   if (gameStarted) {
     e.preventDefault();
-}
-keys[e.keyCode] = true;
+  }
+  keys[e.keyCode] = true;
 }, false);
 
 document.body.addEventListener("keyup", function(e) {
@@ -355,13 +350,13 @@ document.body.addEventListener("keyup", function(e) {
 function collision(shapeA, shapeB) {
     if (shapeA !== undefined && shapeB !== undefined) {
         var vX = (shapeA.x + (shapeA.width / 2)) - (shapeB.x + (shapeB.width / 2)),
-        vY = (shapeA.y + (shapeA.height / 2)) - (shapeB.y + (shapeB.height / 2)),
-        hWidths = (shapeA.width / 2) + (shapeB.width / 2),
-        hHeights = (shapeA.height / 2) + (shapeB.height / 2),
-        colDir = null;
+            vY = (shapeA.y + (shapeA.height / 2)) - (shapeB.y + (shapeB.height / 2)),
+            hWidths = (shapeA.width / 2) + (shapeB.width / 2),
+            hHeights = (shapeA.height / 2) + (shapeB.height / 2),
+            colDir = null;
         if (Math.abs(vX) < hWidths && Math.abs(vY) < hHeights) {
             var oX = hWidths - Math.abs(vX),
-            oY = hHeights - Math.abs(vY);
+                oY = hHeights - Math.abs(vY);
             if (oX >= oY) {
                 if (vY > 0) {
                     colDir = "t";
