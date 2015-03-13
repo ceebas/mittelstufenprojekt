@@ -36,7 +36,7 @@ var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAni
             width: 20,
             height: 30,
             shape: "eckig",
-            color: "#FFFFFF",
+            color: "#B4D455",
             shoot: {
                 enabled: false,
                 speed: 1,
