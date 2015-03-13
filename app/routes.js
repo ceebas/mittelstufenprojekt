@@ -181,7 +181,11 @@ module.exports = function(app, passport, multiparty, accessDb) {
 				gameObj.gameparameter.player.color = requestObj.player_color;
 		}
 		console.log(gameObj);
-		response.status(200).send(gameObj);
+		response.render('uploadGameFiles.jade', { 
+					title: 'we♥games | Datein hochladen',
+					user: request.user
+				});
+		//response.status(200).send(gameObj);
 	});
 
 	app.post('/submitScore', function(request, response) {

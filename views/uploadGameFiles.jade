@@ -1,0 +1,18 @@
+include ./layout/head.jade
+body
+	.container
+		include ./layout/nav.jade
+		.panel.panel-default
+			.panel-heading 
+				h3#createCaption Lade Datein für dein Spiel hoch
+			.panel-body
+				form(action='', methode='POST')
+					label(for='preview') Vorschaubild
+					input#vorschau(type='file', name='preview')
+					label(for='player') Spieler From
+					input(type='file', name='player')
+					label(for='shoot') Schuss From
+					input(type='file', name='shoot')
+					label(for='foes') Gegner From
+					input(type='file', name='foes')											
+					input#senden(type='submit', name='senden', value='hochladen')
