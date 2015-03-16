@@ -2,12 +2,16 @@ include ./layout/head.jade
 body
   .container
     include ./layout/nav.jade 
-    -if(message != "")
-      div.alert.alert-warning #{message} 
-    form.form-signin(role='form', action='/login', method='post')
-      h2.form-signin-heading Login
-      .input-group
-        input#username.form-control(name='username', type='text', placeholder='Benutzername', required='required', autofocus='autofocus')
-        input#password.form-control(name='password', type='password', placeholder='Passwort', required='required')
-      button#loginButton.btn.btn-lg.btn-primary.btn-block(type='submit') Login
+    .panel.panel-default
+      .panel-heading 
+        h2 Login
+      -if(message != "")
+        div.alert.alert-warning #{message} 
+      form.form-signin(role='form', action='/login', method='post')
+        h2.form-signin-heading 
+        .input-group
+          input#username.form-control(name='username', type='text', placeholder='Benutzername', required='required', autofocus='autofocus')
+          input#password.form-control(name='password', type='password', placeholder='Passwort', required='required')
+        button#loginButton.btn.btn-lg.btn-primary.btn-block(type='submit') Login
+        br
   include ./layout/footer.jade
