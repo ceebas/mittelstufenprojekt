@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><project name="WeLoveGames" company="SZUT" webLink="" view-date="2015-04-27" view-index="0" gantt-divider-location="354" resource-divider-location="300" version="2.7" locale="de">
+<?xml version="1.0" encoding="UTF-8"?><project name="WeLoveGames" company="SZUT" webLink="" view-date="2015-05-12" view-index="0" gantt-divider-location="354" resource-divider-location="300" version="2.7" locale="de">
     <description><![CDATA[Mittelstufenprojekt von:
 
 Mike Dobrinski
@@ -11,8 +11,8 @@ Lukas Trenkner]]></description>
         <field id="tpd5" name="Ende" width="21" order="2"/>
     </view>
     <view id="resource-table">
-        <field id="0" name="Ressource" width="57" order="0"/>
-        <field id="1" name="Rolle" width="42" order="1"/>
+        <field id="0" name="Ressource" width="52" order="0"/>
+        <field id="1" name="Rolle" width="47" order="1"/>
     </view>
     <!-- -->
     <calendars>
@@ -73,13 +73,13 @@ Lukas Trenkner]]></description>
             <task id="102" name="Programmierung GUI" color="#8cb6ce" meeting="false" start="2015-02-24" duration="49" complete="0" expand="true"/>
             <task id="104" name="Programmierung Produktfunktionen" color="#8cb6ce" meeting="false" start="2015-02-24" duration="49" complete="0" expand="true"/>
         </task>
-        <task id="106" name="Qualitätsicherung" color="#8cb6ce" meeting="false" start="2015-05-05" duration="15" complete="0" expand="true">
+        <task id="106" name="Qualitätsicherung" color="#8cb6ce" meeting="false" start="2015-05-05" duration="14" complete="0" expand="true">
             <depend id="131" type="2" difference="0" hardness="Strong"/>
             <task id="110" name="Testszenarien erstellen" color="#8cb6ce" meeting="false" start="2015-05-05" duration="2" complete="0" expand="true">
                 <depend id="113" type="2" difference="0" hardness="Strong"/>
             </task>
             <task id="113" name="Testdurchführung" color="#8cb6ce" meeting="false" start="2015-05-07" duration="3" complete="0" expand="true"/>
-            <task id="114" name="Bugfixing" color="#8cb6ce" meeting="false" start="2015-05-05" duration="15" complete="0" expand="true"/>
+            <task id="114" name="Bugfixing" color="#8cb6ce" meeting="false" start="2015-05-05" duration="14" complete="0" expand="true"/>
             <task id="116" name="Codereview" color="#8cb6ce" meeting="false" start="2015-05-18" duration="1" complete="0" expand="true">
                 <depend id="118" type="2" difference="0" hardness="Strong"/>
             </task>
@@ -109,6 +109,7 @@ Lukas Trenkner]]></description>
         <allocation task-id="113" resource-id="0" function="SoftwareDevelopment:2" responsible="true" load="25.0"/>
         <allocation task-id="125" resource-id="0" function="SoftwareDevelopment:2" responsible="true" load="95.0"/>
         <allocation task-id="131" resource-id="0" function="SoftwareDevelopment:2" responsible="false" load="100.0"/>
+        <allocation task-id="126" resource-id="0" function="SoftwareDevelopment:2" responsible="true" load="5.0"/>
         <allocation task-id="56" resource-id="1" function="SoftwareDevelopment:2" responsible="true" load="50.0"/>
         <allocation task-id="62" resource-id="1" function="SoftwareDevelopment:2" responsible="false" load="50.0"/>
         <allocation task-id="76" resource-id="1" function="SoftwareDevelopment:2" responsible="true" load="100.0"/>
@@ -119,7 +120,7 @@ Lukas Trenkner]]></description>
         <allocation task-id="118" resource-id="1" function="SoftwareDevelopment:2" responsible="true" load="20.0"/>
         <allocation task-id="116" resource-id="1" function="SoftwareDevelopment:2" responsible="true" load="25.0"/>
         <allocation task-id="114" resource-id="1" function="SoftwareDevelopment:2" responsible="true" load="50.0"/>
-        <allocation task-id="125" resource-id="1" function="SoftwareDevelopment:2" responsible="true" load="90.0"/>
+        <allocation task-id="125" resource-id="1" function="SoftwareDevelopment:2" responsible="true" load="95.0"/>
         <allocation task-id="126" resource-id="1" function="SoftwareDevelopment:2" responsible="true" load="5.0"/>
         <allocation task-id="131" resource-id="1" function="SoftwareDevelopment:2" responsible="true" load="100.0"/>
         <allocation task-id="47" resource-id="2" function="SoftwareDevelopment:2" responsible="true" load="20.0"/>
@@ -133,7 +134,7 @@ Lukas Trenkner]]></description>
         <allocation task-id="118" resource-id="2" function="SoftwareDevelopment:2" responsible="true" load="20.0"/>
         <allocation task-id="116" resource-id="2" function="SoftwareDevelopment:2" responsible="true" load="25.0"/>
         <allocation task-id="114" resource-id="2" function="SoftwareDevelopment:2" responsible="true" load="50.0"/>
-        <allocation task-id="125" resource-id="2" function="SoftwareDevelopment:2" responsible="true" load="90.0"/>
+        <allocation task-id="125" resource-id="2" function="SoftwareDevelopment:2" responsible="true" load="95.0"/>
         <allocation task-id="126" resource-id="2" function="SoftwareDevelopment:2" responsible="true" load="5.0"/>
         <allocation task-id="131" resource-id="2" function="SoftwareDevelopment:2" responsible="false" load="100.0"/>
         <allocation task-id="56" resource-id="3" function="SoftwareDevelopment:2" responsible="true" load="50.0"/>
