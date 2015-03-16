@@ -5,59 +5,60 @@ body
     .panel.panel-default
       .panel-heading 
         h2 Lade dein Spiel hoch
-      //
-      Spielbeschreibungs-Form
-      form.form-signin(role='form', method='post', action='/', )
-        div.form-group
-          label(for='gamename') Name des Spiels
-          input#gamename.form-control(name='gamedata[gamename]', onkeyup='inputLimiter()', type='text', placeholder='Name deines Spiels', maxlength='20', required='required')
-          div#titleletters.textcount 20
-          br
-        div.form-group
-          label(for='gamedescription') Beschreibung des Spiels
-          textarea#gamedescription.form-control(name='gamedata[gamedescription]', onkeyup='textareaLimiter()' type='textarea', placeholder='Beschreibe dein Spiel', required='required', maxlength='150')
-          div#descletters.textcount 150
+      .panel-body
         //
-        Dateien-Form
-      div.form-group
-        form.form-signin(action='', method='post', enctype='multipart/form-data')
+        Spielbeschreibungs-Form
+        form.form-signin(role='form', method='post', action='/', )
           div.form-group
-            label JavaScript-Datei und Bilder:
+            label(for='gamename') Name des Spiels
+            input#gamename.form-control(name='gamedata[gamename]', onkeyup='inputLimiter()', type='text', placeholder='Name deines Spiels', maxlength='20', required='required')
+            div#titleletters.textcount 20
             br
-            span Benötigte Dateien:
-            p#uploadrequired
-              | • Javascript-Datei (.js)
-              br
-              br
-              | • Images (.png oder .jpg)
-              br
-              br
-              | Regeln, die du beachten musst:
-              br
-              br
-              | Wenn du ein Vorschaubild hochladen willst, nenne es 'image', damit es erkannt wird.
-              br
-              br
-              | Alle Spielrecourcen, auf die du in der JS-Datei zugreifen willst, müssen mit der Variable 'path' und dann den Dateinamen angegeben werden. Die Variable 'path' wird automatisch generiert.
-              br
-              br
-              | Beispiel: playerimage.src = path + "player.jpg";
-              br
-              br
-              | Füge in der Funktion, in bevor dein Spiel zurückgesetzt wird folgenden Code ein, damit der Highscore übermittelt wird:
-              br
-              br
-              | var req = new XMLHttpRequest();
-              br
-              | var data = { score: DEINSCORE, gameId: gamedId,};
-              br
-              | req.open('POST', '/submitScore');
-              br
-              | req.setRequestHeader('Content-Type', 'application/json');
-              br
-              | req.send(JSON.stringify(data));
+          div.form-group
+            label(for='gamedescription') Beschreibung des Spiels
+            textarea#gamedescription.form-control(name='gamedata[gamedescription]', onkeyup='textareaLimiter()' type='textarea', placeholder='Beschreibe dein Spiel', required='required', maxlength='150')
+            div#descletters.textcount 150
+          //
+          Dateien-Form
+        div.form-group
+          form.form-signin(action='', method='post', enctype='multipart/form-data')
             div.form-group
-              input#files(type='file', name='files[]', multiple='multiple')
-              output#list
-            input#uploadBtn(type='button', onclick='uploadFile();', value='Upload', name='upload', class='btn btn-primary btn-block')
+              label JavaScript-Datei und Bilder:
+              br
+              span Benötigte Dateien:
+              p#uploadrequired
+                | • Javascript-Datei (.js)
+                br
+                br
+                | • Images (.png oder .jpg)
+                br
+                br
+                | Regeln, die du beachten musst:
+                br
+                br
+                | Wenn du ein Vorschaubild hochladen willst, nenne es 'image', damit es erkannt wird.
+                br
+                br
+                | Alle Spielrecourcen, auf die du in der JS-Datei zugreifen willst, müssen mit der Variable 'path' und dann den Dateinamen angegeben werden. Die Variable 'path' wird automatisch generiert.
+                br
+                br
+                | Beispiel: playerimage.src = path + "player.jpg";
+                br
+                br
+                | Füge in der Funktion, in bevor dein Spiel zurückgesetzt wird folgenden Code ein, damit der Highscore übermittelt wird:
+                br
+                br
+                | var req = new XMLHttpRequest();
+                br
+                | var data = { score: DEINSCORE, gameId: gamedId,};
+                br
+                | req.open('POST', '/submitScore');
+                br
+                | req.setRequestHeader('Content-Type', 'application/json');
+                br
+                | req.send(JSON.stringify(data));
+              div.form-group
+                input#files(type='file', name='files[]', multiple='multiple')
+                output#list
+              input#uploadBtn(type='button', onclick='uploadFile();', value='Upload', name='upload', class='btn btn-primary btn-block')
   include ./layout/footer.jade

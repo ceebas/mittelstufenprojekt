@@ -5,35 +5,36 @@ body
 		.panel.panel-default
 			.panel-heading 
 				h2 Benutzer
-			table.table.table-striped
-				tablehead
-					tr
-						td ID
-						td Username
-						td Email
-						td Aktionen
-				tablebody
-					each data in results
-						-if (data.inactive == 1)
-							tr.danger
-								td #{data.id_user}
-								td #{data.username}
-								td #{data.email}
-								td
-									a(href='/removeUser?userId=#{data.id_user}', title='User aktivieren')
-										span.glyphicon.glyphicon-ok
-									| &nbsp;&nbsp;&nbsp;
-									a(href='/editUser.html?userId=#{data.id_user}', title='User bearbeiten')
-										span.glyphicon.glyphicon-pencil
-						-else
-							tr
-								td #{data.id_user}
-								td #{data.username}
-								td #{data.email}
-								td
-									a(href='/removeUser?userId=#{data.id_user}', title='User deaktivieren')
-										span.glyphicon.glyphicon-remove
-									| &nbsp;&nbsp;&nbsp;
-									a(href='/editUser.html?userId=#{data.id_user}', title='User bearbeiten')
-										span.glyphicon.glyphicon-pencil
+			.panel-body
+				table.table.table-striped
+					tablehead
+						tr
+							td ID
+							td Username
+							td Email
+							td Aktionen
+					tablebody
+						each data in results
+							-if (data.inactive == 1)
+								tr.danger
+									td #{data.id_user}
+									td #{data.username}
+									td #{data.email}
+									td
+										a(href='/removeUser?userId=#{data.id_user}', title='User aktivieren')
+											span.glyphicon.glyphicon-ok
+										| &nbsp;&nbsp;&nbsp;
+										a(href='/editUser.html?userId=#{data.id_user}', title='User bearbeiten')
+											span.glyphicon.glyphicon-pencil
+							-else
+								tr
+									td #{data.id_user}
+									td #{data.username}
+									td #{data.email}
+									td
+										a(href='/removeUser?userId=#{data.id_user}', title='User deaktivieren')
+											span.glyphicon.glyphicon-remove
+										| &nbsp;&nbsp;&nbsp;
+										a(href='/editUser.html?userId=#{data.id_user}', title='User bearbeiten')
+											span.glyphicon.glyphicon-pencil
 	include ./layout/footer.jade
