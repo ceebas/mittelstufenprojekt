@@ -5,10 +5,10 @@ body
     .panel.panel-default
       .panel-heading 
         h2 Login
+      br
       -if(message != "")
         div.alert.alert-warning #{message} 
       form.form-signin(role='form', action='/login', method='post')
-        h2.form-signin-heading 
         .input-group
           input#username.form-control(name='username', type='text', placeholder='Benutzername', required='required', autofocus='autofocus')
           input#password.form-control(name='password', type='password', placeholder='Passwort', required='required')

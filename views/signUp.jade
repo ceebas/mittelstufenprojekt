@@ -2,13 +2,17 @@ include ./layout/head.jade
 body
 	.container
 		include ./layout/nav.jade 
-		-if(message != "")
-			div.alert.alert-warning #{message} 
-		form.form-signin(role='form' method='post', action='signUp')
-			h2.form-signin-heading Neuen User anlegen
-			.input-group
-				input#user.form-control(name='username', type='text', autocomplete='off', placeholder='Benutzername', required='required', autofocus='autofocus')
-				input#email.form-control(name='email', type='text', autocomplete='off', placeholder='Email', required='required')
-				input#passwort.form-control(name='password', type='password', autocomplete='off', placeholder='Passwort', required='required')
-			button#anmeldeButton.btn.btn-lg.btn-primary.btn-block.confirmButton(type='submit') Anlegen
+		.panel.panel-default
+			.panel-heading 
+				h2 Neuen User anlegen	
+			br
+			-if(message != "")
+				div.alert.alert-warning #{message} 
+			form.form-signin(role='form' method='post', action='signUp')
+				.input-group
+					input#user.form-control(name='username', type='text', autocomplete='off', placeholder='Benutzername', required='required', autofocus='autofocus')
+					input#email.form-control(name='email', type='text', autocomplete='off', placeholder='Email', required='required')
+					input#passwort.form-control(name='password', type='password', autocomplete='off', placeholder='Passwort', required='required')
+				button#anmeldeButton.btn.btn-lg.btn-primary.btn-block.confirmButton(type='submit') Anlegen
+				br
 	include ./layout/footer.jade
