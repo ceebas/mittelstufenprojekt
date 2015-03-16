@@ -25,12 +25,12 @@ body
 						div#seite1
 
 							//Spieloptionen
-							input#gamename.form-control(name='gamename', onkeyup='inputLimiter()', type='text', placeholder='Name deines Spiels', maxlength='20')
+							input#gamename.form-control(name='game_name', onkeyup='inputLimiter()', type='text', placeholder='Name deines Spiels', maxlength='20')
 							div#titleletters.textcount 20
 							br
 
 							div.form-group
-							textarea#gamedescription.form-control(name='game-description', onkeyup='textareaLimiter()' type='textarea', placeholder='Beschreibe dein Spiel', maxlength='150')
+							textarea#gamedescription.form-control(name='game_description', onkeyup='textareaLimiter()' type='textarea', placeholder='Beschreibe dein Spiel', maxlength='150')
 							div#descletters.textcount 150
 							br
 							| Wie soll dein Spiel sich verhalten?

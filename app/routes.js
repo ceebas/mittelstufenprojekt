@@ -118,10 +118,10 @@ module.exports = function(app, passport, multiparty, accessDb) {
 		console.log(JSON.stringify(request.body));
 		var requestObj = request.body;
 		var gameObj = {
-	    	"gamedata": {
-	        	"name": requestObj.game_name,
-	        	"description": requestObj.game_description
-	    	},
+			"gamedata": {
+				"name": requestObj.game_name,
+				"description": requestObj.game_description
+			},
 			"gameparameter": {
 				"scrolldirection": requestObj.scroll_direction,
 				"scrollspeed": requestObj.scroll_speed,
@@ -178,14 +178,16 @@ module.exports = function(app, passport, multiparty, accessDb) {
 			}
 		}
 		if (requestObj.player_shape != "eigene") {
-				gameObj.gameparameter.player.color = requestObj.player_color;
+			gameObj.gameparameter.player.color = requestObj.player_color;
 		}
-		console.log(gameObj);
-		response.render('uploadGameFiles.jade', { 
-					title: 'we♥games | Datein hochladen',
-					user: request.user
-				});
-		//response.status(200).send(gameObj);
+		accessDb.saveGameFiles(request, gameObj, render);
+		function render(status, err) {
+			response.render('uploadGameFiles.jade', { 
+				title: 'we♥games | Datein hochladen',
+				user: request.user,
+				gameObj: JSON.stringify(gameObj)
+			});
+		}
 	});
 
 	app.post('/submitScore', function(request, response) {
@@ -199,10 +201,10 @@ module.exports = function(app, passport, multiparty, accessDb) {
 
 	/* Registrierung eines neuen Benutzers */
 	app.post('/signUp',isLoggedIn, passport.authenticate('local-signup', {
-		//request.flash('signUp', 'User erfolgreich angelegt!');
-		successRedirect : '/tableUsers.html',
-		failureRedirect : '/signUp.html',
-	}));
+			//request.flash('signUp', 'User erfolgreich angelegt!');
+			successRedirect : '/tableUsers.html',
+			failureRedirect : '/signUp.html',
+		}));
 
 	/* Änderung von eigenen Benutzerdaten */
 	app.post('/userSetting', isLoggedIn, function(request,response) {
@@ -219,19 +221,19 @@ module.exports = function(app, passport, multiparty, accessDb) {
 		var gameId;
 
 		form.on('close', function() {
-			//response.redirect('/play?game=' + gameId);
-		});
+				//response.redirect('/play?game=' + gameId);
+			});
 
-    	form.parse(request, function(err, fieldsObject, filesObject, fieldsList, filesList) {
-    		accessDb.uploadGame(request, err, fieldsObject, filesObject, fieldsList, filesList, render);
-    		function render(redirect, err) {
-    			if (err) {
-    				response.status(500).send(redirect);
-    			} else {
-    				response.status(200).send(redirect);
-    			}
-    		}
-    	});
+		form.parse(request, function(err, fieldsObject, filesObject, fieldsList, filesList) {
+			accessDb.uploadGame(request, err, fieldsObject, filesObject, fieldsList, filesList, render);
+			function render(redirect, err) {
+				if (err) {
+					response.status(500).send(redirect);
+				} else {
+					response.status(200).send(redirect);
+				}
+			}
+		});
 	});
 
 	/* Logout */
@@ -278,6 +280,7 @@ module.exports = function(app, passport, multiparty, accessDb) {
 			response.redirect('/userSetting.html');
 		}
 	});
+
 	// Nutzer editieren
 	app.get('/editUser.html', isLoggedIn, function(request, response) {
 		if (request.user.isAdmin == 1) {

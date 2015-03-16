@@ -14,5 +14,9 @@ body
 					label(for='shoot') Schuss From
 					input(type='file', name='shoot')
 					label(for='foes') Gegner From
-					input(type='file', name='foes')											
+					input(type='file', name='foes')
 					input#senden(type='submit', name='senden', value='hochladen')
+	script.
+		var gameObj = !{gameObj};
+		console.log(gameObj);
+	include ./layout/footer.jade
