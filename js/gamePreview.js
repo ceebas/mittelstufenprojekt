@@ -331,7 +331,7 @@ function render() {
     } else if (gameOptions.player.shape == "rund") {
         var radius = gameOptions.player.width;
         ctx.beginPath();
-        ctx.arc(gameOptions.player.x - (gameOptions.player.width / 2), gameOptions.player.y + (gameOptions.player.width / 2), radius, 0, 2 * Math.PI, false);
+        ctx.arc(gameOptions.player.x, gameOptions.player.y + (gameOptions.player.width / 2), radius, 0, 2 * Math.PI, false);
         ctx.fillStyle = gameOptions.player.color;
         ctx.fill();
         ctx.lineWidth = 1;
@@ -344,11 +344,21 @@ function render() {
     for (var s = 0; s < shots.length; s++) {
         ctx.fillStyle = gameOptions.player.shoot.color;
         if (gameOptions.player.shoot.shape == "eckig") {
-            ctx.fillRect(shots[s].x, shots[s].y, shots[s].width, shots[s].height);
+            //ctx.fillRect(shots[s].x + gameOptions.player.width/2, shots[s].y, shots[s].width, shots[s].height);
+              if (gameOptions.player.shape == "rund") {
+                ctx.fillRect(shots[s].x - gameOptions.player.width/2, shots[s].y, shots[s].width, shots[s].height);
+              } else if (gameOptions.player.shape == "eckig") {
+                ctx.fillRect(shots[s].x, shots[s].y, shots[s].width, shots[s].height);
+              }
+              
         } else if (gameOptions.player.shoot.shape == "rund") {
             var radius = shots[s].width / 2;
             ctx.beginPath();
-            ctx.arc(shots[s].x - (shots[s].width / 2), shots[s].y + (shots[s].width / 2), radius, 0, 2 * Math.PI, false);
+            if (gameOptions.player.shape == "rund") {
+                ctx.arc((shots[s].x + shots[s].width/2) - gameOptions.player.width/2, shots[s].y + (shots[s].width / 2), radius, 0, 2 * Math.PI, false);
+            }else if (gameOptions.player.shape == "eckig"){
+                ctx.arc(shots[s].x + shots[s].width/2, shots[s].y + (shots[s].width / 2), radius, 0, 2 * Math.PI, false);
+            }
             ctx.fill();
         }
         shots[s].y -= gameOptions.player.shoot.speed + 7;
