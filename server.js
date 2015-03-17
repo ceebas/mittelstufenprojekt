@@ -9,7 +9,8 @@ var flash = require('connect-flash'),
     multiparty = require('multiparty'),
     fs = require('fs'),
     bcrypt = require('bcrypt-nodejs'),
-	mysql = require('mysql');
+	mysql = require('mysql'),
+	pg = require('pg');
 
 /*Authentifizierung*/
 app.use(flash());
@@ -28,7 +29,10 @@ app.use(bodyParser.urlencoded({
 	extended: true 
 }));
 app.use(bodyParser.json());
-var accessDb = require('./database/sqlaccess.js')(fs, bcrypt, mysql);
+//WELCHES DAO SOLL VERWENDET WERDEN?
+var accessDb = require('./database/postgresaccess.js')(fs, bcrypt, pg);
+//var accessDb = require('./database/sqlaccess.js')(fs, bcrypt, mysql);
+
 require('./config/passport')(passport, accessDb);
 require('./app/routes.js')(app, passport, multiparty, accessDb);
 

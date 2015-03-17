@@ -4,6 +4,7 @@
   "private": true,
   "version": "0.1.1",
   "dependencies": {
+    "pg": "4.x",
     "bcrypt-nodejs": "0.x",
     "body-parser": "1.x",
     "cookie-parser": "1.x",

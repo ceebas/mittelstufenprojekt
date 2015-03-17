@@ -1,6 +1,11 @@
 var userTemp = {};
 module.exports = function(app, passport, multiparty, accessDb) {
 	/* Index */
+	accessDb.test(render);
+	function render(string) {
+		console.log(string);
+	}
+
 	app.get('/', function(request, response) {
 		accessDb.getAllActiveGames(render);
 		function render(rows, err) {
