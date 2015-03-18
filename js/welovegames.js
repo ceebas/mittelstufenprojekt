@@ -66,6 +66,19 @@ $(document).keydown(function(e) {
     }
 });
 
+function checkPass() {
+    var password = $('input#password');
+    var password_confirmation = $('input#password_confirmation');
+
+    if (password.trim() == '' && password != password_confirmation){
+        $( "button#registerButton" ).click(function( event ) {
+            event.preventDefault();
+            alert("Bitte überprüfe die Passwörter");
+        }
+
+    }
+}
+
 
 
 //CreateGame Stuff

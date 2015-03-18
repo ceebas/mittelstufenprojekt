@@ -13,8 +13,8 @@ body
           .input-group
             input#username.form-control(name='username', type='text', placeholder='Benutzername', required='required', autofocus='autofocus')
             input#password.form-control(name='password', type='password', placeholder='Passwort', required='required')
+          div.hidden
+            input#user_hash.form-control(name='user_hash', type='password')  
           button#loginButton.btn.btn-lg.btn-primary.btn-block(type='submit') Login
           br
-        a(href='/signUp.html')  
-          button#register.btn.btn-lg.btn-primary.btn-block()   
   include ./layout/footer.jade

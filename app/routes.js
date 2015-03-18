@@ -259,7 +259,7 @@ module.exports = function(app, passport, multiparty, accessDb) {
 	});
 
 	/* Neuen Nutzer anmelden */
-	app.get('/signUp.html', isLoggedIn, function(request, response) {
+	app.get('/signUp.html', function(request, response) {
 		response.render('signUp.jade', { 
 			title: 'we♥games | Benutzer registrieren',
 			user: request.user,
