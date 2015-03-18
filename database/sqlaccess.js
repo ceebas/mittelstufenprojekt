@@ -97,11 +97,14 @@ module.exports = function(fs, bcrypt, mysql) {
             });
 		},
 		signup : function(request, username, password, callback) {
+			console.log(username + "******" + password);
 			connection.query("SELECT * FROM " + db.tableUsers + " WHERE username = '" + username + "'", function(err, rows) {
 				if (err) {
+					console.log(err);
 			    	return callback(err);
 				}
                 if (rows.length) {
+                	console.log(rows);
                     return callback(null, false, request.flash('signUpMessage', 'Benutzername schon vergeben!'));
                 } else {
                     // Neuen Benutzer erstellen, falls noch nicht vorhanden
@@ -110,14 +113,17 @@ module.exports = function(fs, bcrypt, mysql) {
                         email: request.body.email,
                         password: bcrypt.hashSync(password, null, null)
                     };
-                    var insertQuery = "INSERT INTO " + db.tableUsers + " ( username, email, password ) values ('" + newUser.username + "','" + newUser.email +"','" + newUser.password + "')";
+                    var insertQuery = "INSERT INTO " + db.tableUsers + " ( username, email, password, inactive ) values ('" + newUser.username + "','" + newUser.email +"','" + newUser.password + "','1')";
 
                     connection.query(insertQuery,function(err, rows) {
+                    	console.log(rows);
                         if (err) {
+                        	console.log(err);
                             return callback(err);
                         } 
                         //Ordner für Uploads wird erstellt
                         connection.query("SELECT LAST_INSERT_ID() as userid", function(err, rows, fields){
+                        	console.log(rows);
                             var userid = rows[0].userid;
                             var path = "uploads/" + userid;
                             fs.mkdir(path, 0777, function (err) {
