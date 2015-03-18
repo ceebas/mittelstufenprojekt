@@ -4,13 +4,13 @@ var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAni
     keys = {},
     shots = [],
     shotVar = 10,
-    canvasHeight = 300, 
-    canvasWidth = 230,
+    canvasHeight = 150, 
+    canvasWidth = 300,
     scoreSend,
     // Parameter die generisch seinen müssen
     gameStarted = false,
     gameOptions = {
-        horizontal: false,
+        horizontal: true,
         selfScroll: false,
         scrollspeed: 0.5,
         borders: {
@@ -136,18 +136,20 @@ function changeBorder(id) {
 function changePreviewCanvas(id) {
     if (id == "vertical"){
         gameOptions.horizontal = false;
+        gameOptions.vertical = true;
         canvasWidth = 230;
         canvasHeight = 300;
         gameOptions.player.x = canvasWidth/2;
         gameOptions.player.y = canvasHeight - gameOptions.player.height;
     } else if (id == "horizontal") {
         gameOptions.horizontal = true;
+        gameOptions.vertical = false;
         canvasWidth = 300;
         canvasHeight = 150;
         gameOptions.player.x = gameOptions.player.width;
         gameOptions.player.y = canvasHeight - gameOptions.player.height;
     } else {
-        gameOptions.horizontal = true;
+        //gameOptions.horizontal = true;
         canvasWidth = 300;
         canvasHeight = 150;
     }
@@ -341,27 +343,60 @@ function render() {
         //ctx.drawImage(gameOptions.player.images.normal, gameOptions.player.x, gameOptions.player.y, gameOptions.player.width, gameOptions.player.height);  
     }
     //Schüsse werden gezeichnet
+    
     for (var s = 0; s < shots.length; s++) {
         ctx.fillStyle = gameOptions.player.shoot.color;
         if (gameOptions.player.shoot.shape == "eckig") {
-            //ctx.fillRect(shots[s].x + gameOptions.player.width/2, shots[s].y, shots[s].width, shots[s].height);
               if (gameOptions.player.shape == "rund") {
-                ctx.fillRect(shots[s].x - gameOptions.player.width/2, shots[s].y, shots[s].width, shots[s].height);
+                if (gameOptions.horizontal) {
+                    // Schuss: Eckig / Player: Rund / Horizontal
+                    ctx.fillRect(shots[s].x + gameOptions.player.width/2 + shots[s].width, shots[s].y + gameOptions.player.width/2 - shots[s].height/2, shots[s].width, shots[s].height);
+                } else if (gameOptions.vertical) {
+                    // Schuss: Eckig / Player: Rund / Vertikal
+                   ctx.fillRect(shots[s].x - gameOptions.player.width/2 , shots[s].y , shots[s].width, shots[s].height); 
+                }                
               } else if (gameOptions.player.shape == "eckig") {
-                ctx.fillRect(shots[s].x, shots[s].y, shots[s].width, shots[s].height);
+                 if (gameOptions.horizontal) {
+                    // Schuss: Eckig / Player: Eckig / Horizontal
+                    ctx.fillRect(shots[s].x + gameOptions.player.width, shots[s].y + gameOptions.player.height/2 - shots[s].height/2, shots[s].width, shots[s].height);
+                 } else if (gameOptions.vertical) {
+                    // Schuss: Eckig / Player: Eckig / Vertikal
+                    ctx.fillRect(shots[s].x, shots[s].y, shots[s].width, shots[s].height);
+                 }  
+                
               }
               
         } else if (gameOptions.player.shoot.shape == "rund") {
             var radius = shots[s].width / 2;
             ctx.beginPath();
             if (gameOptions.player.shape == "rund") {
-                ctx.arc((shots[s].x + shots[s].width/2) - gameOptions.player.width/2, shots[s].y + (shots[s].width / 2), radius, 0, 2 * Math.PI, false);
+                if (gameOptions.horizontal) {
+                    // Schuss: Rund / Player: Rund / Horizontal
+                    ctx.arc(shots[s].x + shots[s].width + gameOptions.player.width/2, shots[s].y + gameOptions.player.width/2, radius, 0, 2 * Math.PI, false);
+                } else if (gameOptions.vertical) { 
+                    // Schuss: Rund / Player: Rund / Vertikal   
+                    ctx.arc((shots[s].x + shots[s].width/2) - gameOptions.player.width/2, shots[s].y + (shots[s].width / 2), radius, 0, 2 * Math.PI, false);
+                }            
             }else if (gameOptions.player.shape == "eckig"){
-                ctx.arc(shots[s].x + shots[s].width/2, shots[s].y + (shots[s].width / 2), radius, 0, 2 * Math.PI, false);
+                if (gameOptions.horizontal) {
+                    // Schuss: Rund / Player: Eckig / Horizontal
+                    ctx.arc(shots[s].x + gameOptions.player.width + shots[s].width/2, shots[s].y + gameOptions.player.height/2 , radius, 0, 2 * Math.PI, false);
+                } else if (gameOptions.vertical) {
+                    // Schuss: Rund / Player: Eckig / Vertikal       
+                    ctx.arc(shots[s].x + shots[s].width/2, shots[s].y + (shots[s].width / 2), radius, 0, 2 * Math.PI, false);
+                }
             }
             ctx.fill();
         }
-        shots[s].y -= gameOptions.player.shoot.speed + 7;
+        
+        // Schussrichtung festlegen je nach Horizontal / Vertikal
+        if (gameOptions.horizontal){
+            shots[s].x += gameOptions.player.shoot.speed + 7;
+        }else if (gameOptions.vertical){
+            shots[s].y -= gameOptions.player.shoot.speed + 7;
+        } 
+
+        
         if (shots[s].y < (-50)) {
             shots.splice(s,1);
         }
@@ -370,7 +405,7 @@ function render() {
 function shot() {
   shots.push({
     x: gameOptions.player.x + gameOptions.player.width / 2 - 6,
-    y: gameOptions.player.y - 20,
+    y: gameOptions.player.y,
     width: 10,
     height: 10
   });
