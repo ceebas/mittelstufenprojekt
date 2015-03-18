@@ -9,6 +9,7 @@ var flash = require('connect-flash'),
     multiparty = require('multiparty'),
     fs = require('fs'),
     bcrypt = require('bcrypt-nodejs'),
+    nodemailer = require('nodemailer'),
 	mysql = require('mysql');
 
 /*Authentifizierung*/
@@ -30,7 +31,7 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 var accessDb = require('./database/sqlaccess.js')(fs, bcrypt, mysql);
 require('./config/passport')(passport, accessDb);
-require('./app/routes.js')(app, passport, multiparty, accessDb);
+require('./app/routes.js')(app, passport, multiparty, nodemailer, accessDb);
 
 /* Statische Auslieferung */
 app.set('views', __dirname + '/views');
