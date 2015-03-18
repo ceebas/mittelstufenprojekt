@@ -7,16 +7,19 @@ body
 				h3#createCaption Lade Datein für dein Spiel hoch
 			.panel-body
 				form(action='', methode='POST')
-					label(for='preview') Vorschaubild
-					input#vorschau(type='file', name='preview')
-					label(for='player') Spieler From
-					input(type='file', name='player')
-					label(for='shoot') Schuss From
-					input(type='file', name='shoot')
-					label(for='foes') Gegner From
-					input(type='file', name='foes')
+					script.
+						var gameObject = !{JSON.stringify(gameObj)}
+					.vorschaubild
+						label(for='preview') Vorschaubild
+						input#vorschau(type='file', name='preview')
+					.spielerform
+						label(for='player') Spieler Form
+						input(type='file', name='player')
+					.schussform
+						label(for='shoot') Schuss Form
+						input(type='file', name='shoot')
+					.gegnerform
+						label(for='foes') Gegner Form
+						input(type='file', name='foes')
 					input#senden(type='submit', name='senden', value='hochladen')
-	script.
-		var gameObj = !{gameObj};
-		console.log(gameObj);
 	include ./layout/footer.jade
