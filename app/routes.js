@@ -1,5 +1,5 @@
 var userTemp = {};
-module.exports = function(app, passport, multiparty, accessDb) {
+module.exports = function(app, passport, multiparty, nodemailer, accessDb) {
 	/* Index */
 	app.get('/', function(request, response) {
 		accessDb.getAllActiveGames(render);
