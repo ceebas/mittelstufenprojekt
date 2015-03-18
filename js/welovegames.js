@@ -180,6 +180,18 @@ function changePreviewDirection(id){
     }
 }
 
+function updateFilePicker(gameObject) {
+    if (gameObject.gameparameter.player.shape == "eigene") {
+        $('div.spielerform').removeClass('hidden');
+    }
+    if (gameObject.gameparameter.player.shoot.shape ==  "eigene") {
+        $('div.schussform').removeClass('hidden');
+    }
+    if (gameObject.gameparameter.foes.shape == "eigene") {
+        $('div.gegnerform').removeClass('hidden');
+    }
+}
+
 //Disable input-cache
 $("form :input").attr("autocomplete", "off");
 

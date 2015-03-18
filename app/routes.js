@@ -115,7 +115,6 @@ module.exports = function(app, passport, multiparty, accessDb) {
 	});
 
 	app.post('/createGame', isLoggedIn, function(request, response) {
-		console.log(JSON.stringify(request.body));
 		var requestObj = request.body;
 		var gameObj = {
 			"gamedata": {
@@ -182,10 +181,11 @@ module.exports = function(app, passport, multiparty, accessDb) {
 		}
 		accessDb.saveGameFiles(request, gameObj, render);
 		function render(status, err) {
+			console.log(gameObj);
 			response.render('uploadGameFiles.jade', { 
 				title: 'we♥games | Datein hochladen',
 				user: request.user,
-				gameObj: JSON.stringify(gameObj)
+				gameObj: gameObj
 			});
 		}
 	});
