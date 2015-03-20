@@ -15,7 +15,7 @@ var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAni
         scrollspeed: 0.5,
         borders: {
             top: false,
-            bottom: false,
+            bottom: true,
             left: false,
             right: false
         },
@@ -136,15 +136,13 @@ function changeBorder(id) {
 function changePreviewCanvas(id) {
     if (id == "vertical"){
         gameOptions.horizontal = false;
-        gameOptions.vertical = true;
         canvasWidth = 230;
         canvasHeight = 300;
         gameOptions.player.x = canvasWidth/2;
         gameOptions.player.y = canvasHeight - gameOptions.player.height;
     } else if (id == "horizontal") {
         gameOptions.horizontal = true;
-        gameOptions.vertical = false;
-        canvasWidth = 300;
+        casnvasWidth = 300;
         canvasHeight = 150;
         gameOptions.player.x = gameOptions.player.width;
         gameOptions.player.y = canvasHeight - gameOptions.player.height;
