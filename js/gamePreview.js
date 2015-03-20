@@ -141,6 +141,16 @@ function changePreviewCanvas(id) {
         canvasHeight = 300;
         gameOptions.player.x = canvasWidth/2;
         gameOptions.player.y = canvasHeight - gameOptions.player.height;
+
+        // Schleife für Setzen des neuen Borders (Vertikal)
+        for (var i = 0; i < borders.length; i++) {
+            if (borders[i].position == "bottom") {
+                borders[i].width = canvasWidth;
+                borders[i].height = 5; 
+                borders[i].x = 0;
+                borders[i].y = canvasHeight - 5;
+            }
+        }
     } else if (id == "horizontal") {
         gameOptions.horizontal = true;
         gameOptions.vertical = false;
@@ -148,6 +158,17 @@ function changePreviewCanvas(id) {
         canvasHeight = 150;
         gameOptions.player.x = gameOptions.player.width;
         gameOptions.player.y = canvasHeight - gameOptions.player.height;
+
+        // Schleife für Setzen des neuen Borders (Vertikal)
+        for (var i = 0; i < borders.length; i++) {
+            if (borders[i].position == "bottom") {
+                borders[i].width = canvasWidth;
+                borders[i].height = 5; 
+                borders[i].x = 0;
+                borders[i].y = canvasHeight - 5;
+            }
+        }
+
     } else {
         //gameOptions.horizontal = true;
         canvasWidth = 300;
