@@ -353,7 +353,7 @@ function render() {
                     ctx.fillRect(shots[s].x + gameOptions.player.width/2 + shots[s].width, shots[s].y + gameOptions.player.width/2 - shots[s].height/2, shots[s].width, shots[s].height);
                 } else if (gameOptions.vertical) {
                     // Schuss: Eckig / Player: Rund / Vertikal
-                   ctx.fillRect(shots[s].x - gameOptions.player.width/2 , shots[s].y , shots[s].width, shots[s].height); 
+                   ctx.fillRect(shots[s].x - gameOptions.player.width/2 , shots[s].y - gameOptions.player.width/2 - shots[s].height - 4, shots[s].width, shots[s].height); 
                 }                
               } else if (gameOptions.player.shape == "eckig") {
                  if (gameOptions.horizontal) {
@@ -361,7 +361,7 @@ function render() {
                     ctx.fillRect(shots[s].x + gameOptions.player.width, shots[s].y + gameOptions.player.height/2 - shots[s].height/2, shots[s].width, shots[s].height);
                  } else if (gameOptions.vertical) {
                     // Schuss: Eckig / Player: Eckig / Vertikal
-                    ctx.fillRect(shots[s].x, shots[s].y, shots[s].width, shots[s].height);
+                    ctx.fillRect(shots[s].x, shots[s].y - gameOptions.player.height/2, shots[s].width, shots[s].height);
                  }  
                 
               }
@@ -372,10 +372,10 @@ function render() {
             if (gameOptions.player.shape == "rund") {
                 if (gameOptions.horizontal) {
                     // Schuss: Rund / Player: Rund / Horizontal
-                    ctx.arc(shots[s].x + shots[s].width + gameOptions.player.width/2, shots[s].y + gameOptions.player.width/2, radius, 0, 2 * Math.PI, false);
+                    ctx.arc(shots[s].x + shots[s].width + gameOptions.player.width/2 + 4, shots[s].y + gameOptions.player.width/2, radius, 0, 2 * Math.PI, false);
                 } else if (gameOptions.vertical) { 
                     // Schuss: Rund / Player: Rund / Vertikal   
-                    ctx.arc((shots[s].x + shots[s].width/2) - gameOptions.player.width/2, shots[s].y + (shots[s].width / 2), radius, 0, 2 * Math.PI, false);
+                    ctx.arc((shots[s].x + shots[s].width/2) - gameOptions.player.width/2, shots[s].y - gameOptions.player.width/2 - radius - 4, radius, 0, 2 * Math.PI, false);
                 }            
             }else if (gameOptions.player.shape == "eckig"){
                 if (gameOptions.horizontal) {
@@ -383,7 +383,7 @@ function render() {
                     ctx.arc(shots[s].x + gameOptions.player.width + shots[s].width/2, shots[s].y + gameOptions.player.height/2 , radius, 0, 2 * Math.PI, false);
                 } else if (gameOptions.vertical) {
                     // Schuss: Rund / Player: Eckig / Vertikal       
-                    ctx.arc(shots[s].x + shots[s].width/2, shots[s].y + (shots[s].width / 2), radius, 0, 2 * Math.PI, false);
+                    ctx.arc(shots[s].x + shots[s].width/2, shots[s].y - radius - 3, radius, 0, 2 * Math.PI, false);
                 }
             }
             ctx.fill();
