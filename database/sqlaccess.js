@@ -88,7 +88,7 @@ module.exports = function(fs, bcrypt, mysql) {
                     if(!exists) {
                         fs.mkdir(path, 0777, function (err) {
                             if (err) {
-                                console.log(err);
+                                console.log("Uploads/User Ordner ##### " + err);
                             }
                         });
                     }
@@ -97,18 +97,17 @@ module.exports = function(fs, bcrypt, mysql) {
             });
 		},
 		signup : function(request, username, password, callback) {
-			console.log(username + "******" + password);
+			var newUser;
 			connection.query("SELECT * FROM " + db.tableUsers + " WHERE username = '" + username + "'", function(err, rows) {
 				if (err) {
-					console.log(err);
+					console.log("SELECT ######" + err);
 			    	return callback(err);
 				}
                 if (rows.length) {
-                	console.log(rows);
                     return callback(null, false, request.flash('signUpMessage', 'Benutzername schon vergeben!'));
                 } else {
                     // Neuen Benutzer erstellen, falls noch nicht vorhanden
-                    var newUser = {
+                    newUser = {
                         username: username,
                         email: request.body.email,
                         password: bcrypt.hashSync(password, null, null)
@@ -118,13 +117,15 @@ module.exports = function(fs, bcrypt, mysql) {
                     connection.query(insertQuery,function(err, rows) {
                     	console.log(rows);
                         if (err) {
-                        	console.log(err);
+                        	console.log("Insert Error ##### " + err);
                             return callback(err);
                         } 
                         //Ordner für Uploads wird erstellt
                         connection.query("SELECT LAST_INSERT_ID() as userid", function(err, rows, fields){
-                        	console.log(rows);
                             var userid = rows[0].userid;
+                            newUser.id_user = userid;
+                            request.user = newUser;
+                            console.log("New User ++++++ " + JSON.stringify(request.user));
                             var path = "uploads/" + userid;
                             fs.mkdir(path, 0777, function (err) {
                                 if (err) {

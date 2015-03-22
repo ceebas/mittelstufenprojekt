@@ -200,9 +200,14 @@ module.exports = function(app, passport, multiparty, nodemailer, accessDb) {
 	});
 
 	/* Registrierung eines neuen Benutzers */
-	app.post('/signUp', passport.authenticate('local-signup'), function (request, response) {
-			console.log(request.body);
-			response.redirect('/' + req.user.username);
+	app.post('/signUp', passport.authenticate('local-signup', {
+			//request.flash('signUp', 'User erfolgreich angelegt!');
+			successRedirect : '/sendEmail',
+			failureRedirect : '/signUp.html',
+	}));
+
+	app.get('/sendEmail', function(request, response) {
+		console.log("sendEmail #### " + request.user);
 	});
 
 	/* Änderung von eigenen Benutzerdaten */
