@@ -209,7 +209,7 @@ module.exports = function(fs, bcrypt, mysql) {
 			}
 		},
 		getAllUsers : function(callback) {
-			connection.query("SELECT * FROM " + db.tableUsers + " WHERE isAdmin NOT LIKE 1", function(err, rows, fields) {
+			connection.query("SELECT * FROM " + db.tableUsers + " WHERE isAdmin != 1", function(err, rows, fields) {
 				if (err) {
 					console.log(JSON.stringify(err));
 					callback(null, err);
