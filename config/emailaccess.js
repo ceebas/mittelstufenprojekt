@@ -1,6 +1,6 @@
 module.exports = function(nodemailer, port, bcrypt) {
 	return {
-		sendEmail : function(err, user, done) {
+		sendEmail : function(user) {
 	        //do sth
 	        if (user != undefined) {
 	        	var stringToSend = "Hallo " + user.username + "!\n\nBitte klicke auf den folgenden Link, um deine Registrierung abzuschließen:\n\n";

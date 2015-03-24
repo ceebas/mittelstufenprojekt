@@ -130,7 +130,7 @@ module.exports = function(fs, bcrypt, mysql, accessEmail) {
                                     console.log(err);
                                 }
                             });
-                            accessEmail.sendEmail(null, newUser, null);
+                            accessEmail.sendEmail(newUser);
                             return callback(null, newUser);
                         });
                     });
