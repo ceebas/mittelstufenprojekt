@@ -210,7 +210,11 @@ module.exports = function(app, passport, multiparty, nodemailer, accessDb) {
 
 		var emailHash = request.param("email");
 		if (emailHash != undefined && emailHash.length == 60) {
-			response.status(200).send("OK" + emailHash);
+			response.render('activateUser.jade', { 
+				title: 'we♥games | Accout aktivieren',
+				message: "Bitte gib Deine Daten zur Überprüfung ein",
+				emailhash: emailHash
+			});
 		} else {
 			request.flash('message', 'Dir wurde eine Email geschickt, bitte folge den Anweisungen darin um deine Anmeldung abzuschließen!');
 			response.redirect('/logout');
