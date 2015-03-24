@@ -221,6 +221,23 @@ module.exports = function(app, passport, multiparty, nodemailer, accessDb) {
 		}
 	});
 
+	app.post('/activateUser', function(request, response) {
+		console.log(request.body);
+		if (request.body.emailhash.length == 60) {
+			//validate User!
+			accessDb.validateUser(request.body, login);
+			function login (success) {
+				if (success) {
+					console.log("YEAH!!!")
+				} else {
+					console.log("NOOO!")
+				}
+			}
+		} else {
+			response.redirect('/');
+		}  
+	});
+
 	/* Änderung von eigenen Benutzerdaten */
 	app.post('/userSetting', isLoggedIn, function(request,response) {
 		accessDb.updateUser(request, render);

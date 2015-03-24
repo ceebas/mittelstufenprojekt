@@ -4,7 +4,7 @@ module.exports = function(nodemailer, port, bcrypt) {
 	        //do sth
 	        if (user != undefined) {
 	        	var stringToSend = "Hallo " + user.username + "!\n\nBitte klicke auf den folgenden Link, um deine Registrierung abzuschließen:\n\n";
-	        	stringToSend += "http://localhost:" + port + "/sendEmail?email=" + bcrypt.hashSync(user.email, null, null) + "\n\n";
+	        	stringToSend += "<a href='http://localhost:" + port + "/sendEmail?email=" + bcrypt.hashSync(user.email, null, null) + "'>Bitte hier klicken!</a>\n\n";
 	        	stringToSend += "Viel Spaß wünscht Dein WeLoveGames Team ;)";
 	        	var transporter = nodemailer.createTransport({
 			    	service: 'Gmail',
