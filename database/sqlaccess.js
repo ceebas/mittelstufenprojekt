@@ -1,7 +1,7 @@
 /* Datenbank */
 var db = require('../config/database.js');
 
-module.exports = function(fs, bcrypt, mysql) {
+module.exports = function(fs, bcrypt, mysql, accessEmail) {
 	// Datenbankverbindung herstellen
 	var connection = mysql.createConnection(db.connection);
 	/* Datenbank erstellen */
@@ -70,7 +70,7 @@ module.exports = function(fs, bcrypt, mysql) {
                     return callback(null, false, request.flash('loginMessage', 'Falscher Benutzername oder falsches Passwort!'));
                 }
                 if (rows[0].inactive == 1) {
-                    return callback(null, false, request.flash('loginMessage', 'Dein Account ist inaktiv, bitte wende dich an einen Admin!'))
+                    return callback(null, false, request.flash('loginMessage', 'Dein Account ist inaktiv, bitte klicke erst auf deinen Aktivierungslink, den du per Mail erhalten hast!'))
                 }
                 //Benutzerordner wird erstellt, wenn nicht vorhanden
                 fs.exists("uploads", function(exists) {
@@ -101,10 +101,10 @@ module.exports = function(fs, bcrypt, mysql) {
 			connection.query("SELECT * FROM " + db.tableUsers + " WHERE username = '" + username + "'", function(err, rows) {
 				if (err) {
 					console.log("SELECT ######" + err);
-			    	return callback(err);
+			    	return callback(err, null);
 				}
                 if (rows.length) {
-                    return callback(null, false, request.flash('signUpMessage', 'Benutzername schon vergeben!'));
+                    return callback(null, null);
                 } else {
                     // Neuen Benutzer erstellen, falls noch nicht vorhanden
                     newUser = {
@@ -115,25 +115,24 @@ module.exports = function(fs, bcrypt, mysql) {
                     var insertQuery = "INSERT INTO " + db.tableUsers + " ( username, email, password, inactive ) values ('" + newUser.username + "','" + newUser.email +"','" + newUser.password + "','1')";
 
                     connection.query(insertQuery,function(err, rows) {
-                    	console.log(rows);
                         if (err) {
                         	console.log("Insert Error ##### " + err);
-                            return callback(err);
+                            return callback(err, null);
                         } 
                         //Ordner für Uploads wird erstellt
                         connection.query("SELECT LAST_INSERT_ID() as userid", function(err, rows, fields){
                             var userid = rows[0].userid;
                             newUser.id_user = userid;
                             request.user = newUser;
-                            console.log("New User ++++++ " + JSON.stringify(request.user));
                             var path = "uploads/" + userid;
                             fs.mkdir(path, 0777, function (err) {
                                 if (err) {
                                     console.log(err);
                                 }
                             });
+                            accessEmail.sendEmail(null, newUser, null);
+                            return callback(null, newUser);
                         });
-                        return callback(null);
                     });
                 }
             });

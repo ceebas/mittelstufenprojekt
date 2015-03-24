@@ -207,7 +207,14 @@ module.exports = function(app, passport, multiparty, nodemailer, accessDb) {
 	}));
 
 	app.get('/sendEmail', function(request, response) {
-		console.log("sendEmail #### " + request.user);
+
+		var emailHash = request.param("email");
+		if (emailHash != undefined && emailHash.length == 60) {
+			response.status(200).send("OK" + emailHash);
+		} else {
+			request.flash('message', 'Dir wurde eine Email geschickt, bitte folge den Anweisungen darin um deine Anmeldung abzuschließen!');
+			response.redirect('/logout');
+		}
 	});
 
 	/* Änderung von eigenen Benutzerdaten */

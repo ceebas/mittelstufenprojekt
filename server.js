@@ -29,7 +29,8 @@ app.use(bodyParser.urlencoded({
 	extended: true 
 }));
 app.use(bodyParser.json());
-var accessDb = require('./database/sqlaccess.js')(fs, bcrypt, mysql);
+var accessEmail = require('./config/emailaccess.js')(nodemailer, port, bcrypt);
+var accessDb = require('./database/sqlaccess.js')(fs, bcrypt, mysql, accessEmail);
 require('./config/passport')(passport, accessDb);
 require('./app/routes.js')(app, passport, multiparty, nodemailer, accessDb);
 
