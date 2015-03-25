@@ -215,6 +215,10 @@ module.exports = function(app, passport, multiparty, nodemailer, accessDb) {
 				message: "Bitte gib Deine Daten zur Überprüfung ein",
 				emailhash: emailHash
 			});
+		} else if (request.user.isAdmin == 1){
+			request.flash('message', 'Es wurde eine Aktivierungsmail an die angegebene Emailadresse gesendet.');
+			response.redirect('/');
+
 		} else {
 			request.flash('message', 'Dir wurde eine Email geschickt, bitte folge den Anweisungen darin um deine Anmeldung abzuschließen!');
 			response.redirect('/logout');

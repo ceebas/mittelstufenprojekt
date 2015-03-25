@@ -83,7 +83,7 @@ module.exports = function(fs, bcrypt, mysql, accessEmail) {
                 	}
                 });
                 var userid = rows[0].id_user;
-                var path = "uploads/" + userid;
+                var path = __dirname + "/../uploads/" + userid;
                 fs.exists(path, function(exists) {
                     if(!exists) {
                         fs.mkdir(path, 0777, function (err) {
@@ -124,7 +124,7 @@ module.exports = function(fs, bcrypt, mysql, accessEmail) {
                             var userid = rows[0].userid;
                             newUser.id_user = userid;
                             request.user = newUser;
-                            var path = "uploads/" + userid;
+                            var path = __dirname + "/../uploads/" + userid;
                             fs.mkdir(path, 0777, function (err) {
                                 if (err) {
                                     console.log(err);
@@ -354,7 +354,7 @@ module.exports = function(fs, bcrypt, mysql, accessEmail) {
 						if (!err) {
 							// ID für das Spiel wird in der Datenbank festgelegt und Pfad vervollständigt
 							gameId = rows[0].id_game;
-							var path = "uploads/" + request.user.id_user + "/" + gameId + "." + fieldsObject.gamename;
+							var path = __dirname + "/../uploads/" + request.user.id_user + "/" + gameId + "." + fieldsObject.gamename;
 	    					// Ordner für das Spiel wird erstellt
 							if(typeof fieldsObject.gamename != undefined) {
 			    				fs.mkdir(path, 0777, function (err) {
@@ -423,7 +423,7 @@ module.exports = function(fs, bcrypt, mysql, accessEmail) {
 						if (!err) {
 							// ID für das Spiel wird in der Datenbank festgelegt und Pfad vervollständigt
 							gameId = rows[0].id_game;
-							var path = "uploads/" + request.user.id_user + "/" + gameId + "." + gameObj.gamedata.name;
+							var path = __dirname + "/../uploads/" + request.user.id_user + "/" + gameId + "." + gameObj.gamedata.name;
 	    					// Ordner für das Spiel wird erstellt
 							if(typeof gameObj.gamedata.name != undefined) {
 			    				fs.mkdir(path, 0777, function (err) {
