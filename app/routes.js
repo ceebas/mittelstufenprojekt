@@ -222,16 +222,15 @@ module.exports = function(app, passport, multiparty, nodemailer, accessDb) {
 	});
 
 	app.post('/activateUser', function(request, response) {
-		console.log(request.body);
 		if (request.body.emailhash.length == 60) {
-			//validate User!
-			accessDb.validateUser(request.body, login);
-			function login (success) {
+			accessDb.validateUser(request, login);
+			function login (request, success) {
 				if (success) {
-					console.log("YEAH!!!")
+					request.flash('loginMessage', 'Melde dich nun zum ersten Mal an!');
 				} else {
-					console.log("NOOO!")
+					request.flash('loginMessage', 'Fehler bei der Aktivierung! Bitte versuche es noch einmal!');
 				}
+				response.redirect('login.html');
 			}
 		} else {
 			response.redirect('/');

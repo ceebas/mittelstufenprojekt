@@ -137,22 +137,25 @@ module.exports = function(fs, bcrypt, mysql, accessEmail) {
                 }
             });
 		},
-		validateUser : function (user, callback) {
+		validateUser : function (request, callback) {
+			var user = request.body;
 			connection.query("SELECT * FROM " + db.tableUsers + " WHERE username = '" + user.username + "'",function(err, rows) {
 				if (err) {
 					console.log(err);
-					return callback(false);
+					return callback(request, false);
 				} else if (!rows.length) {
 					console.log(err);
-					return callback(false);
+					return callback(request, false);
 				}
-				if (user.emailhash == bcrypt(rows[0].email, null, null) && bcrypt(user.password, null, null) == rows[0].password) {
+				if (bcrypt.compareSync(rows[0].email, user.emailhash) && bcrypt.compareSync(user.password, rows[0].password)) {
 					connection.query("UPDATE " + db.tableUsers + " SET inactive='0' WHERE id_user='" + rows[0].id_user + "'", function(err) {
 						if (err) {
 							console.log(err);
 						}
-						return callback(true);
+						return callback(request, true);
 					});
+				} else {
+					return callback(request, false);
 				}
 			});
 		},
