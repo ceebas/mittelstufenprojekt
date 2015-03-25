@@ -6,7 +6,7 @@ module.exports = {
         'password': 'i2dm'
     },
 	'database': 'browseagame_node',
-    'tableUsers': "users",
-	'tableGames': "games",
-	'tableHighscores': "highscores"
+    'tableUsers': 'users',
+	'tableGames': 'games',
+	'tableHighscores': 'highscores'
 };
