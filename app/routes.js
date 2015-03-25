@@ -200,9 +200,41 @@ module.exports = function(app, passport, multiparty, nodemailer, accessDb) {
 	});
 
 	/* Registrierung eines neuen Benutzers */
-	app.post('/signUp', passport.authenticate('local-signup'), function (request, response) {
-			console.log(request.body);
-			response.redirect('/' + req.user.username);
+	app.post('/signUp', passport.authenticate('local-signup', {
+			//request.flash('signUp', 'User erfolgreich angelegt!');
+			successRedirect : '/sendEmail',
+			failureRedirect : '/signUp.html',
+	}));
+
+	app.get('/sendEmail', function(request, response) {
+
+		var emailHash = request.param("email");
+		if (emailHash != undefined && emailHash.length == 60) {
+			response.render('activateUser.jade', { 
+				title: 'we♥games | Accout aktivieren',
+				message: "Bitte gib Deine Daten zur Überprüfung ein",
+				emailhash: emailHash
+			});
+		} else {
+			request.flash('message', 'Dir wurde eine Email geschickt, bitte folge den Anweisungen darin um deine Anmeldung abzuschließen!');
+			response.redirect('/logout');
+		}
+	});
+
+	app.post('/activateUser', function(request, response) {
+		if (request.body.emailhash.length == 60) {
+			accessDb.validateUser(request, login);
+			function login (request, success) {
+				if (success) {
+					request.flash('loginMessage', 'Melde dich nun zum ersten Mal an!');
+				} else {
+					request.flash('loginMessage', 'Fehler bei der Aktivierung! Bitte versuche es noch einmal!');
+				}
+				response.redirect('login.html');
+			}
+		} else {
+			response.redirect('/');
+		}  
 	});
 
 	/* Änderung von eigenen Benutzerdaten */

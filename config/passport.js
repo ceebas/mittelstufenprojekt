@@ -1,7 +1,7 @@
 // config/passport.js
 var LocalStrategy = require('passport-local').Strategy;
 
-module.exports = function(passport, accessDb) {
+module.exports = function(passport, accessDb, accessEmail) {
     
     // used to serialize the user for the session
     passport.serializeUser(function(user, done) {

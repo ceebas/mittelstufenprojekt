@@ -1,7 +1,7 @@
 /* Datenbank */
 var db = require('../config/database.js');
 
-module.exports = function(fs, bcrypt, mysql) {
+module.exports = function(fs, bcrypt, mysql, accessEmail) {
 	// Datenbankverbindung herstellen
 	var connection = mysql.createConnection(db.connection);
 	/* Datenbank erstellen */
@@ -70,7 +70,7 @@ module.exports = function(fs, bcrypt, mysql) {
                     return callback(null, false, request.flash('loginMessage', 'Falscher Benutzername oder falsches Passwort!'));
                 }
                 if (rows[0].inactive == 1) {
-                    return callback(null, false, request.flash('loginMessage', 'Dein Account ist inaktiv, bitte wende dich an einen Admin!'))
+                    return callback(null, false, request.flash('loginMessage', 'Dein Account ist inaktiv, bitte klicke erst auf deinen Aktivierungslink, den du per Mail erhalten hast!'))
                 }
                 //Benutzerordner wird erstellt, wenn nicht vorhanden
                 fs.exists("uploads", function(exists) {
@@ -88,7 +88,7 @@ module.exports = function(fs, bcrypt, mysql) {
                     if(!exists) {
                         fs.mkdir(path, 0777, function (err) {
                             if (err) {
-                                console.log(err);
+                                console.log("Uploads/User Ordner ##### " + err);
                             }
                         });
                     }
@@ -97,18 +97,17 @@ module.exports = function(fs, bcrypt, mysql) {
             });
 		},
 		signup : function(request, username, password, callback) {
-			console.log(username + "******" + password);
+			var newUser;
 			connection.query("SELECT * FROM " + db.tableUsers + " WHERE username = '" + username + "'", function(err, rows) {
 				if (err) {
-					console.log(err);
-			    	return callback(err);
+					console.log("SELECT ######" + err);
+			    	return callback(err, null);
 				}
                 if (rows.length) {
-                	console.log(rows);
-                    return callback(null, false, request.flash('signUpMessage', 'Benutzername schon vergeben!'));
+                    return callback(null, null);
                 } else {
                     // Neuen Benutzer erstellen, falls noch nicht vorhanden
-                    var newUser = {
+                    newUser = {
                         username: username,
                         email: request.body.email,
                         password: bcrypt.hashSync(password, null, null)
@@ -116,26 +115,49 @@ module.exports = function(fs, bcrypt, mysql) {
                     var insertQuery = "INSERT INTO " + db.tableUsers + " ( username, email, password, inactive ) values ('" + newUser.username + "','" + newUser.email +"','" + newUser.password + "','1')";
 
                     connection.query(insertQuery,function(err, rows) {
-                    	console.log(rows);
                         if (err) {
-                        	console.log(err);
-                            return callback(err);
+                        	console.log("Insert Error ##### " + err);
+                            return callback(err, null);
                         } 
                         //Ordner für Uploads wird erstellt
                         connection.query("SELECT LAST_INSERT_ID() as userid", function(err, rows, fields){
-                        	console.log(rows);
                             var userid = rows[0].userid;
+                            newUser.id_user = userid;
+                            request.user = newUser;
                             var path = "uploads/" + userid;
                             fs.mkdir(path, 0777, function (err) {
                                 if (err) {
                                     console.log(err);
                                 }
                             });
+                            accessEmail.sendEmail(newUser);
+                            return callback(null, newUser);
                         });
-                        return callback(null);
                     });
                 }
             });
+		},
+		validateUser : function (request, callback) {
+			var user = request.body;
+			connection.query("SELECT * FROM " + db.tableUsers + " WHERE username = '" + user.username + "'",function(err, rows) {
+				if (err) {
+					console.log(err);
+					return callback(request, false);
+				} else if (!rows.length) {
+					console.log(err);
+					return callback(request, false);
+				}
+				if (bcrypt.compareSync(rows[0].email, user.emailhash) && bcrypt.compareSync(user.password, rows[0].password)) {
+					connection.query("UPDATE " + db.tableUsers + " SET inactive='0' WHERE id_user='" + rows[0].id_user + "'", function(err) {
+						if (err) {
+							console.log(err);
+						}
+						return callback(request, true);
+					});
+				} else {
+					return callback(request, false);
+				}
+			});
 		},
 		getUser : function(request, callback) {
 			var editId = request.query.userId;

@@ -4,17 +4,15 @@ body
     include ./layout/nav.jade 
     .panel.panel-default
       .panel-heading 
-        h2 Login
+        h2 Accout aktivieren
       .panel-body
         br
         -if(message != "")
           div.alert.alert-warning #{message} 
-        form.form-signin(role='form', action='/login', method='post')
+        form.form-signin(role='form', action='/activateUser', method='post')
           .input-group
+            input#username.form-control(name='emailhash', type='text', value='#{emailhash}', required='required', autocomplete='off', autofocus='autofocus', readonly='readonly')
             input#username.form-control(name='username', type='text', placeholder='Benutzername', required='required', autofocus='autofocus')
             input#password.form-control(name='password', type='password', placeholder='Passwort', required='required')
-          div.hidden
-            input#user_hash.form-control(name='user_hash', type='password')  
-          button#loginButton.btn.btn-lg.btn-primary.btn-block(type='submit') Login
-          br
+          button#loginButton.btn.btn-lg.btn-primary.btn-block(type='submit') Aktivieren
   include ./layout/footer.jade
