@@ -70,7 +70,10 @@ function checkPass() {
     var password = $('input#password').val();
     var password_confirmation = $('input#password_confirmation').val();
     if (password.trim() == '' || password != password_confirmation) {
-        alert("Bitte überprüfe die Passwörter");
+        $('input#password').addClass('wrongPassword');
+        $('input#password_confirmation').addClass('wrongPassword');
+        $('input#password').val("");
+        $('input#password_confirmation').val("");
         return false;
     }
     return true;
