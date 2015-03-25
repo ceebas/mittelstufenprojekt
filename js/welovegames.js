@@ -67,18 +67,14 @@ $(document).keydown(function(e) {
 });
 
 function checkPass() {
-    var password = $('input#password');
-    var password_confirmation = $('input#password_confirmation');
-
-    if (password.trim() == '' && password != password_confirmation){
-        event.preventDefault();
+    var password = $('input#password').val();
+    var password_confirmation = $('input#password_confirmation').val();
+    if (password.trim() == '' || password != password_confirmation) {
         alert("Bitte überprüfe die Passwörter");
+        return false;
     }
+    return true;
 }
-
-$( "button#registerButton" ).click(function (event) {
-            checkPass(event);
-});
 
 //CreateGame Stuff
 /* Angabe des aktuellen wertes bei Schiebereglern (CreateGame)*/
