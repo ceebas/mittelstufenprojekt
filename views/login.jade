@@ -1,19 +1,19 @@
 include ./layout/head.jade
 body
-  .container
-    include ./layout/nav.jade 
-    .panel.panel-default
-      .panel-heading 
-        h2 Login
-      .panel-body
-        br
-        -if(message != "")
-          div.alert.alert-warning #{message} 
-        form.form-signin(role='form', action='/login', method='post')
-          .input-group
-            input#username.form-control(name='username', type='text', placeholder='Benutzername', required='required', autofocus='autofocus')
-            input#password.form-control(name='password', type='password', placeholder='Passwort', required='required')
-          button#loginButton.btn.btn-lg.btn-primary.btn-block(type='submit') Login
-        a(href='/signUp.html')  
-          | Noch kein Konto? Jetzt registrieren
-  include ./layout/footer.jade
+	.container
+		include ./layout/nav.jade 
+		.panel.panel-default
+			.panel-heading 
+				h2 Login
+			.panel-body
+				br
+				-if(message != "")
+					div.alert.alert-warning #{message} 
+				form.form-signin(role='form', action='/login', method='post')
+					.input-group
+						input#username.form-control(name='username', type='text', placeholder='Benutzername', required='required', autofocus='autofocus')
+						input#password.form-control(name='password', type='password', placeholder='Passwort', required='required')
+					button#loginButton.btn.btn-lg.btn-primary.btn-block(type='submit') Login
+				a(href='/signUp.html')  
+					| Noch kein Konto? Jetzt registrieren
+	include ./layout/footer.jade

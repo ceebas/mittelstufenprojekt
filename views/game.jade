@@ -1,52 +1,51 @@
 include ./layout/head.jade
 body
-  .container
-    include ./layout/nav.jade
-    -if(message != "")
-      div.alert.alert-warning #{message}  
-    .panel.panel-default
-      .panel-heading 
-        h3 Spiele jetzt #{results.gamename}
-      canvas#canvas
-    #accordion.panel-group
-      .panel.panel-default
-        .panel-heading
-          h4.panel-title
-            span.glyphicon.glyphicon-chevron-down &nbsp;
-            a(data-toggle='collapse', data-parent='#accordion', href='#collapseOne')
-              | Highscores für #{results.gamename}
-        #collapseOne.panel-collapse.collapse
-          .panel-body
-            table.table.table-striped
-              tablehead
-                tr 
-                  td Platz
-                  td Username
-                  td Score
-                  td Datum
-              tablebody
-              -var i = 1
-              -if (scores[0] == undefined)
-                tr
-                  td
-                  td Leider noch keine Scores vorhanden!
-                  td
-              each data in scores
-                tr 
-                  td #{i} 
-                  td #{data.username}
-                  td #{data.score}
-                  td
-                    |  am #{data.tStamp.getDay()}.#{data.tStamp.getMonth()}.#{data.tStamp.getFullYear()}
-                    | um #{data.tStamp.getHours()}:
-                    -if (data.tStamp.getMinutes() < 10) 
-                      |0#{data.tStamp.getMinutes()}
-                    -else
-                      |#{data.tStamp.getMinutes()}
-                    
-                  -i++
-  script.
-    var path = "/uploads/#{results.user}/#{results.id_game}.#{results.gamename}/";
-    var gameId =  #{results.id_game};
-  script(src='./uploads/#{results.user}/#{results.id_game}.#{results.gamename}/#{results.javascript}')
-  include ./layout/footer.jade
+	.container
+		include ./layout/nav.jade
+		-if(message != "")
+			div.alert.alert-warning #{message}  
+		.panel.panel-default
+			.panel-heading 
+				h3 Spiele jetzt #{results.gamename}
+			canvas#canvas
+		#accordion.panel-group
+			.panel.panel-default
+				.panel-heading
+					h4.panel-title
+						span.glyphicon.glyphicon-chevron-down &nbsp;
+						a(data-toggle='collapse', data-parent='#accordion', href='#collapseOne')
+							| Highscores für #{results.gamename}
+				#collapseOne.panel-collapse.collapse
+					.panel-body
+						table.table.table-striped
+							tablehead
+								tr 
+								td Platz
+								td Username
+								td Score
+								td Datum
+							tablebody
+							-var i = 1
+							-if (scores[0] == undefined)
+								tr
+									td
+									td Leider noch keine Scores vorhanden!
+									td
+							each data in scores
+								tr 
+									td #{i} 
+									td #{data.username}
+									td #{data.score}
+									td
+										|  am #{data.tStamp.getDay()}.#{data.tStamp.getMonth()}.#{data.tStamp.getFullYear()}
+										| um #{data.tStamp.getHours()}:
+										-if (data.tStamp.getMinutes() < 10) 
+											|0#{data.tStamp.getMinutes()}
+										-else
+											#{data.tStamp.getMinutes()}
+									-i++
+	script.
+		var path = "/uploads/#{results.user}/#{results.id_game}.#{results.gamename}/";
+		var gameId =  #{results.id_game};
+	script(src='./uploads/#{results.user}/#{results.id_game}.#{results.gamename}/#{results.javascript}')
+	include ./layout/footer.jade
