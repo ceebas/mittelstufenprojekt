@@ -25,8 +25,8 @@ app.use(passport.session());
 
 /* Allgemeine Einstellungen */
 var port = 8081;
-app.use(bodyParser.urlencoded({ 
-	extended: true 
+app.use(bodyParser.urlencoded({
+	extended: true
 }));
 app.use(bodyParser.json());
 var accessEmail = require('./config/emailaccess.js')(nodemailer, port, bcrypt);
