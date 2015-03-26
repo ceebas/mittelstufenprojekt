@@ -43,7 +43,7 @@ body
 							br
 							input#selfscroll(type='checkbox', name='selfscroll', onchange='showDiv("selfscroll"); setSelfscroll()')
 							| 	Selbstscroller
-							//Wenn selbsscroller dann anzeigen
+							//Wenn selbstscroller dann anzeigen
 							div#scroll.hidden
 								| Scrollgeschwindigkeit:
 								span#scroll_speed_span /
@@ -79,7 +79,7 @@ body
 
 
 
-						//PLayeroptionen
+						//Playeroptionen
 						div#seite3.hidden
 							h4 Spieler
 
@@ -144,9 +144,7 @@ body
 								span#foes_gravity_span /
 								input#foes_gravity(type='range', name='foes_gravity', min='0', max='10', value='5', oninput='showValue(this.value, "foes_gravity")',onchange='showValue(this.value, "foes_gravity"); getFoeOptions()')
 
-
 							a.btn.btn-primary.changePageBtn(href='#', onclick='changePage(3);') zurück
 							button#loginButton.btn.btn-lg.btn-primary.btn-block(type='submit',onclick='uploadFile();') senden
 	include ./layout/footer.jade
 	script(src='js/gamePreview.js')
-
