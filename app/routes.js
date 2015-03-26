@@ -56,7 +56,7 @@ module.exports = function(app, passport, multiparty, nodemailer, accessDb) {
 	});
 
 	/* Login */
-	app.get('/login.html', function(request, response) {
+	app.get('/login', function(request, response) {
 		response.render('login.jade', { 
 			title: 'we♥games | Login',
 			message: request.flash('loginMessage'),
@@ -66,7 +66,7 @@ module.exports = function(app, passport, multiparty, nodemailer, accessDb) {
 	
 	app.post('/login', passport.authenticate('login-local', {
 		successRedirect: '/loginSuccess', 
-		failureRedirect: '/login.html' 
+		failureRedirect: '/login' 
 	}));
 
 	/* Wenn Nutzer vor Login auf bestimmter Seite war, wird er daruf zurückgebracht */
@@ -80,7 +80,7 @@ module.exports = function(app, passport, multiparty, nodemailer, accessDb) {
 	});
 	
 	/* Bearbeiten von Nutzerangaben */	
-	app.get('/userSetting.html',isLoggedIn, function(request, response) {
+	app.get('/userSetting',isLoggedIn, function(request, response) {
 		accessDb.getOwnUser(request, render);
 		function render(rows, request, err) {
 			response.render('userSetting.jade', { 
@@ -94,20 +94,20 @@ module.exports = function(app, passport, multiparty, nodemailer, accessDb) {
 	});
 
 	/* Seite zum hochladen */
-	app.get('/upload.html', isLoggedIn, function(request, response) {
+	app.get('/upload', isLoggedIn, function(request, response) {
 		response.render('upload.jade', { 
 			title: 'we♥games | Upload',
 			user: request.user
 		});
 	});
-	app.get('/uploadDoneGame.html', isLoggedIn, function(request, response) {
+	app.get('/uploadDoneGame', isLoggedIn, function(request, response) {
 		response.render('uploadDoneGame.jade', { 
 			title: 'we♥games | Upload',
 			user: request.user
 		});
 	});
 	/* ----- CREATE GAME ----- */
-	app.get('/createGame.html', isLoggedIn, function(request, response) {
+	app.get('/createGame', isLoggedIn, function(request, response) {
 		response.render('createGame.jade', { 
 			title: 'we♥games | CREATE NOW',
 			user: request.user
@@ -203,7 +203,7 @@ module.exports = function(app, passport, multiparty, nodemailer, accessDb) {
 	app.post('/signUp', passport.authenticate('local-signup', {
 			//request.flash('signUp', 'User erfolgreich angelegt!');
 			successRedirect : '/sendEmail',
-			failureRedirect : '/signUp.html',
+			failureRedirect : '/signUp',
 	}));
 
 	app.get('/sendEmail', function(request, response) {
@@ -216,7 +216,7 @@ module.exports = function(app, passport, multiparty, nodemailer, accessDb) {
 			});
 		} else if (request.user.isAdmin == 1){
 			request.flash('message', 'Es wurde eine Aktivierungsmail an die angegebene Emailadresse gesendet.');
-			response.redirect('/tableUsers.html');
+			response.redirect('/tableUsers');
 		} else {
 			request.flash('message', 'Dir wurde eine Email geschickt, bitte folge den Anweisungen darin um deine Anmeldung abzuschließen!');
 			response.redirect('/logout');
@@ -232,7 +232,7 @@ module.exports = function(app, passport, multiparty, nodemailer, accessDb) {
 				} else {
 					request.flash('loginMessage', 'Fehler bei der Aktivierung! Bitte versuche es noch einmal!');
 				}
-				response.redirect('login.html');
+				response.redirect('login');
 			}
 		} else {
 			response.redirect('/');
@@ -276,7 +276,7 @@ module.exports = function(app, passport, multiparty, nodemailer, accessDb) {
 	});
 
 	/*----- Admin Ansicht -----*/
-	app.get('/tableUsers.html', isLoggedIn, function(request, response) {
+	app.get('/tableUsers', isLoggedIn, function(request, response) {
 		if (request.user.isAdmin == 1) {
 			accessDb.getAllUsers(request, render);
 			function render(users, admins, err) {
@@ -289,19 +289,19 @@ module.exports = function(app, passport, multiparty, nodemailer, accessDb) {
 				});
 			}
 		} else {
-			response.redirect('/userSetting.html');
+			response.redirect('/userSetting');
 		}
 	});
 
 	/* Neuen Nutzer anmelden */
-	app.get('/signUp.html', function(request, response) {
+	app.get('/signUp', function(request, response) {
 		response.render('signUp.jade', { 
 			title: 'we♥games | Benutzer registrieren',
 			user: request.user,
 			message: request.flash('signUpMessage')
 		});
 	});
-	app.get('/tableGames.html', isLoggedIn, function(request, response) {
+	app.get('/tableGames', isLoggedIn, function(request, response) {
 		if (request.user.isAdmin == 1) {
 			accessDb.getAllGames(render);
 			function render(rows, err) {
@@ -312,7 +312,7 @@ module.exports = function(app, passport, multiparty, nodemailer, accessDb) {
 				});
 			}
 		} else {
-			response.redirect('/userSetting.html');
+			response.redirect('/userSetting');
 		}
 	});
 
@@ -323,15 +323,15 @@ module.exports = function(app, passport, multiparty, nodemailer, accessDb) {
 				if (!succsess) {
 					request.flash('message', 'Es ist ein Fehler aufgetreten!');
 				}
-				response.redirect('/tableUsers.html');
+				response.redirect('/tableUsers');
 			}
 		} else {
-			response.redirect('/userSetting.html');
+			response.redirect('/userSetting');
 		}
 	});
 
 	// Nutzer editieren
-	app.get('/editUser.html', isLoggedIn, function(request, response) {
+	app.get('/editUser', isLoggedIn, function(request, response) {
 		if (request.user.isAdmin == 1) {
 			accessDb.getUser(request, render);
 			function render(rows, request, err) {
@@ -348,7 +348,7 @@ module.exports = function(app, passport, multiparty, nodemailer, accessDb) {
 				});
 			}
 		} else {
-			response.redirect('/userSetting.html');
+			response.redirect('/userSetting');
 		}
 	});
 
@@ -380,5 +380,5 @@ function isLoggedIn(request, response, next) {
 	var clientIp = request.connection.remoteAddress;
 	userTemp[clientIp] = request.path;
 	request.flash('loginMessage', 'Du musst angemeldet sein, um diese Seite aufrufen zu können!');
-	response.redirect('/login.html');
+	response.redirect('/login');
 }

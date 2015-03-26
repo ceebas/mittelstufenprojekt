@@ -8,27 +8,27 @@ nav.navbar.navbar-default(role='navigation')
     ul.nav.navbar-nav
       if(user)
         li
-          a(href='upload.html') Spiel erstellen
+          a(href='upload') Spiel erstellen
         if(user.isAdmin ==1)
             li.divider(role='presentation')
             li(role='presentation')
-              a(role='menuitem', tabindex='-1', href='/signUp.html') Neuen User anlegen
+              a(role='menuitem', tabindex='-1', href='/signUp') Neuen User anlegen
             li(role='presentation')
-              a(role='menuitem', tabindex='-1', href='/tableUsers.html') Alle Benutzer anzeigen
+              a(role='menuitem', tabindex='-1', href='/tableUsers') Alle Benutzer anzeigen
             li(role='presentation')
-              a(role='menuitem', tabindex='-1', href='/tableGames.html') Alle Spiele anzeigen
+              a(role='menuitem', tabindex='-1', href='/tableGames') Alle Spiele anzeigen
         .dropdown
           button#userMenu.btn.btn-default.dropdown-toggle(data-toggle='dropdown')
             | #{user.username} 
             span.caret
           ul#userDropdown.dropdown-menu(role='menu', aria-labelledby='menu1')
             li(role='presentation')
-              a(role='menuitem', tabindex='-1', href='/userSetting.html') Mein Profil bearbeiten
+              a(role='menuitem', tabindex='-1', href='/userSetting') Mein Profil bearbeiten
             li.divider(role='presentation')
             li(role='presentation')
               a(role='menuitem', tabindex='-1', href='/logout') Logout
       else
-        a#login.btn.btn-default(href='/login.html') Login &nbsp;
+        a#login.btn.btn-default(href='/login') Login &nbsp;
           span.glyphicon.glyphicon-log-in
     form.navbar-form.navbar-left(role='search', method='post', action='/search')
       .form-group

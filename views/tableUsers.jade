@@ -26,7 +26,7 @@ body
 										a(href='/removeUser?userId=#{data.id_user}', title='User aktivieren')
 											span.glyphicon.glyphicon-ok
 										| &nbsp;&nbsp;&nbsp;
-										a(href='/editUser.html?userId=#{data.id_user}', title='User bearbeiten')
+										a(href='/editUser?userId=#{data.id_user}', title='User bearbeiten')
 											span.glyphicon.glyphicon-pencil
 							-else
 								tr
@@ -37,7 +37,7 @@ body
 										a(href='/removeUser?userId=#{data.id_user}', title='User deaktivieren')
 											span.glyphicon.glyphicon-remove
 										| &nbsp;&nbsp;&nbsp;
-										a(href='/editUser.html?userId=#{data.id_user}', title='User bearbeiten')
+										a(href='/editUser?userId=#{data.id_user}', title='User bearbeiten')
 											span.glyphicon.glyphicon-pencil
 										| &nbsp;&nbsp;&nbsp;
 										a(href='/becomeAdmin?userId=#{data.id_user}', title='zum Admin machen', onclick="if(confirm('Bist du sicher, dass du diesem User Adminrechte geben willst?')){return true;} else {return false;}")
@@ -60,7 +60,7 @@ body
 									td #{data.username}
 									td #{data.email}
 									td
-										a(href='/editUser.html?userId=#{data.id_user}', title='Admin bearbeiten')
+										a(href='/editUser?userId=#{data.id_user}', title='Admin bearbeiten')
 											span.glyphicon.glyphicon-pencil
 										| &nbsp;&nbsp;&nbsp;
 										a(href='/becomeAdmin?userId=#{data.id_user}', title='zum User machen', onclick="if(confirm('Bist du sicher, dass du diesem Admin die Adminrechte entziehen willst?')){return true;} else {return false;}")

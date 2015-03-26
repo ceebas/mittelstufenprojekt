@@ -217,16 +217,16 @@ module.exports = function(fs, bcrypt, mysql, accessEmail) {
 							if (err) {
 								console.log(JSON.stringify(err));
 								request.flash('message', err);
-								callback(request, '/tableUsers.html');
+								callback(request, '/tableUsers');
 							} else {
 								if (request.user.isAdmin == 0) {
 									request.logout();
 									request.flash('loginMessage', 'Melde dich mit deinen neuen Daten an!');
-									callback(response, '/login.html');
+									callback(response, '/login');
 								} else if (request.user.isAdmin == 1 && newData.id_user == undefined) {
 									callback(request, "/");
 								} else {
-									callback(request, '/tableUsers.html');
+									callback(request, '/tableUsers');
 								}
 							}
 						});
@@ -328,7 +328,7 @@ module.exports = function(fs, bcrypt, mysql, accessEmail) {
 							console.log(JSON.stringify(err));
 							callback("/", err);
 						} else {
-							callback('/tableGames.html', null);
+							callback('/tableGames', null);
 						}
 					});
 				}
@@ -351,7 +351,7 @@ module.exports = function(fs, bcrypt, mysql, accessEmail) {
 							console.log(JSON.stringify(err));
 							callback('/', err);
 						} else {
-							callback('/tableUsers.html', null);
+							callback('/tableUsers', null);
 						}
 					});
 				}
@@ -449,7 +449,7 @@ module.exports = function(fs, bcrypt, mysql, accessEmail) {
 					});
 				} else {
 					console.log("INSERT ERROR ------ " + JSON.stringify(err));
-					callback("upload.html", err);
+					callback("upload", err);
 				}
 			});
 		},
