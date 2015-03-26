@@ -207,7 +207,6 @@ module.exports = function(app, passport, multiparty, nodemailer, accessDb) {
 	}));
 
 	app.get('/sendEmail', function(request, response) {
-
 		var emailHash = request.param("email");
 		if (emailHash != undefined && emailHash.length == 60) {
 			response.render('activateUser.jade', { 
@@ -217,8 +216,7 @@ module.exports = function(app, passport, multiparty, nodemailer, accessDb) {
 			});
 		} else if (request.user.isAdmin == 1){
 			request.flash('message', 'Es wurde eine Aktivierungsmail an die angegebene Emailadresse gesendet.');
-			response.redirect('/');
-
+			response.redirect('/tableUsers.html');
 		} else {
 			request.flash('message', 'Dir wurde eine Email geschickt, bitte folge den Anweisungen darin um deine Anmeldung abzuschließen!');
 			response.redirect('/logout');
@@ -286,7 +284,8 @@ module.exports = function(app, passport, multiparty, nodemailer, accessDb) {
 					title: 'we♥games | Alle Benutzer',
 					user: request.user,
 					users: users,
-					admins: admins
+					admins: admins,
+					message: request.flash('message')
 				});
 			}
 		} else {

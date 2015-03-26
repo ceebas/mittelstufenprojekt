@@ -123,7 +123,7 @@ module.exports = function(fs, bcrypt, mysql, accessEmail) {
                         connection.query("SELECT LAST_INSERT_ID() as userid", function(err, rows, fields){
                             var userid = rows[0].userid;
                             newUser.id_user = userid;
-                            request.user = newUser;
+                            //request.user = newUser;
                             var path = __dirname + "/../uploads/" + userid;
                             fs.mkdir(path, 0777, function (err) {
                                 if (err) {
@@ -131,7 +131,11 @@ module.exports = function(fs, bcrypt, mysql, accessEmail) {
                                 }
                             });
                             accessEmail.sendEmail(newUser);
-                            return callback(null, newUser);
+                            if (request.user.isAdmin == 1) {
+                            	callback(null, request.user);
+                            } else {
+                            	return callback(null, newUser);
+                            }
                         });
                     });
                 }

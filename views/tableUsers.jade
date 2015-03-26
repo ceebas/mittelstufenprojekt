@@ -1,7 +1,9 @@
 include ./layout/head.jade
 body
 	.container
-		include ./layout/nav.jade 
+		include ./layout/nav.jade
+		-if(message != undefined && message.length > 0)
+			div.alert.alert-warning #{message} 
 		.panel.panel-default
 			.panel-heading 
 				h2 Benutzer
