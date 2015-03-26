@@ -230,13 +230,21 @@ module.exports = function(fs, bcrypt, mysql, accessEmail) {
 				});
 			}
 		},
-		getAllUsers : function(callback) {
+		getAllUsers : function(request, callback) {
 			connection.query("SELECT * FROM " + db.tableUsers + " WHERE isAdmin != 1", function(err, rows, fields) {
 				if (err) {
 					console.log(JSON.stringify(err));
-					callback(null, err);
+					callback(null, null, err);
 				} else {
-					callback(rows, null);
+					var users = rows;
+					connection.query("SELECT * FROM " + db.tableUsers + " WHERE isAdmin ='1' AND id_user !='" + request.user.id_user + "' AND id_user !='1'", function(err, rows, fields) {
+						if (err) {
+							console.log(JSON.stringify(err));
+							callback(null, null, err);
+						} else {
+							callback(users, rows, null);
+						}
+					});
 				}
 			});
 		},
@@ -340,6 +348,32 @@ module.exports = function(fs, bcrypt, mysql, accessEmail) {
 							callback('/', err);
 						} else {
 							callback('/tableUsers.html', null);
+						}
+					});
+				}
+			});
+		},
+		becomeAdmin : function(request, callback) {
+			var userId = request.query.userId;
+			connection.query("SELECT * FROM " + db.tableUsers + " WHERE id_user='" + userId + "' AND id_user !='1' AND inactive='0'", function(err, rows, fields) {
+				if (err) {
+					console.log(JSON.stringify(err));
+					callback(false, err);
+				} else if (!rows.length) {
+					console.log("ungültige userId ( " + userId + " ) in becomeAdmin");
+					callback(false, null);
+				}else {
+					var isAdmin = 0;
+					//wenn nicht inaktiv, dann auf inaktiv setzten
+					if (rows[0].isAdmin == 0) {
+						isAdmin = 1;
+					}
+					connection.query("UPDATE " + db.tableUsers + " SET isAdmin='" + isAdmin + "' WHERE id_user='" + userId + "'", function(err) {
+						if (err) {
+							console.log(JSON.stringify(err));
+							callback(false, err);
+						} else {
+							callback(true, null);
 						}
 					});
 				}

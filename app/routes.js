@@ -280,12 +280,13 @@ module.exports = function(app, passport, multiparty, nodemailer, accessDb) {
 	/*----- Admin Ansicht -----*/
 	app.get('/tableUsers.html', isLoggedIn, function(request, response) {
 		if (request.user.isAdmin == 1) {
-			accessDb.getAllUsers(render);
-			function render(rows, err) {
+			accessDb.getAllUsers(request, render);
+			function render(users, admins, err) {
 				response.render('tableUsers.jade', { 
 					title: 'we♥games | Alle Benutzer',
 					user: request.user,
-					results: rows
+					users: users,
+					admins: admins
 				});
 			}
 		} else {
@@ -310,6 +311,20 @@ module.exports = function(app, passport, multiparty, nodemailer, accessDb) {
 					games: rows,
 					user: request.user
 				});
+			}
+		} else {
+			response.redirect('/userSetting.html');
+		}
+	});
+
+	app.get('/becomeAdmin', isLoggedIn, function(request, response) {
+		if (request.user.isAdmin == 1 && request.user.id_user != request.query.userId) {
+			accessDb.becomeAdmin(request, render);
+			function render(succsess, err) {
+				if (!succsess) {
+					request.flash('message', 'Es ist ein Fehler aufgetreten!');
+				}
+				response.redirect('/tableUsers.html');
 			}
 		} else {
 			response.redirect('/userSetting.html');

@@ -14,7 +14,7 @@ body
 							td Email
 							td Aktionen
 					tablebody
-						each data in results
+						each data in users
 							-if (data.inactive == 1)
 								tr.danger
 									td #{data.id_user}
@@ -37,4 +37,30 @@ body
 										| &nbsp;&nbsp;&nbsp;
 										a(href='/editUser.html?userId=#{data.id_user}', title='User bearbeiten')
 											span.glyphicon.glyphicon-pencil
+										| &nbsp;&nbsp;&nbsp;
+										a(href='/becomeAdmin?userId=#{data.id_user}', title='zum Admin machen', onclick="if(confirm('Bist du sicher, dass du diesem User Adminrechte geben willst?')){return true;} else {return false;}")
+											span.glyphicon.glyphicon-wrench
+		.panel.panel-default
+			.panel-heading 
+				h2 Admins
+			.panel-body
+				table.table.table-striped
+					tablehead
+						tr
+							td ID
+							td Username
+							td Email
+							td Aktionen
+					tablebody
+						each data in admins
+								tr
+									td #{data.id_user}
+									td #{data.username}
+									td #{data.email}
+									td
+										a(href='/editUser.html?userId=#{data.id_user}', title='Admin bearbeiten')
+											span.glyphicon.glyphicon-pencil
+										| &nbsp;&nbsp;&nbsp;
+										a(href='/becomeAdmin?userId=#{data.id_user}', title='zum User machen', onclick="if(confirm('Bist du sicher, dass du diesem Admin die Adminrechte entziehen willst?')){return true;} else {return false;}")
+											span.glyphicon.glyphicon-wrench
 	include ./layout/footer.jade

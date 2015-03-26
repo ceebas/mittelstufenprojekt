@@ -12,7 +12,7 @@ panel-body
 					br
 					.input-group
 						-if (edituser.id != undefined)
-							input#username.form-control(name='id_user', type='text', value='#{edituser.id}', required='required', autocomplete='off', autofocus='autofocus', readonly='readonly')
+							input#username.hidden(name='id_user', type='text', value='#{edituser.id}', required='required', autocomplete='off', autofocus='autofocus', readonly='readonly')
 						input#username.form-control(name='username', type='text', value='#{edituser.username}', required='required', autocomplete='off', autofocus='autofocus', readonly='readonly')
 						input#username.form-control(name='email', type='text', value='#{edituser.email}', required='required', autocomplete='off', autofocus='autofocus')
 						input#password.form-control(name='newPassword', type='password', placeholder='Neues Passwort', autocomplete='off')
