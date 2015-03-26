@@ -42,7 +42,7 @@ body
 										-if (data.tStamp.getMinutes() < 10) 
 											|0#{data.tStamp.getMinutes()}
 										-else
-											#{data.tStamp.getMinutes()}
+											|#{data.tStamp.getMinutes()}
 									-i++
 	script.
 		var path = "/uploads/#{results.user}/#{results.id_game}.#{results.gamename}/";
