@@ -54,12 +54,12 @@ module.exports = function(fs, bcrypt, mysql, accessEmail) {
 	return {
 		/*-- Passport und User Abfragen --*/
 		deserializeUser : function(id, callback) {
-			connection.query("SELECT * FROM " + db.tableUsers + " WHERE id_user = "+ id, function(err, rows){
+			connection.query("SELECT * FROM " + db.tableUsers + " WHERE id_user = ? ", [id], function(err, rows){
             	callback(err, rows[0]);
         	});
 		},
 		login : function(request, username, password, callback) {
-			connection.query("SELECT * FROM " + db.tableUsers + " WHERE username = '" + username + "'",function(err, rows){
+			connection.query("SELECT * FROM " + db.tableUsers + " WHERE username = ?", [username] ,function(err, rows){
                 if (err) {
                     return callback(err);
                 }
@@ -98,7 +98,7 @@ module.exports = function(fs, bcrypt, mysql, accessEmail) {
 		},
 		signup : function(request, username, password, callback) {
 			var newUser;
-			connection.query("SELECT * FROM " + db.tableUsers + " WHERE username = '" + username + "'", function(err, rows) {
+			connection.query("SELECT * FROM " + db.tableUsers + " WHERE username = ? ", [username], function(err, rows) {
 				if (err) {
 					console.log("SELECT ######" + err);
 			    	return callback(err, null);
@@ -112,9 +112,9 @@ module.exports = function(fs, bcrypt, mysql, accessEmail) {
                         email: request.body.email,
                         password: bcrypt.hashSync(password, null, null)
                     };
-                    var insertQuery = "INSERT INTO " + db.tableUsers + " ( username, email, password, inactive ) values ('" + newUser.username + "','" + newUser.email +"','" + newUser.password + "','1')";
+                    var insertQuery = "INSERT INTO " + db.tableUsers + " ( username, email, password, inactive ) values ( ?, ?, ?, 1)";
 
-                    connection.query(insertQuery,function(err, rows) {
+                    connection.query(insertQuery, [newUser.username, newUser.email, newUser.password] ,function(err, rows) {
                         if (err) {
                         	console.log("Insert Error ##### " + err);
                             return callback(err, null);
@@ -143,7 +143,7 @@ module.exports = function(fs, bcrypt, mysql, accessEmail) {
 		},
 		validateUser : function (request, callback) {
 			var user = request.body;
-			connection.query("SELECT * FROM " + db.tableUsers + " WHERE username = '" + user.username + "'",function(err, rows) {
+			connection.query("SELECT * FROM " + db.tableUsers + " WHERE username = ?", [user.username],function(err, rows) {
 				if (err) {
 					console.log(err);
 					return callback(request, false);
@@ -152,7 +152,7 @@ module.exports = function(fs, bcrypt, mysql, accessEmail) {
 					return callback(request, false);
 				}
 				if (bcrypt.compareSync(rows[0].email, user.emailhash) && bcrypt.compareSync(user.password, rows[0].password)) {
-					connection.query("UPDATE " + db.tableUsers + " SET inactive='0' WHERE id_user='" + rows[0].id_user + "'", function(err) {
+					connection.query("UPDATE " + db.tableUsers + " SET inactive='0' WHERE id_user= ? ", [rows[0].id_user], function(err) {
 						if (err) {
 							console.log(err);
 						}
@@ -168,7 +168,7 @@ module.exports = function(fs, bcrypt, mysql, accessEmail) {
 			if (editId == undefined) {
 				editId = request.user.id_user;
 			}
-			connection.query("select * from " + db.tableUsers +" WHERE id_user='" + editId +"'", function(err, rows, fields) {
+			connection.query("SELECT * FROM " + db.tableUsers +" WHERE id_user= ?", [editId], function(err, rows, fields) {
 				if (rows[0] == undefined || rows[0].id_user == undefined) {
 					callback(null, null, "User does not exist!");
 				} else if (err) {
@@ -180,7 +180,7 @@ module.exports = function(fs, bcrypt, mysql, accessEmail) {
 			});	
 		},
 		getOwnUser : function(request, callback) {
-			connection.query("select * from " + db.tableGames +" WHERE user='" + request.user.id_user +"'", function(err, rows, fields) {
+			connection.query("SELECT * FROM " + db.tableGames +" WHERE user= ? ", [request.user.id_user], function(err, rows, fields) {
 				if (err) {
 					console.log(JSON.stringify(err));
 					callback(null, err);
@@ -241,7 +241,7 @@ module.exports = function(fs, bcrypt, mysql, accessEmail) {
 					callback(null, null, err);
 				} else {
 					var users = rows;
-					connection.query("SELECT * FROM " + db.tableUsers + " WHERE isAdmin ='1' AND id_user !='" + request.user.id_user + "' AND id_user !='1'", function(err, rows, fields) {
+					connection.query("SELECT * FROM " + db.tableUsers + " WHERE isAdmin ='1' AND id_user != ? AND id_user !='1'", [request.user.id_user], function(err, rows, fields) {
 						if (err) {
 							console.log(JSON.stringify(err));
 							callback(null, null, err);
@@ -264,12 +264,12 @@ module.exports = function(fs, bcrypt, mysql, accessEmail) {
 			});
 		},
 		getGameAndHighscores : function(gameId, callback) {
-			connection.query("SELECT * FROM " + db.tableGames + " WHERE id_game LIKE '" + gameId + "' AND inactive = 0", function(err, rowsGame, fields) {
+			connection.query("SELECT * FROM " + db.tableGames + " WHERE id_game = ? AND inactive = 0", [gameId], function(err, rowsGame, fields) {
 				if (err) {
 					console.log(JSON.stringify(err));
 					callback(null, null, err);
 				} else {
-					connection.query("SELECT high.*, user.username FROM " + db.tableHighscores + " high left join " + db.tableUsers + " user ON high.user = user.id_user WHERE game LIKE '" + gameId + "'ORDER BY score DESC LIMIT 10", function(err, rowsScore, fileds) {
+					connection.query("SELECT high.*, user.username FROM " + db.tableHighscores + " high left join " + db.tableUsers + " user ON high.user = user.id_user WHERE game = ? ORDER BY score DESC LIMIT 10", [gameId], function(err, rowsScore, fileds) {
 						if (err) {
 							console.log(err);
 							callback(null, null, err);
@@ -281,7 +281,7 @@ module.exports = function(fs, bcrypt, mysql, accessEmail) {
 			});
 		},
 		searchGames : function(searchString, callback) {
-			connection.query("SELECT * FROM " + db.tableGames + " WHERE (gamename LIKE '%" + searchString + "%' or description LIKE '%" + searchString + "%') AND inactive LIKE 0", function(err, rows, fields) {
+			connection.query("SELECT * FROM " + db.tableGames + "WHERE (gamename LIKE '%" + searchString + "%' or description LIKE '%" + searchString + "%') AND inactive LIKE 0 ", function(err, rows, fields) {
 				if (err) {
 					console.log(JSON.stringify(err));
 					callback(null, err);
@@ -313,7 +313,7 @@ module.exports = function(fs, bcrypt, mysql, accessEmail) {
 		},
 		removeGame : function(request, callback) {
 			var gameId = request.query.gameId;
-			connection.query("SELECT * FROM " + db.tableGames + " WHERE id_game=" + gameId, function(err, rows, fields) {
+			connection.query("SELECT * FROM " + db.tableGames + " WHERE id_game= ?", [gameId], function(err, rows, fields) {
 				if (err) {
 					console.log(JSON.stringify(err));
 					callback("/", err);
@@ -323,7 +323,7 @@ module.exports = function(fs, bcrypt, mysql, accessEmail) {
 					if (rows[0].inactive == 0) {
 						inactive = 1;
 					}
-					connection.query("UPDATE " + db.tableGames + " SET inactive='" + inactive + "' WHERE id_game='" + gameId + "'", function(err) {
+					connection.query("UPDATE " + db.tableGames + " SET inactive= ? WHERE id_game= ?", [inactive, gameId], function(err) {
 						if (err) {
 							console.log(JSON.stringify(err));
 							callback("/", err);
@@ -336,7 +336,7 @@ module.exports = function(fs, bcrypt, mysql, accessEmail) {
 		},
 		removeUser : function(request, callback) {
 			var userId = request.query.userId;
-			connection.query("SELECT * FROM " + db.tableUsers + " WHERE id_user=" + userId, function(err, rows, fields) {
+			connection.query("SELECT * FROM " + db.tableUsers + " WHERE id_user= ?", [userId], function(err, rows, fields) {
 				if (err) {
 					console.log(JSON.stringify(err));
 					callback('/', err);
@@ -346,7 +346,7 @@ module.exports = function(fs, bcrypt, mysql, accessEmail) {
 					if (rows[0].inactive == 0) {
 						inactive = 1;
 					}
-					connection.query("UPDATE " + db.tableUsers + " SET inactive='" + inactive + "' WHERE id_user='" + userId + "'", function(err) {
+					connection.query("UPDATE " + db.tableUsers + " SET inactive= ? WHERE id_user= ?", [inactive, userId], function(err) {
 						if (err) {
 							console.log(JSON.stringify(err));
 							callback('/', err);
@@ -359,7 +359,7 @@ module.exports = function(fs, bcrypt, mysql, accessEmail) {
 		},
 		becomeAdmin : function(request, callback) {
 			var userId = request.query.userId;
-			connection.query("SELECT * FROM " + db.tableUsers + " WHERE id_user='" + userId + "' AND id_user !='1' AND inactive='0'", function(err, rows, fields) {
+			connection.query("SELECT * FROM " + db.tableUsers + " WHERE id_user= ? AND id_user !='1' AND inactive='0'", [userId], function(err, rows, fields) {
 				if (err) {
 					console.log(JSON.stringify(err));
 					callback(false, err);
@@ -372,7 +372,7 @@ module.exports = function(fs, bcrypt, mysql, accessEmail) {
 					if (rows[0].isAdmin == 0) {
 						isAdmin = 1;
 					}
-					connection.query("UPDATE " + db.tableUsers + " SET isAdmin='" + isAdmin + "' WHERE id_user='" + userId + "'", function(err) {
+					connection.query("UPDATE " + db.tableUsers + " SET isAdmin= ? WHERE id_user= ?", [isAdmin, userId], function(err) {
 						if (err) {
 							console.log(JSON.stringify(err));
 							callback(false, err);
@@ -407,7 +407,7 @@ module.exports = function(fs, bcrypt, mysql, accessEmail) {
 											//für das Anzeigebild wird der Datensatz ergänzt
 											if (fileName == "image") {
 												var fileEnc = originalFilename.substr(originalFilename.length - 3);
-												connection.query("UPDATE " + db.tableGames + " SET imageEnc='" + fileEnc + "' WHERE id_game='" + gameId + "'", function(err, rows, fields) {
+												connection.query("UPDATE " + db.tableGames + " SET imageEnc= ? WHERE id_game= ?", [fileEnc, gameId], function(err, rows, fields) {
 													if (err) {
 														console.log(JSON.stringify(err));
 													}
@@ -419,7 +419,7 @@ module.exports = function(fs, bcrypt, mysql, accessEmail) {
 												});
 											//JS Datei wird ebenfalls in Dtansatz gebracht
 											} else if (originalFilename.substr(originalFilename.length - 2) == "js") {
-												connection.query("UPDATE " + db.tableGames + " SET javascript='" + originalFilename + "' WHERE id_game='" + gameId + "'", function(err, rows, fields) {
+												connection.query("UPDATE " + db.tableGames + " SET javascript= ? WHERE id_game= ?", [originalFilename, gameId], function(err, rows, fields) {
 													if (err) {
 														console.log(JSON.stringify(err));
 													}
