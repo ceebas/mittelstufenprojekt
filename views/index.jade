@@ -19,7 +19,7 @@ body
 					div.alert.alert-warning Deine Suche nach "#{search}" hatte leider keine Ergebnisse :(
 			//Spielvorschau 
 			.row
-			each data in results
+			each data, i in results
 				.col-sm-6.col-md-4.gamePanel
 					.thumbnail.indexGameView
 						if(data.imageEnc !== null)
