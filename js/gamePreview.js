@@ -1,12 +1,15 @@
 var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame,
-    canvas = document.getElementById('gamePreview'),
-    ctx = canvas.getContext('2d'),
-    keys = {},
-    shots = [],
-    shotVar = 10,
-    canvasHeight = 150, 
-    canvasWidth = 300,
-    scoreSend,
+canvas = document.getElementById('gamePreview'),
+ctx = canvas.getContext('2d'),
+keys = {},
+shots = [],
+foes = [],
+shotVar = 10,
+score = 0,
+multiplier = 0,
+canvasHeight = 150, 
+canvasWidth = 300,
+scoreSend,
     // Parameter die generisch seinen müssen
     gameStarted = false,
     gameOptions = {
@@ -20,15 +23,16 @@ var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAni
             right: false
         },
         foes: {
-          moving: false,
-          speed: 0,
-          gravity: 0,
-          width: 20,
-          height: 30,
-          shape: "eckig",
-          color: "#88FF00"
+            enabled: true,
+            lives: 1,
+            spawnIntervall : 1,
+            width: 20,
+            height: 30,
+            shape: "eckig",
+            color: "#88FF00"
         },
         player: {
+            lives : 1,
             x : canvasWidth/2,
             y : canvasHeight - 30,
             dead: false,
@@ -54,18 +58,18 @@ var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAni
     backX = 0,
     backY = 0,
     borders = [{
-                position: "bottom",
-                x: 0,
-                y: canvasHeight - 5,
-                width: canvasWidth,
-                height: 5
-           }];
-background.src = "./img/horizontal_preview.png";
-canvas.width = canvasWidth;
-canvas.height = canvasHeight;
+        position: "bottom",
+        x: 0,
+        y: canvasHeight - 5,
+        width: canvasWidth,
+        height: 5
+    }];
+    background.src = "./img/horizontal_preview.png";
+    canvas.width = canvasWidth;
+    canvas.height = canvasHeight;
 
 
-function changeBorder(id) {
+    function changeBorder(id) {
     //Betreffende Border suchen und aus Array entfernen
     function popBorder() {
         for (var i = 0; i < borders.length; i++) {
@@ -97,7 +101,7 @@ function changeBorder(id) {
                 y: canvasHeight - 5,
                 width: canvasWidth,
                 height: 5
-           });
+            });
         }else{
             gameOptions.borders.bottom = false;
             popBorder();
@@ -177,7 +181,7 @@ function changePreviewCanvas(id) {
     canvas.width = canvasWidth;
     canvas.height = canvasHeight;
 }
- 
+
 function setSelfscroll(value) {
     if ($('input#selfscroll').prop("checked")) {
         gameOptions.selfScroll = true;
@@ -259,8 +263,9 @@ window.addEventListener("load", function(){
 
 function update() {
     if (gameOptions.selfScroll) {
-        var multiplier = gameOptions.scrollspeed * 2;
+        multiplier = gameOptions.scrollspeed * 2;
 
+        score = Math.floor(score + multiplier);
         if (gameOptions.horizontal) {
             backX -= multiplier;
         } else {
@@ -309,6 +314,55 @@ function update() {
         }
     }
 
+    // Kollision zwischen Shot und Gegner?
+    for (var k = 0; k < shots.length; k++) {
+        for (var j = 0; j < foes.length; j++) {
+            var dir = collision(shots[k], foes[j]);
+            if (dir === "b" || dir ===  "t" || dir === "l" || dir === "r") {
+                foes[j].lives--;
+            }
+        }
+        shots.splice(k, 1);
+    }
+
+    // Kollision mit einem Gegner?
+    for (var j = 0; j < foes.length; j++) { 
+        var dir = collision(gameOptions.player, foes[j]);
+        if (dir === "l" || dir === "r" || dir === "b" || dir === "t") {
+            gameOptions.player.lives--;
+            gameOptions.player.x = 10;
+            gameOptions.player.y = canvasHeight/2 + gameOptions.player.height;
+            foes = [];          
+            shots = [];
+        }
+    }
+
+    //Gegner werden erstellt
+    if (score % (gameOptions.foes.spawnIntervall * 10) == 0) {
+        if (gameOptions.foes.enabled) {
+            if (gameOptions.horizontal) {
+                var by = Math.random() * (canvasHeight - 0) + 0;
+                foes.push({
+                    x: canvasWidth + 10,
+                    y: by,
+                    width: 30,
+                    height: 40,
+                    color: "red",
+                    lives: 1
+                });  
+            } else {
+                var by = Math.random() * (canvasWidth - 0) + 0;
+                foes.push({
+                    x: by,
+                    y: -10,
+                    width: 30,
+                    height: 40,
+                    color: "red",
+                    lives: 1
+                });  
+            }
+        } 
+    } 
 }
 
 function render() {
@@ -361,30 +415,30 @@ function render() {
     } else {
         //ctx.drawImage(gameOptions.player.images.normal, gameOptions.player.x, gameOptions.player.y, gameOptions.player.width, gameOptions.player.height);  
     }
+
     //Schüsse werden gezeichnet
-    
     for (var s = 0; s < shots.length; s++) {
         ctx.fillStyle = gameOptions.player.shoot.color;
         if (gameOptions.player.shoot.shape == "eckig") {
-              if (gameOptions.player.shape == "rund") {
-                if (gameOptions.horizontal) {
+          if (gameOptions.player.shape == "rund") {
+            if (gameOptions.horizontal) {
                     // Schuss: Eckig / Player: Rund / Horizontal
                     ctx.fillRect(shots[s].x + gameOptions.player.width/2 + shots[s].width, shots[s].y + gameOptions.player.width/2 - shots[s].height/2, shots[s].width, shots[s].height);
                 } else {
                     // Schuss: Eckig / Player: Rund / Vertikal
-                   ctx.fillRect(shots[s].x - gameOptions.player.width/2 , shots[s].y - gameOptions.player.width/2 - shots[s].height - 4, shots[s].width, shots[s].height); 
+                    ctx.fillRect(shots[s].x - gameOptions.player.width/2 , shots[s].y - gameOptions.player.width/2 - shots[s].height - 4, shots[s].width, shots[s].height); 
                 }                
-              } else if (gameOptions.player.shape == "eckig") {
-                 if (gameOptions.horizontal) {
+            } else if (gameOptions.player.shape == "eckig") {
+               if (gameOptions.horizontal) {
                     // Schuss: Eckig / Player: Eckig / Horizontal
                     ctx.fillRect(shots[s].x + gameOptions.player.width, shots[s].y + gameOptions.player.height/2 - shots[s].height/2, shots[s].width, shots[s].height);
-                 } else {
+                } else {
                     // Schuss: Eckig / Player: Eckig / Vertikal
                     ctx.fillRect(shots[s].x, shots[s].y - gameOptions.player.height/2, shots[s].width, shots[s].height);
-                 }  
+                }  
                 
-              }
-              
+            }
+
         } else if (gameOptions.player.shoot.shape == "rund") {
             var radius = shots[s].width / 2;
             ctx.beginPath();
@@ -420,6 +474,30 @@ function render() {
             shots.splice(s,1);
         }
     }
+
+    //Gegner werden gezeichnet
+    for (var s = 0; s < foes.length; s++) {
+        if (gameOptions.horizontal) {
+            if (foes[s].lives == 1) {
+                ctx.fillStyle = foes[s].color;
+                ctx.fillRect(foes[s].x, foes[s].y, foes[s].width, foes[s].height);
+                foes[s].x -= 5;
+                if (foes[s].x > (canvasWidth <= -20)) {
+                    foes.splice(s,1);
+                }
+             }   
+        } else {
+            if (foes[s].lives == 1) {
+                ctx.fillStyle = foes[s].color;
+                ctx.fillRect(foes[s].x, foes[s].y, foes[s].width, foes[s].height);
+                foes[s].height = 5 * foes[s].lives;
+                foes[s].y += multiplier / 2;
+                if (foes[s].y > (canvasHeight + 100)) {
+                    foes.splice(s,1);
+                }
+            }    
+        }    
+    }
 }
 function shot() {
   shots.push({
@@ -427,7 +505,7 @@ function shot() {
     y: gameOptions.player.y,
     width: 10,
     height: 10
-  });
+});
 }
 
 function sendScoreRequest() {
@@ -439,8 +517,8 @@ function sendScoreRequest() {
 document.body.addEventListener("keydown", function(e) {
   if (gameStarted) {
     e.preventDefault();
-  }
-  keys[e.keyCode] = true;
+}
+keys[e.keyCode] = true;
 }, false);
 
 document.body.addEventListener("keyup", function(e) {
@@ -451,13 +529,13 @@ document.body.addEventListener("keyup", function(e) {
 function collision(shapeA, shapeB) {
     if (shapeA !== undefined && shapeB !== undefined) {
         var vX = (shapeA.x + (shapeA.width / 2)) - (shapeB.x + (shapeB.width / 2)),
-            vY = (shapeA.y + (shapeA.height / 2)) - (shapeB.y + (shapeB.height / 2)),
-            hWidths = (shapeA.width / 2) + (shapeB.width / 2),
-            hHeights = (shapeA.height / 2) + (shapeB.height / 2),
-            colDir = null;
+        vY = (shapeA.y + (shapeA.height / 2)) - (shapeB.y + (shapeB.height / 2)),
+        hWidths = (shapeA.width / 2) + (shapeB.width / 2),
+        hHeights = (shapeA.height / 2) + (shapeB.height / 2),
+        colDir = null;
         if (Math.abs(vX) < hWidths && Math.abs(vY) < hHeights) {
             var oX = hWidths - Math.abs(vX),
-                oY = hHeights - Math.abs(vY);
+            oY = hHeights - Math.abs(vY);
             if (oX >= oY) {
                 if (vY > 0) {
                     colDir = "t";
