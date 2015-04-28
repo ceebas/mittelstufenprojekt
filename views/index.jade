@@ -20,6 +20,14 @@ body
 			//Spielvorschau 
 			.row
 			each data, i in results
+				if (i % 5 == 0 && i != 0)
+					.col-sm-6.col-md-4.gamePanel
+						.thumbnail.indexGameView
+							a(href='http://www.google.de')
+										img.previewPics(src='img/advertising.png', alt='Werbung')
+								.caption
+									h3 Platzhalter
+									p Werbung	
 				.col-sm-6.col-md-4.gamePanel
 					.thumbnail.indexGameView
 						if(data.imageEnc !== null)
