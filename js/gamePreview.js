@@ -23,7 +23,7 @@ scoreSend,
             right: false
         },
         foes: {
-            enabled: true,
+            enabled: false,
             lives: 1,
             spawnIntervall : 1,
             width: 20,
@@ -481,8 +481,8 @@ function render() {
             if (foes[s].lives == 1) {
                 ctx.fillStyle = foes[s].color;
                 ctx.fillRect(foes[s].x, foes[s].y, foes[s].width, foes[s].height);
-                foes[s].x -= 5;
-                if (foes[s].x > (canvasWidth <= -20)) {
+                foes[s].x -= multiplier / 2;
+                if (foes[s].x < -20) {
                     foes.splice(s,1);
                 }
              }   
@@ -490,9 +490,8 @@ function render() {
             if (foes[s].lives == 1) {
                 ctx.fillStyle = foes[s].color;
                 ctx.fillRect(foes[s].x, foes[s].y, foes[s].width, foes[s].height);
-                foes[s].height = 5 * foes[s].lives;
                 foes[s].y += multiplier / 2;
-                if (foes[s].y > (canvasHeight + 100)) {
+                if (foes[s].y > (canvasHeight + 20)) {
                     foes.splice(s,1);
                 }
             }    
