@@ -454,8 +454,8 @@ module.exports = function(fs, bcrypt, mysql, accessEmail) {
 			});
 		},
 		saveGameFiles : function(request, gameObj, fieldsObject, filesObject, fieldsList, filesList, callback) {
+			// Legt den Ordner für das Spiel an
 			if(gameObj.gamedata.name != undefined && filesObject == undefined) {
-				console.log("Gamedatsa bitte");
 				connection.query("INSERT INTO " + db.tableGames + "(gamename, description, user, inactive) VALUES (?, ?, ?, 0)", [gameObj.gamedata.name, gameObj.gamedata.description, request.user.id_user], function(err, rows, fields) {			
 	    			if (!err) {
 						// Gibt die ID des des zuvor erstellten Datensatzes aus
@@ -486,8 +486,27 @@ module.exports = function(fs, bcrypt, mysql, accessEmail) {
 					}
 				});
 			} else {
+				// Schreibt die Dateien in den Ordner des Spiels
 				if(filesObject != undefined) {
-					console.log(filesObject);
+					var path = __dirname + "/../uploads/" + request.user.id_user + "/" + gameId + ".";
+					connection.query("SELECT gamename FROM " + db.tableGames + " WHERE id_game = " + gameId, function(err, rows, fields) {
+						if(!err) {
+							path += rows[0].gamename;
+							if(filesObject.preview != undefined) {
+								if(filesObject.preview[0].size > 0) {
+									fs.rename(filesObject.preview[0].path, path + "/" + filesObject.preview[0].fieldName , function(err) {
+										if (err) {
+											console.log(JSON.stringify(err));
+										} else {
+											console.log("Yeah");
+										}
+									});
+								}
+							}						
+						} else {
+							console.log(err);
+						}
+					});
 				}
 			}
 			callback(null,null);
@@ -495,4 +514,3 @@ module.exports = function(fs, bcrypt, mysql, accessEmail) {
 	}
 
 };
-
