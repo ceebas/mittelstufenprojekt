@@ -491,18 +491,48 @@ module.exports = function(fs, bcrypt, mysql, accessEmail) {
 					var path = __dirname + "/../uploads/" + request.user.id_user + "/" + gameId + ".";
 					connection.query("SELECT gamename FROM " + db.tableGames + " WHERE id_game = " + gameId, function(err, rows, fields) {
 						if(!err) {
+							console.log(filesObject);
 							path += rows[0].gamename;
+							// Preview
 							if(filesObject.preview != undefined) {
 								if(filesObject.preview[0].size > 0) {
 									fs.rename(filesObject.preview[0].path, path + "/" + filesObject.preview[0].fieldName , function(err) {
 										if (err) {
 											console.log(JSON.stringify(err));
-										} else {
-											console.log("Yeah");
 										}
 									});
 								}
-							}						
+							}
+							// Spielerform - player
+							if(filesObject.player != undefined) {
+								if(filesObject.player[0].size > 0) {
+									fs.rename(filesObject.player[0].path, path + "/" + filesObject.player[0].fieldName, function(err) {
+										if(err) {
+											console.log(JSON.stringify(err));
+										}
+									});
+								}
+							}
+							// Schussform - shoot
+							if(filesObject.shoot != undefined) {
+								if(filesObject.shoot[0].size > 0) {
+									fs.rename(filesObject.shoot[0].path, path + "/" + filesObject.shoot[0].fieldName, function(err) {
+										if(err) {
+											console.log(JSON.stringify(err));
+										}
+									});
+								}
+							}
+							// Gegnerform - foes		
+							if(filesObject.foes != undefined) {
+								if(filesObject.foes[0].size > 0) {
+									fs.rename(filesObject.foes[0].path, path + "/" + filesObject.foes[0].fieldName, function(err) {
+										if(err) {
+											console.log(JSON.stringify(err));
+										}
+									})
+								}
+							}
 						} else {
 							console.log(err);
 						}
