@@ -11,14 +11,26 @@ function handleFileSelect(evt) {
 }
 
 function uploadFile() {
+    var file = document.getElementById("files").files[0];
     var formData = new FormData();
     client = new XMLHttpRequest();
     var gamedata = {
         gamename: document.getElementById("gamename").value,
         gamedescription: document.getElementById("gamedescription").value,
     }
+    if (!file) {
+        return;
+    }
+
+    //Fügt dem formData Objekt unser File Objekt hinzu
+    for (var i = 0, f; f = files[i]; i++) {
+        formData.append("datei", files[i]);
+    }
     client.onerror = function(e) {
         alert("Es ist ein Fehler aufgetreten!");
+    }
+    client.onabort = function(e) {
+        alert("Upload abgebrochen");
     }
     formData.append("gamename", gamedata.gamename);
     formData.append("gamedescription", gamedata.gamedescription);
