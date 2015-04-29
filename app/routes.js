@@ -116,6 +116,7 @@ module.exports = function(app, passport, multiparty, nodemailer, accessDb) {
 
 	app.post('/createGame', isLoggedIn, function(request, response) {
 		var requestObj = request.body;
+		var form = new multiparty.Form();
 		var gameObj = {
 			"gamedata": {
 				"name": requestObj.game_name,
@@ -179,11 +180,13 @@ module.exports = function(app, passport, multiparty, nodemailer, accessDb) {
 		if (requestObj.player_shape != "eigene") {
 			gameObj.gameparameter.player.color = requestObj.player_color;
 		}
-		accessDb.saveGameFiles(request, gameObj, render);
+
+		form.parse(request, function(err, fieldsObject, filesObject, fieldsList, filesList) {
+			accessDb.saveGameFiles(request, gameObj, fieldsObject, filesObject, fieldsList, filesList, render);
+		});
 		function render(status, err) {
-			console.log(gameObj);
 			response.render('uploadGameFiles.jade', { 
-				title: 'we♥games | Datein hochladen',
+				title: 'we♥games | Dateien hochladen',
 				user: request.user,
 				gameObj: gameObj
 			});
@@ -254,8 +257,8 @@ module.exports = function(app, passport, multiparty, nodemailer, accessDb) {
 		var gameId;
 
 		form.on('close', function() {
-				//response.redirect('/play?game=' + gameId);
-			});
+			//response.redirect('/play?game=' + gameId);
+		});
 
 		form.parse(request, function(err, fieldsObject, filesObject, fieldsList, filesList) {
 			accessDb.uploadGame(request, err, fieldsObject, filesObject, fieldsList, filesList, render);

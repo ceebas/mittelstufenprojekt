@@ -4,9 +4,9 @@ body
 		include ./layout/nav.jade
 		.panel.panel-default
 			.panel-heading 
-				h3#createCaption Lade Datein für dein Spiel hoch
+				h3#createCaption Lade Dateien für dein Spiel hoch
 			.panel-body
-				form(action='', methode='POST')
+				form#files(action='', method='post', enctype='multipart/form-data')
 					.vorschaubild
 						label(for='preview') Vorschaubild
 						input#vorschau(type='file', name='preview')
@@ -19,7 +19,7 @@ body
 					.gegnerform.hidden
 						label(for='foes') Gegner Form
 						input(type='file', name='foes')
-					input#senden(type='submit', name='senden', value='hochladen')
+					button#loginButton.btn.btn-lg.btn-primary.btn-block(type='submit',onclick='uploadUserFiles();') Hochladen
 	script.
 		updateFilePicker(!{JSON.stringify(gameObj)})
 	include ./layout/footer.jade

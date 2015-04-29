@@ -11,25 +11,14 @@ function handleFileSelect(evt) {
 }
 
 function uploadFile() {
-    var file = document.getElementById("files").files[0];
     var formData = new FormData();
     client = new XMLHttpRequest();
     var gamedata = {
         gamename: document.getElementById("gamename").value,
         gamedescription: document.getElementById("gamedescription").value,
     }
-    if (!file) {
-        return;
-    }
-    //Fügt dem formData Objekt unser File Objekt hinzu
-    for (var i = 0, f; f = files[i]; i++) {
-        formData.append("datei", files[i]);
-    }
     client.onerror = function(e) {
         alert("Es ist ein Fehler aufgetreten!");
-    }
-    client.onabort = function(e) {
-        alert("Upload abgebrochen");
     }
     formData.append("gamename", gamedata.gamename);
     formData.append("gamedescription", gamedata.gamedescription);
@@ -39,6 +28,31 @@ function uploadFile() {
     client.onreadystatechange = function() {
         if (client.readyState == 4 && client.status == 200) {
             window.location = client.response;
+        }
+    }
+}
+
+// Wird aufgerufen, wenn beim selbst erstellten Spiel die Dateien hochgeladen werden
+function uploadUserFiles() {
+    var fileForm = document.getElementById("files");
+    var formData = new FormData();
+    var xmlreq = new XMLHttpRequest();
+    for(var i = 0;i<fileForm.length;i++) {
+        if(fileForm[i].files != null) {
+            if(fileForm[i].files.length>0) {
+                for(var j = 0; j<fileForm[i].files.length;i++) {
+                    var uploadedFile = fileForm[i].files[j];
+                    formData.append("datei", uploadedFile);
+                }
+            }
+        }
+    }
+    xmlreq.open("POST", "/createGame");
+    xmlreq.send(formData);
+
+    xmlreq.onreadystatechange = function() {
+        if(xmlreq.readyState == 4 && xmlreq.status == 200) {
+            window.location = xmlreq.response;
         }
     }
 }

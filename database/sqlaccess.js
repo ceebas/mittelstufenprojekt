@@ -453,36 +453,43 @@ module.exports = function(fs, bcrypt, mysql, accessEmail) {
 				}
 			});
 		},
-		saveGameFiles : function(request, gameObj, callback) {
-			connection.query("INSERT INTO " + db.tableGames + "(gamename, description, user, inactive) VALUES (?, ?, ?, 0)", [gameObj.gamedata.name, gameObj.gamedata.description, request.user.id_user], function(err, rows, fields) {			
-    			if (!err) {
-					// Gibt die ID des des zuvor erstellten Datensatzes aus
-					connection.query("SELECT LAST_INSERT_ID() as id_game", function(err, rows, fields){
-						if (!err) {
-							// ID für das Spiel wird in der Datenbank festgelegt und Pfad vervollständigt
-							gameId = rows[0].id_game;
-							var path = __dirname + "/../uploads/" + request.user.id_user + "/" + gameId + "." + gameObj.gamedata.name;
-	    					// Ordner für das Spiel wird erstellt
-							if(typeof gameObj.gamedata.name != undefined) {
-			    				fs.mkdir(path, 0777, function (err) {
-									if (err) {
-										console.log(JSON.stringify(err));
-										callback("/", err);
-									} else {
+		saveGameFiles : function(request, gameObj, fieldsObject, filesObject, fieldsList, filesList, callback) {
+			if(gameObj.gamedata.name != undefined && filesObject == undefined) {
+				console.log("Gamedatsa bitte");
+				connection.query("INSERT INTO " + db.tableGames + "(gamename, description, user, inactive) VALUES (?, ?, ?, 0)", [gameObj.gamedata.name, gameObj.gamedata.description, request.user.id_user], function(err, rows, fields) {			
+	    			if (!err) {
+						// Gibt die ID des des zuvor erstellten Datensatzes aus
+						connection.query("SELECT LAST_INSERT_ID() as id_game", function(err, rows, fields){
+							if (!err) {
+								// ID für das Spiel wird in der Datenbank festgelegt und Pfad vervollständigt
+								gameId = rows[0].id_game;
+								var path = __dirname + "/../uploads/" + request.user.id_user + "/" + gameId + "." + gameObj.gamedata.name;
+		    					// Ordner für das Spiel wird erstellt
+								if(typeof gameObj.gamedata.name != undefined) {
+				    				fs.mkdir(path, 0777, function (err) {
+										if (err) {
+											console.log(JSON.stringify(err));
+											callback("/", err);
+										} else {
 
-									}
-								});
+										}
+									});
+								}
+							} else {
+								console.log("SubmitError " + JSON.stringify(err));
+								return;
 							}
-						} else {
-							console.log("SubmitError " + JSON.stringify(err));
-							return;
-						}
-					});
-				} else {
-					console.log("INSERT ERROR ------ " + JSON.stringify(err));
-					callback(null, err);
+						});
+					} else {
+						console.log("INSERT ERROR ------ " + JSON.stringify(err));
+						callback(null, err);
+					}
+				});
+			} else {
+				if(filesObject != undefined) {
+					console.log(filesObject);
 				}
-			});
+			}
 			callback(null,null);
 		}
 	}

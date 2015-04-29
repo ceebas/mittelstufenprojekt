@@ -145,6 +145,6 @@ body
 								input#foes_gravity(type='range', name='foes_gravity', min='0', max='10', value='5', oninput='showValue(this.value, "foes_gravity")',onchange='showValue(this.value, "foes_gravity"); getFoeOptions()')
 
 							a.btn.btn-primary.changePageBtn(href='#', onclick='changePage(3);') zurück
-							button#loginButton.btn.btn-lg.btn-primary.btn-block(type='submit',onclick='uploadFile();') senden
+							button#loginButton.btn.btn-lg.btn-primary.btn-block(type='submit',onclick='uploadUserFiles();') senden
 	include ./layout/footer.jade
 	script(src='js/gamePreview.js')
