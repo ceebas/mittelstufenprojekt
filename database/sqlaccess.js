@@ -489,6 +489,7 @@ module.exports = function(fs, bcrypt, mysql, accessEmail) {
 				// Schreibt die Dateien in den Ordner des Spiels
 				if(filesObject != undefined) {
 					var path = __dirname + "/../uploads/" + request.user.id_user + "/" + gameId + ".";
+					var extension;
 					connection.query("SELECT gamename FROM " + db.tableGames + " WHERE id_game = " + gameId, function(err, rows, fields) {
 						if(!err) {
 							console.log(filesObject);
@@ -496,7 +497,8 @@ module.exports = function(fs, bcrypt, mysql, accessEmail) {
 							// Preview
 							if(filesObject.preview != undefined) {
 								if(filesObject.preview[0].size > 0) {
-									fs.rename(filesObject.preview[0].path, path + "/" + filesObject.preview[0].fieldName , function(err) {
+									extension = filesObject.preview[0].originalFilename.split('.').pop();
+									fs.rename(filesObject.preview[0].path, path + "/" + filesObject.preview[0].fieldName + "." + extension , function(err) {
 										if (err) {
 											console.log(JSON.stringify(err));
 										}
@@ -506,7 +508,8 @@ module.exports = function(fs, bcrypt, mysql, accessEmail) {
 							// Spielerform - player
 							if(filesObject.player != undefined) {
 								if(filesObject.player[0].size > 0) {
-									fs.rename(filesObject.player[0].path, path + "/" + filesObject.player[0].fieldName, function(err) {
+									extension = filesObject.player[0].originalFilename.split('.').pop();
+									fs.rename(filesObject.player[0].path, path + "/" + filesObject.player[0].fieldName + "." + extension, function(err) {
 										if(err) {
 											console.log(JSON.stringify(err));
 										}
@@ -516,7 +519,8 @@ module.exports = function(fs, bcrypt, mysql, accessEmail) {
 							// Schussform - shoot
 							if(filesObject.shoot != undefined) {
 								if(filesObject.shoot[0].size > 0) {
-									fs.rename(filesObject.shoot[0].path, path + "/" + filesObject.shoot[0].fieldName, function(err) {
+									extension = filesObject.shoot[0].originalFilename.split('.').pop();
+									fs.rename(filesObject.shoot[0].path, path + "/" + filesObject.shoot[0].fieldName + "." + extension, function(err) {
 										if(err) {
 											console.log(JSON.stringify(err));
 										}
@@ -526,7 +530,8 @@ module.exports = function(fs, bcrypt, mysql, accessEmail) {
 							// Gegnerform - foes		
 							if(filesObject.foes != undefined) {
 								if(filesObject.foes[0].size > 0) {
-									fs.rename(filesObject.foes[0].path, path + "/" + filesObject.foes[0].fieldName, function(err) {
+									extension = filesObject.foes[0].originalFilename.split('.').pop();
+									fs.rename(filesObject.foes[0].path, path + "/" + filesObject.foes[0].fieldName + "." + extension, function(err) {
 										if(err) {
 											console.log(JSON.stringify(err));
 										}

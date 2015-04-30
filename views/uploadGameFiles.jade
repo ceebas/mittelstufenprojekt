@@ -9,7 +9,7 @@ body
 				form#files(action='', method='post', enctype='multipart/form-data')
 					.vorschaubild
 						label(for='preview') Vorschaubild
-						input#vorschau(type='file', name='preview')
+						input#vorschau(type='file', name='preview', accept="image/png")
 					.spielerform.hidden
 						label(for='player') Spieler Form
 						input(type='file', name='player')
