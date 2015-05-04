@@ -23,7 +23,7 @@ scoreSend,
             right: false
         },
         foes: {
-            enabled: false,
+            enabled: true,
             lives: 1,
             spawnIntervall : 1,
             width: 20,
@@ -320,9 +320,10 @@ function update() {
             var dir = collision(shots[k], foes[j]);
             if (dir === "b" || dir ===  "t" || dir === "l" || dir === "r") {
                 foes[j].lives--;
+                shots.splice(k, 1);
             }
         }
-        shots.splice(k, 1);
+       // shots.splice(k, 1);
     }
 
     // Kollision mit einem Gegner?
