@@ -453,7 +453,7 @@ module.exports = function(fs, bcrypt, mysql, accessEmail) {
 				}
 			});
 		},
-		saveGameFiles : function(request, gameObj, fieldsObject, filesObject, fieldsList, filesList, callback) {
+		createGameFolder : function(request, gameObj, fieldsObject, filesObject, fieldsList, filesList, callback) {
 			// Legt den Ordner für das Spiel an
 			if(gameObj.gamedata.name != undefined && filesObject == undefined) {
 				connection.query("INSERT INTO " + db.tableGames + "(gamename, description, user, inactive) VALUES (?, ?, ?, 0)", [gameObj.gamedata.name, gameObj.gamedata.description, request.user.id_user], function(err, rows, fields) {			
@@ -485,64 +485,79 @@ module.exports = function(fs, bcrypt, mysql, accessEmail) {
 						callback(null, err);
 					}
 				});
-			} else {
-				// Schreibt die Dateien in den Ordner des Spiels
-				if(filesObject != undefined) {
-					var path = __dirname + "/../uploads/" + request.user.id_user + "/" + gameId + ".";
-					var extension;
-					connection.query("SELECT gamename FROM " + db.tableGames + " WHERE id_game = " + gameId, function(err, rows, fields) {
-						if(!err) {
-							console.log(filesObject);
-							path += rows[0].gamename;
-							// Preview
-							if(filesObject.preview != undefined) {
-								if(filesObject.preview[0].size > 0) {
-									extension = filesObject.preview[0].originalFilename.split('.').pop();
-									fs.rename(filesObject.preview[0].path, path + "/" + filesObject.preview[0].fieldName + "." + extension , function(err) {
-										if (err) {
-											console.log(JSON.stringify(err));
-										}
-									});
-								}
+			}
+			callback(null,null);
+		},
+		createGameFiles : function(request, fieldsObject, filesObject, fieldsList, filesList, callback) {
+			console.log("Test 1");
+			if(filesObject != undefined) {
+				var gameId;
+				connection.query("SELECT LAST_INSERT_ID() as id_game", function(err, rows, fields){
+					if (!err) {
+						// ID für das Spiel wird in der Datenbank festgelegt und Pfad vervollständigt
+						gameId = rows[0].id_game;
+						console.log("Test 2: " + gameId);
+					} else {
+						console.log(err);
+					}
+				});
+				var path = __dirname + "/../uploads/" + request.user.id_user + "/" + gameId + ".";
+				var extension;
+				connection.query("SELECT gamename FROM " + db.tableGames + " WHERE id_game = " + gameId, function(err, rows, fields) {
+					if(!err) {
+						console.log("Test 3");
+						path += rows[0].gamename;
+						// Preview
+						if(filesObject.preview != undefined) {
+							console.log("Test 4");
+							if(filesObject.preview[0].size > 0) {
+								console.log("Test 5");
+								extension = filesObject.preview[0].originalFilename.split('.').pop();
+								fs.rename(filesObject.preview[0].path, path + "/" + filesObject.preview[0].fieldName + "." + extension , function(err) {
+									if (err) {
+										console.log(JSON.stringify(err));
+									}
+									console.log("Test 6");
+								});
 							}
-							// Spielerform - player
-							if(filesObject.player != undefined) {
-								if(filesObject.player[0].size > 0) {
-									extension = filesObject.player[0].originalFilename.split('.').pop();
-									fs.rename(filesObject.player[0].path, path + "/" + filesObject.player[0].fieldName + "." + extension, function(err) {
-										if(err) {
-											console.log(JSON.stringify(err));
-										}
-									});
-								}
-							}
-							// Schussform - shoot
-							if(filesObject.shoot != undefined) {
-								if(filesObject.shoot[0].size > 0) {
-									extension = filesObject.shoot[0].originalFilename.split('.').pop();
-									fs.rename(filesObject.shoot[0].path, path + "/" + filesObject.shoot[0].fieldName + "." + extension, function(err) {
-										if(err) {
-											console.log(JSON.stringify(err));
-										}
-									});
-								}
-							}
-							// Gegnerform - foes		
-							if(filesObject.foes != undefined) {
-								if(filesObject.foes[0].size > 0) {
-									extension = filesObject.foes[0].originalFilename.split('.').pop();
-									fs.rename(filesObject.foes[0].path, path + "/" + filesObject.foes[0].fieldName + "." + extension, function(err) {
-										if(err) {
-											console.log(JSON.stringify(err));
-										}
-									})
-								}
-							}
-						} else {
-							console.log(err);
 						}
-					});
-				}
+						// Spielerform - player
+						if(filesObject.player != undefined) {
+							if(filesObject.player[0].size > 0) {
+								extension = filesObject.player[0].originalFilename.split('.').pop();
+								fs.rename(filesObject.player[0].path, path + "/" + filesObject.player[0].fieldName + "." + extension, function(err) {
+									if(err) {
+										console.log(JSON.stringify(err));
+									}
+								});
+							}
+						}
+						// Schussform - shoot
+						if(filesObject.shoot != undefined) {
+							if(filesObject.shoot[0].size > 0) {
+								extension = filesObject.shoot[0].originalFilename.split('.').pop();
+								fs.rename(filesObject.shoot[0].path, path + "/" + filesObject.shoot[0].fieldName + "." + extension, function(err) {
+									if(err) {
+										console.log(JSON.stringify(err));
+									}
+								});
+							}
+						}
+						// Gegnerform - foes		
+						if(filesObject.foes != undefined) {
+							if(filesObject.foes[0].size > 0) {
+								extension = filesObject.foes[0].originalFilename.split('.').pop();
+								fs.rename(filesObject.foes[0].path, path + "/" + filesObject.foes[0].fieldName + "." + extension, function(err) {
+									if(err) {
+										console.log(JSON.stringify(err));
+									}
+								})
+							}
+						}
+					} else {
+						console.log(err);
+					}
+				});
 			}
 			callback(null,null);
 		}

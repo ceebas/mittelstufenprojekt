@@ -59,7 +59,7 @@ function uploadUserFiles() {
             }
         }
     }
-    xmlreq.open("POST", "/createGame");
+    xmlreq.open("POST", "/createFiles");
     xmlreq.send(formData);
 
     xmlreq.onreadystatechange = function() {

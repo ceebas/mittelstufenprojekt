@@ -182,7 +182,7 @@ module.exports = function(app, passport, multiparty, nodemailer, accessDb) {
 		}
 
 		form.parse(request, function(err, fieldsObject, filesObject, fieldsList, filesList) {
-			accessDb.saveGameFiles(request, gameObj, fieldsObject, filesObject, fieldsList, filesList, render);
+			accessDb.createGameFolder(request, gameObj, fieldsObject, filesObject, fieldsList, filesList, render);
 		});
 		function render(status, err) {
 			response.render('uploadGameFiles.jade', { 
@@ -190,6 +190,20 @@ module.exports = function(app, passport, multiparty, nodemailer, accessDb) {
 				user: request.user,
 				gameObj: gameObj
 			});
+		}
+	});
+
+	app.post('/createFiles', function(request, response) {
+		var requestObj = request.body;
+		var form = new multiparty.Form();
+
+		form.parse(request, function(err, fieldsObject, filesObject, fieldsList, filesList) {
+			console.log(filesList);
+			accessDb.createGameFiles(request, fieldsObject, filesObject, fieldsList, filesList, render);
+		});
+
+		function render(err) {
+			response.redirect('/');
 		}
 	});
 
@@ -255,10 +269,6 @@ module.exports = function(app, passport, multiparty, nodemailer, accessDb) {
 	app.post('/uploads',isLoggedIn, function(request, response) {
 		var form = new multiparty.Form();
 		var gameId;
-
-		form.on('close', function() {
-			//response.redirect('/play?game=' + gameId);
-		});
 
 		form.parse(request, function(err, fieldsObject, filesObject, fieldsList, filesList) {
 			accessDb.uploadGame(request, err, fieldsObject, filesObject, fieldsList, filesList, render);
