@@ -52,14 +52,14 @@ function uploadUserFiles() {
     for(var i = 0;i<fileForm.length;i++) {
         if(fileForm[i].files != null) {
             if(fileForm[i].files.length>0) {
-                for(var j = 0; j<fileForm[i].files.length;i++) {
+                for(var j = 0; j<fileForm[i].files.length;j++) {
                     var uploadedFile = fileForm[i].files[j];
-                    formData.append("datei", uploadedFile);
+                    formData.append(fileForm[i].name, uploadedFile);
                 }
             }
         }
     }
-    xmlreq.open("POST", "/createFiles");
+    xmlreq.open("POST", "/uploadGameFiles");
     xmlreq.send(formData);
 
     xmlreq.onreadystatechange = function() {
