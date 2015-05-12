@@ -234,8 +234,7 @@ $("form :input").attr("autocomplete", "off");
 
 /* EventListener */
 window.onload = function() {
-    if (document.getElementById('files') != undefined) {
-        document.getElementById('files').addEventListener('change',
-            handleFileSelect, false);
+    if (document.getElementById('files') != undefined && window.document.URL == "http://localhost:8081/uploadDoneGame") {
+        document.getElementById('files').addEventListener('change', handleFileSelect, false);
     }
 }

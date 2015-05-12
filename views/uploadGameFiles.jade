@@ -9,16 +9,16 @@ body
 				form#files(action='', method='post', enctype='multipart/form-data')
 					.vorschaubild
 						label(for='preview') Vorschaubild
-						input#vorschau(type='file', name='preview', accept="image/png")
+						input#vorschau(type='file', name='preview', accept=".png,.jpg,.jpeg")
 					.spielerform.hidden
 						label(for='player') Spieler Form
-						input(type='file', name='player')
+						input(type='file', name='player', accept=".png,.jpg,.jpeg")
 					.schussform.hidden
 						label(for='shoot') Schuss Form
-						input(type='file', name='shoot')
+						input(type='file', name='shoot', accept=".png,.jpg,.jpeg")
 					.gegnerform.hidden
 						label(for='foes') Gegner Form
-						input(type='file', name='foes')
+						input(type='file', name='foes', accept=".png,.jpg,.jpeg")
 					button#loginButton.btn.btn-lg.btn-primary.btn-block(type='submit',onclick='uploadUserFiles();') Hochladen
 	script.
 		updateFilePicker(!{JSON.stringify(gameObj)})

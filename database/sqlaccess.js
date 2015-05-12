@@ -502,16 +502,15 @@ module.exports = function(fs, bcrypt, mysql, accessEmail) {
 						// ID für das Spiel wird in der Datenbank festgelegt und Pfad vervollständigt
 						gameId = rows[0].id_game;
 						var path = __dirname + "/../uploads/" + request.user.id_user + "/" + gameId + ".";
-						var extension;
+						var extension = ".png";
 						connection.query("SELECT gamename FROM " + db.tableGames + " WHERE id_game = " + gameId, function(err, rows, fields) {
 							if(!err) {
 								path += rows[0].gamename;
 								// Preview
 								if(filesObject.preview != undefined) {
 									if(filesObject.preview[0].size > 0) {
-										extension = filesObject.preview[0].originalFilename.split('.').pop();
 										fs.readFile(filesObject.preview[0].path, function(err, data) {
-											fs.writeFile(path + "/" + filesObject.preview[0].fieldName + "." + extension, data, function() {
+											fs.writeFile(path + "/" + filesObject.preview[0].fieldName + extension, data, function() {
 												fs.unlink(filesObject.preview[0].path, function() {
 													if(err) {
 														console.log(JSON.stringify(err));
@@ -524,9 +523,8 @@ module.exports = function(fs, bcrypt, mysql, accessEmail) {
 								// Spielerform - player
 								if(filesObject.player != undefined) {
 									if(filesObject.player[0].size > 0) {
-										extension = filesObject.player[0].originalFilename.split('.').pop();
 										fs.readFile(filesObject.player[0].path, function(err, data) {
-											fs.writeFile(path + "/" + filesObject.player[0].fieldName + "." + extension, data, function() {
+											fs.writeFile(path + "/" + filesObject.player[0].fieldName + extension, data, function() {
 												fs.unlink(filesObject.player[0].path, function() {
 													if(err) {
 														console.log(JSON.stringify(err));
@@ -539,9 +537,8 @@ module.exports = function(fs, bcrypt, mysql, accessEmail) {
 								// Schussform - shoot
 								if(filesObject.shoot != undefined) {
 									if(filesObject.shoot[0].size > 0) {
-										extension = filesObject.shoot[0].originalFilename.split('.').pop();
 										fs.readFile(filesObject.shoot[0].path, function(err, data) {
-											fs.writeFile(path + "/" + filesObject.shoot[0].fieldName + "." + extension, data, function() {
+											fs.writeFile(path + "/" + filesObject.shoot[0].fieldName + extension, data, function() {
 												fs.unlink(filesObject.shoot[0].path, function() {
 													if(err) {
 														console.log(JSON.stringify(err));
@@ -554,9 +551,8 @@ module.exports = function(fs, bcrypt, mysql, accessEmail) {
 								// Gegnerform - foes		
 								if(filesObject.foes != undefined) {
 									if(filesObject.foes[0].size > 0) {
-										extension = filesObject.foes[0].originalFilename.split('.').pop();
 										fs.readFile(filesObject.foes[0].path, function(err, data) {
-											fs.writeFile(path + "/" + filesObject.foes[0].fieldName + "." + extension, data, function() {
+											fs.writeFile(path + "/" + filesObject.foes[0].fieldName + extension, data, function() {
 												fs.unlink(filesObject.foes[0].path, function() {
 													if(err) {
 														console.log(JSON.stringify(err));
