@@ -93,6 +93,20 @@ module.exports = function(app, passport, multiparty, nodemailer, accessDb) {
 		}	
 	});
 
+	/* Bearbeiten von Nutzerangaben */	
+	app.get('/myGames',isLoggedIn, function(request, response) {
+		accessDb.getOwnUser(request, render);
+		function render(rows, request, err) {
+			response.render('myGames.jade', { 
+				title: 'we♥games | Meine Spiele',
+				user: request.user,
+				edituser: request.user,
+				results: rows,
+				message: request.flash('message')
+			});
+		}	
+	});
+
 	/* Seite zum hochladen */
 	app.get('/upload', isLoggedIn, function(request, response) {
 		response.render('upload.jade', { 

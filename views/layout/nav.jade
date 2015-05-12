@@ -8,8 +8,8 @@ nav.navbar.navbar-default(role='navigation')
     ul.nav.navbar-nav
       if(user)
         li
-          a(href='upload') Spiel erstellen
-        if(user.isAdmin ==1)
+          a(href='upload') Spiel erstellen 
+        if(user.isAdmin == 1)
             li.divider(role='presentation')
             li(role='presentation')
               a(role='menuitem', tabindex='-1', href='/signUp') Neuen User anlegen
@@ -17,13 +17,19 @@ nav.navbar.navbar-default(role='navigation')
               a(role='menuitem', tabindex='-1', href='/tableUsers') Alle Benutzer anzeigen
             li(role='presentation')
               a(role='menuitem', tabindex='-1', href='/tableGames') Alle Spiele anzeigen
+         else
+            li(role='presentation')
+              a(role='menuitem', tabindex='-1', href='/myGames') Meine Spiele          
         .dropdown
           button#userMenu.btn.btn-default.dropdown-toggle(data-toggle='dropdown')
             | #{user.username} 
             span.caret
           ul#userDropdown.dropdown-menu(role='menu', aria-labelledby='menu1')
             li(role='presentation')
-              a(role='menuitem', tabindex='-1', href='/userSetting') Mein Profil bearbeiten
+              a(role='menuitem', tabindex='-1', href='/userSetting') Mein Profil bearbeiten   
+            if(user.isAdmin == 1)
+              li(role='presentation')
+                a(role='menuitem',tabindex='-1', href='/myGames') Meine Spiele         
             li.divider(role='presentation')
             li(role='presentation')
               a(role='menuitem', tabindex='-1', href='/logout') Logout
