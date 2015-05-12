@@ -9,7 +9,10 @@ body
 					| games
 				p.text-muted Deine Plattform für JavaScript-Spiele
 			-if(user)
-				div.alert.alert-info Willkommen, #{user.username}
+				div.alert.alert-info.alert-dismissible Willkommen, #{user.username}
+					button.close(aria-label='close', data-dismiss='alert', type='button')
+						span(aria-hidden='true')
+							| x
 			-if(message != undefined && message.length > 0)
 				div.alert.alert-warning #{message}
 			-if(search != undefined)
