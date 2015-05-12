@@ -7,6 +7,7 @@ body
 		.panel.panel-default
 			.panel-heading 
 				h3 Spiele jetzt #{results.gamename}
+			//was passiert wenn kein javascript vorhanden ist?	
 			-if (user != null && user.id_user == results.user)
 				a(href='uploads/#{results.user}/#{results.id_game}.#{results.gamename}/#{results.javascript}' download='WeLoveGames_#{results.gamename}.js')  Download	
 			canvas#canvas
