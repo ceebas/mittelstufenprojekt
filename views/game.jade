@@ -7,6 +7,8 @@ body
 		.panel.panel-default
 			.panel-heading 
 				h3 Spiele jetzt #{results.gamename}
+			-if (user != null && user.id_user == results.user)
+				a(href='uploads/#{results.user}/#{results.id_game}.#{results.gamename}/#{results.javascript}' download='WeLoveGames_#{results.gamename}.js')  Download	
 			canvas#canvas
 		#accordion.panel-group
 			.panel.panel-default
