@@ -11,16 +11,32 @@ panel-body
 				if (results[0] !== undefined)   
 					each data in results
 						.col-sm-6.col-md-4.gamePanel
-							.thumbnail.indexGameView
-								if(data.imageEnc !== null)
-									img.previewPics(src='uploads/#{data.user}/#{data.id_game}.#{data.gamename}/image.#{data.imageEnc}', alt='#{data.gamename}')
-								else 
-									img.previewPics(src='img/placeholder.png', alt='#{data.gamename}')
-								.caption
-									h3 #{data.gamename}
-									p #{data.description}
-									p
-									a.btn.btn-primary(href='/play?game=#{data.id_game}', role='button') Anzeigen
+							if(data.inactive == 1)
+								.thumbnail.indexGameView.alert.alert-danger
+									if(data.imageEnc !== null)
+										img.previewPics(src='uploads/#{data.user}/#{data.id_game}.#{data.gamename}/image.#{data.imageEnc}', alt='#{data.gamename}')
+									else 
+										img.previewPics(src='img/placeholder.png', alt='#{data.gamename}')
+									.caption
+										h3 #{data.gamename}
+										p #{data.description}
+										p
+										a.btn.btn-primary(href='/play?game=#{data.id_game}', role='button') Anzeigen 
+										a.btn.btn-primary(href='/removeGame?gameId=#{data.id_game}', title='Spiel aktivieren')
+											span.glyphicon.glyphicon-ok
+							else		
+								.thumbnail.indexGameView
+									if(data.imageEnc !== null)
+										img.previewPics(src='uploads/#{data.user}/#{data.id_game}.#{data.gamename}/image.#{data.imageEnc}', alt='#{data.gamename}')
+									else 
+										img.previewPics(src='img/placeholder.png', alt='#{data.gamename}')
+									.caption
+										h3 #{data.gamename}
+										p #{data.description}
+										p
+										a.btn.btn-primary(href='/play?game=#{data.id_game}', role='button') Anzeigen 
+										a.btn.btn-primary(href='/removeGame?gameId=#{data.id_game}', title='Spiel deaktivieren')
+											span.glyphicon.glyphicon-remove
 				else
 					div.alert.alert-warning Du hast noch keine Spiele hochgeladen oder erstellt.
 						| Dies kannst du 

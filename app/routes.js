@@ -379,11 +379,9 @@ module.exports = function(app, passport, multiparty, nodemailer, accessDb) {
 	});
 
 	app.get('/removeGame', isLoggedIn, function(request, response) {
-		if (request.user.isAdmin == 1) {
 			accessDb.removeGame(request, render);
 			function render(redirect, err) {
 				response.redirect(redirect);
-			}
 		}
 	});
 

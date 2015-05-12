@@ -313,24 +313,32 @@ module.exports = function(fs, bcrypt, mysql, accessEmail) {
 		},
 		removeGame : function(request, callback) {
 			var gameId = request.query.gameId;
+			var userid = request.user.id_user;
 			connection.query("SELECT * FROM " + db.tableGames + " WHERE id_game= ?", [gameId], function(err, rows, fields) {
-				if (err) {
+				if (err || rows.length == 0) {
 					console.log(JSON.stringify(err));
 					callback("/", err);
 				} else {
 					var inactive = 0;
 					//wenn nicht inaktiv, dann auf inaktiv setzten
-					if (rows[0].inactive == 0) {
+
+					if (rows[0] != null && rows[0].inactive == 0) {
 						inactive = 1;
 					}
-					connection.query("UPDATE " + db.tableGames + " SET inactive= ? WHERE id_game= ?", [inactive, gameId], function(err) {
-						if (err) {
-							console.log(JSON.stringify(err));
-							callback("/", err);
-						} else {
-							callback('/tableGames', null);
-						}
-					});
+					if(request.user.isAdmin == 1 || rows[0].user == request.user.id_user){
+						connection.query("UPDATE " + db.tableGames + " SET inactive= ? WHERE id_game= ?", [inactive, gameId], function(err) {
+							if (err) {
+								console.log(JSON.stringify(err));
+								callback("/", err);
+							} else if(request.user.isAdmin == 1){
+								callback('/tableGames', null);
+							} else{
+								callback('/myGames', null);
+							}
+						});
+					} else{
+						callback('/', null);
+					}	
 				}
 			});
 		},

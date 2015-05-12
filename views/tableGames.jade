@@ -25,7 +25,7 @@ body
 										a(href='/play?game=#{data.id_game}') #{data.gamename}
 									td #{data.user}
 									td #{data.description}
-									-if (data.javascript != null)	
+									-if (data.javascript != null)
 										td #{data.javascript}
 											a(href='uploads/#{data.user}/#{data.id_game}.#{data.gamename}/#{data.javascript}' download='WeLoveGames_#{data.gamename}.js')  Download
 									-else
