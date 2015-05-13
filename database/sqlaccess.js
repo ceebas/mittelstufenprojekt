@@ -131,7 +131,7 @@ module.exports = function(fs, bcrypt, mysql, accessEmail) {
                                 }
                             });
                             accessEmail.sendEmail(newUser);
-                            if (request.user.isAdmin == 1) {
+                            if (request.user != undefined && request.user.isAdmin == 1) {
                             	callback(null, request.user);
                             } else {
                             	return callback(null, newUser);
