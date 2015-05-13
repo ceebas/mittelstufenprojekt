@@ -13,10 +13,10 @@ body
 			.panel-body
 				div#preview
 					canvas#gamePreview.horizontal
+					p.previewtext Diese Ansicht dient lediglich zur Veranschaulichung.
 					a#reset_player.btn.btn-default.changePageBtn(href='#', onclick='gameOptions.player.x = canvasWidth/2; gameOptions.player.y = canvasHeight/2;') 
 						span.glyphicon.glyphicon-user
 						span.glyphicon.glyphicon-repeat
-					p.previewtext Diese Ansicht dient lediglich zur Vorschau und spiegelt nicht die realen Größen oder Ähnliches wieder.	
 				div#options
 					form(role='form', action='/createGame', method='post')
 
@@ -130,6 +130,15 @@ body
 								option(value='eckig') eckig
 								option(value='rund') rund
 								option(value='eigene') eigene Form hochladen (im nächsten Schritt)
+								br
+								br
+								input#foes_enabled(type='checkbox', name='foes_enabled', value='false', onchange='setFoesEnabled(this.checked); getFoeOptions()')
+								| 	Gegner aktivieren
+								br
+								br
+								| Spawnintervall der Gegner:
+								span#foes_intervall_span /
+								input#foes_intervall(type='range', name='foes_intervall', min='1', max='10', value='5', oninput='showValue(this.value, "foes_intervall");gameOptions.foes.spawnIntervall = parseInt(this.value);', onchange='showValue(this.value, "foes_intervall"); gameOptions.foes.spawnIntervall = parseInt(this.value);')
 							input#foes_width.form-control(type='number', min='1', name='foes_width', placeholder='Breite in px', onchange='getFoeOptions()')
 							input#foes_height.form-control(type='number', min='1', name='foes_height', placeholder='Hoehe in px', onchange='getFoeOptions()')
 							input#foes_color.form-control.color(type='text', name='foes_color', placeholder='Farbe', onchange='getFoeOptions()', value='#88ff00')

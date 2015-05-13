@@ -263,17 +263,19 @@ module.exports = function(fs, bcrypt, mysql, accessEmail) {
 				}
 			});
 		},
-		getGameAndHighscores : function(gameId, callback) {
-			connection.query("SELECT * FROM " + db.tableGames + " WHERE id_game = ? AND inactive = 0", [gameId], function(err, rowsGame, fields) {
+		getGameAndHighscores : function(gameId, request, callback) {
+			connection.query("SELECT * FROM " + db.tableGames + " WHERE id_game = ?", [gameId], function(err, rowsGame, fields) {
 				if (err) {
 					console.log(JSON.stringify(err));
 					callback(null, null, err);
-				} else {
+				} 
+				else {
 					connection.query("SELECT high.*, user.username FROM " + db.tableHighscores + " high left join " + db.tableUsers + " user ON high.user = user.id_user WHERE game = ? ORDER BY score DESC LIMIT 10", [gameId], function(err, rowsScore, fileds) {
 						if (err) {
 							console.log(err);
 							callback(null, null, err);
-						} else {
+						}
+						else{
 							callback(rowsGame, rowsScore, null);
 						}
 					});
@@ -464,7 +466,7 @@ module.exports = function(fs, bcrypt, mysql, accessEmail) {
 		createGameFolder : function(request, gameObj, callback) {
 			// Legt den Ordner für das Spiel an
 			if(gameObj.gamedata.name != undefined) {
-				connection.query("INSERT INTO " + db.tableGames + "(gamename, description, user, inactive) VALUES (?, ?, ?, 0)", [gameObj.gamedata.name, gameObj.gamedata.description, request.user.id_user], function(err, rows, fields) {			
+				connection.query("INSERT INTO " + db.tableGames + "(gamename, description, user, inactive) VALUES (?, ?, ?, 1)", [gameObj.gamedata.name, gameObj.gamedata.description, request.user.id_user], function(err, rows, fields) {			
 	    			if (!err) {
 						// Gibt die ID des des zuvor erstellten Datensatzes aus
 						connection.query("SELECT LAST_INSERT_ID() as id_game", function(err, rows, fields){

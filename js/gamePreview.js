@@ -7,8 +7,8 @@ foes = [],
 shotVar = 10,
 score = 0,
 multiplier = 0,
-canvasHeight = 150, 
-canvasWidth = 300,
+canvasHeight = 400, 
+canvasWidth = 600,
 scoreSend,
     // Parameter die generisch seinen müssen
     gameStarted = false,
@@ -23,7 +23,7 @@ scoreSend,
             right: false
         },
         foes: {
-            enabled: true,
+            enabled: false,
             lives: 1,
             spawnIntervall : 1,
             spawn: "zufall",
@@ -219,6 +219,7 @@ function getPlayerOptions(kind, value) {
 
 function getFoeOptions() {
     gameOptions.foes.speed = $('input#foes_speed').val();
+    gameOptions.foes.spawnIntervall = $('input#foes_intervall').val();
     gameOptions.foes.gravity = $('input#foes_gravity').val();
     gameOptions.foes.shape = $('select#foes_shape').val();
     gameOptions.foes.spawn = $('select#foes_spawn').val();
@@ -232,6 +233,16 @@ function getFoeOptions() {
     gameOptions.foes.color = $('input#foes_color').val();
 }
 
+
+function setFoesEnabled(value) {
+    gameOptions.foes.enabled = value
+    if (value == false) {
+        for (var s = 0; s < foes.length; s++) {
+            foes.splice(s,1);
+            foes = [];
+        }
+    }
+}
 
 
 
