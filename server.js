@@ -10,7 +10,8 @@ var flash = require('connect-flash'),
     fs = require('fs'),
     bcrypt = require('bcrypt-nodejs'),
     nodemailer = require('nodemailer'),
-	mysql = require('mysql');
+	mysql = require('mysql'),
+	zip = require('node-zip')();
 
 /*Authentifizierung*/
 app.use(flash());
@@ -32,7 +33,7 @@ app.use(bodyParser.json());
 var accessEmail = require('./config/emailaccess.js')(nodemailer, port, bcrypt);
 var accessDb = require('./database/sqlaccess.js')(fs, bcrypt, mysql, accessEmail);
 require('./config/passport')(passport, accessDb);
-require('./app/routes.js')(app, passport, multiparty, nodemailer, accessDb);
+require('./app/routes.js')(app, passport, multiparty, nodemailer, accessDb, zip);
 
 /* Statische Auslieferung */
 app.set('views', __dirname + '/views');

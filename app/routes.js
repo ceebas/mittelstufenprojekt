@@ -1,5 +1,5 @@
 var userTemp = {};
-module.exports = function(app, passport, multiparty, nodemailer, accessDb) {
+module.exports = function(app, passport, multiparty, nodemailer, accessDb, zip) {
 	/* Index */
 	app.get('/', function(request, response) {
 		accessDb.getAllActiveGames(render);
@@ -400,10 +400,14 @@ module.exports = function(app, passport, multiparty, nodemailer, accessDb) {
 		accessDb.getGame(gameId, request, validate);
 		function validate (rows, err) {
 			console.log(rows);
-			if (request.user.isAdmin == 1 || request.user.id_user == rows[0].user) {
+			var game = rows[0];
+			if (request.user.isAdmin == 1 || request.user.id_user == game.user) {
 				//has right to download
-
-				response.status(200).send("OK");
+				var folderString = 'uploads/' + game.user + '/' + game.id_game + "." + game.gamename;
+				zip.folder(folderString);
+				var data = zip.generate({base64:false,compression:'DEFLATE'});
+				console.log(data);
+				response.status(200).send(data);
 			} else {
 				request.flash('message', 'Du hast nicht die nötigen Rechte dieses Spiel runterzuladen!');
 				response.redirect('/');
