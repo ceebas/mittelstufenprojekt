@@ -10,7 +10,7 @@ body
 			//was passiert wenn kein javascript vorhanden ist?
 			-if (user != null && user.id_user == results.user)
 				-if(results.javascript != null)
-					a(href='uploads/#{results.user}/#{results.id_game}.#{results.gamename}/#{results.javascript}' download='WeLoveGames_#{results.gamename}.js')  Download	
+					a(href='download?gameId=#{results.id_game}')  Diese Spiel downloaden	
 			canvas#canvas
 		#accordion.panel-group
 			.panel.panel-default

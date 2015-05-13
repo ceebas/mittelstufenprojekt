@@ -394,6 +394,22 @@ module.exports = function(app, passport, multiparty, nodemailer, accessDb) {
 			}
 		}
 	});
+
+	app.get('/download', isLoggedIn, function(request, response) {
+		var gameId = request.param("gameId");
+		accessDb.getGame(gameId, request, validate);
+		function validate (rows, err) {
+			console.log(rows);
+			if (request.user.isAdmin == 1 || request.user.id_user == rows[0].user) {
+				//has right to download
+
+				response.status(200).send("OK");
+			} else {
+				request.flash('message', 'Du hast nicht die nötigen Rechte dieses Spiel runterzuladen!');
+				response.redirect('/');
+			}
+		}
+	});
 };
 
 /* Prüft ob Nutzer eingeloggt ist */

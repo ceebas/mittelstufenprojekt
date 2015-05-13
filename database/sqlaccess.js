@@ -282,6 +282,17 @@ module.exports = function(fs, bcrypt, mysql, accessEmail) {
 				}
 			});
 		},
+		getGame : function(gameId, request, callback) {
+			connection.query("SELECT * FROM " + db.tableGames + " WHERE id_game = ?", [gameId], function(err, rows, fields) {
+				if (err) {
+					console.log(JSON.stringify(err));
+					callback(null, null, err);
+				} 
+				else {
+					callback(rows, request, null);	
+				}
+			});
+		},
 		searchGames : function(searchString, callback) {
 			connection.query("SELECT * FROM " + db.tableGames + "WHERE (gamename LIKE '%" + searchString + "%' or description LIKE '%" + searchString + "%') AND inactive LIKE 0 ", function(err, rows, fields) {
 				if (err) {
