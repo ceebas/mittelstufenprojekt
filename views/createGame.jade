@@ -125,25 +125,21 @@ body
 						// Gegner optionen				
 						div#seite4.hidden
 							h4 Gegner
-								select#foes_shape.form-control(name='foes_shape', size='1', onchange='showDiv("foes_shape"); getFoeOptions(this.value)')
-									option(value='eckig') eckig
-									option(value='rund') rund
-									option(value='eigene') eigene Form hochladen (im nächsten Schritt)	
+							| Form der Gegner
+							select#foes_shape.form-control(name='foes_shape', size='1', onchange='showDiv("foes_shape"); getFoeOptions()')
+								option(value='eckig') eckig
+								option(value='rund') rund
+								option(value='eigene') eigene Form hochladen (im nächsten Schritt)
 							input#foes_width.form-control(type='number', min='1', name='foes_width', placeholder='Breite in px', onchange='getFoeOptions()')
 							input#foes_height.form-control(type='number', min='1', name='foes_height', placeholder='Hoehe in px', onchange='getFoeOptions()')
 							input#foes_color.form-control.color(type='text', name='foes_color', placeholder='Farbe', onchange='getFoeOptions()', value='#88ff00')
-							input#foes_active(type='checkbox', name='foes_active', value='true', onchange='showDiv("foes"); getFoeOptions()')
-							| 	Kann sich bewegen
-							br
-							div#foes_enabled.hidden
-								| Geschwindigkeit des Gegners:
-								span#foes_speed_span /
-								input#foes_speed(type='range', name='foes_speed', min='1', max='10', value='5', oninput='showValue(this.value, "foes_speed")',onchange='showValue(this.value, "foes_speed"); getFoeOptions()')
-
-								| Gravitation des Gegners:
-								span#foes_gravity_span /
-								input#foes_gravity(type='range', name='foes_gravity', min='0', max='10', value='5', oninput='showValue(this.value, "foes_gravity")',onchange='showValue(this.value, "foes_gravity"); getFoeOptions()')
-
+							| Wo sollen die Gegner spawnen?
+							select#foes_spawn.form-control(name='foes_spawn', size='1', onchange='getFoeOptions()')
+								option(value='unten') unten
+								option(value='oben') oben
+								option(value='links') links
+								option(value='rechts') rechts
+								option(value='zufall') zufällig
 							a.btn.btn-primary.changePageBtn(href='#', onclick='changePage(3);') zurück
 							button#loginButton.btn.btn-lg.btn-primary.btn-block(type='submit') senden
 	include ./layout/footer.jade

@@ -26,6 +26,7 @@ scoreSend,
             enabled: true,
             lives: 1,
             spawnIntervall : 1,
+            spawn: "zufall",
             width: 20,
             height: 30,
             shape: "eckig",
@@ -216,10 +217,11 @@ function getPlayerOptions(kind, value) {
 
 }
 
-function getFoeOptions(value) {
+function getFoeOptions() {
     gameOptions.foes.speed = $('input#foes_speed').val();
     gameOptions.foes.gravity = $('input#foes_gravity').val();
-    gameOptions.foes.shape = value;
+    gameOptions.foes.shape = $('select#foes_shape').val();
+    gameOptions.foes.spawn = $('select#foes_spawn').val();
     if ($('input#foes_width').val() != ''){
         gameOptions.foes.width = $('input#foes_width').val();
     }
@@ -306,9 +308,14 @@ function update() {
     }
 
     // Kollision mit der Grenze?
-    for (var j = 0, l = borders.length; j < l; j++) { 
-        var dir = collision(gameOptions.player, borders[j]);
-        if (dir === "l" || dir === "r" || dir === "b" || dir ===  "t") {
+    for (var j = 0, l = borders.length; j < l; j++) {
+        var dir;
+        if (gameOptions.player.shape == "rund") {
+            dir = collides(borders[j],gameOptions.player, null);
+        } else {
+            dir = collision(gameOptions.player, borders[j]);
+        }
+        if (dir === "ture" || dir === "l" || dir === "r" || dir === "b" || dir ===  "t") {
             gameOptions.player.velX = 0;
             gameOptions.player.velY = 0;
         }
@@ -339,31 +346,35 @@ function update() {
     }
 
     //Gegner werden erstellt
-    if (score % (gameOptions.foes.spawnIntervall * 10) == 0) {
-        if (gameOptions.foes.enabled) {
-            if (gameOptions.horizontal) {
-                var by = Math.random() * (canvasHeight - 0) + 0;
-                foes.push({
-                    x: canvasWidth + 10,
-                    y: by,
-                    width: 30,
-                    height: 40,
-                    color: "red",
-                    lives: 1
-                });  
-            } else {
-                var by = Math.random() * (canvasWidth - 0) + 0;
-                foes.push({
-                    x: by,
-                    y: -10,
-                    width: 30,
-                    height: 40,
-                    color: "red",
-                    lives: 1
-                });  
-            }
-        } 
-    } 
+    if (gameOptions.foes.enabled) {
+        if (gameOptions.foes.spawn == "zufall") {
+            if (score % (gameOptions.foes.spawnIntervall * 30) == 0) {
+                if (gameOptions.horizontal) {
+                    var by = Math.random() * (canvasHeight - 0) + 0;
+                    foes.push({
+                        x: canvasWidth + 10,
+                        y: by,
+                        width: 30,
+                        height: 40,
+                        color: gameOptions.foes.color,
+                        lives: 1
+                    });  
+                } else {
+                    var by = Math.random() * (canvasWidth - 0) + 0;
+                    foes.push({
+                        x: by,
+                        y: -10,
+                        width: 30,
+                        height: 40,
+                        color: gameOptions.foes.color,
+                        lives: 1
+                    });  
+                }
+            } 
+        } else if (gameOptions.foes.spawn == "unten") {
+            //todo
+        }
+    }
 }
 
 function render() {
@@ -525,7 +536,7 @@ document.body.addEventListener("keyup", function(e) {
   keys[e.keyCode] = false;
 }, false);
 
-//Kollisionsabfrage
+//Kollisionsabfragen
 function collision(shapeA, shapeB) {
     if (shapeA !== undefined && shapeB !== undefined) {
         var vX = (shapeA.x + (shapeA.width / 2)) - (shapeB.x + (shapeB.width / 2)),
@@ -556,4 +567,48 @@ function collision(shapeA, shapeB) {
             return colDir;
         }
     }
+}
+
+//circle.width == radius!!
+function collides (rect, circle, collide_inside) {
+    // compute a center-to-center vector
+    var half = { x: rect.w/2, y: rect.h/2 };
+    var center = {
+        x: circle.x - (rect.x+half.x),
+        y: circle.y - (rect.y+half.y)};
+        
+    // check circle position inside the rectangle quadrant
+    var side = {
+        x: Math.abs (center.x) - half.x,
+        y: Math.abs (center.y) - half.y};
+    if (side.x >  circle.width || side.y >  circle.width) // outside
+        return false; 
+    if (side.x < -circle.width && side.y < -circle.width) // inside
+        return collide_inside;
+    if (side.x < 0 || side.y < 0) // intersects side or corner
+        return true;
+        
+    // circle is near the corner
+    return side.x*side.x + side.y*side.y  < circle.width*circle.width;
+}
+
+function rectCircleCollision(circle,rect) {
+    var distX = Math.abs(circle.x - rect.x-rect.width/2);
+    var distY = Math.abs(circle.y - rect.y-rect.height/2);
+    if (distX > (rect.width/2 + circle.width)) { 
+        return false; 
+    }
+    if (distY > (rect.height/2 + circle.width)) { 
+        return false; 
+    }
+
+    if (distX <= (rect.width/2)) { 
+        return true; 
+    } 
+    if (distY <= (rect.height/2)) { 
+        return true; 
+    }
+    var dx=distX-rect.width/2;
+    var dy=distY-rect.height/2;
+    return (dx*dx+dy*dy<=(circle.width*circle.width));
 }
