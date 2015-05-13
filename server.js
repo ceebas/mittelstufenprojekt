@@ -33,7 +33,7 @@ app.use(bodyParser.json());
 var accessEmail = require('./config/emailaccess.js')(nodemailer, port, bcrypt);
 var accessDb = require('./database/sqlaccess.js')(fs, bcrypt, mysql, accessEmail);
 require('./config/passport')(passport, accessDb);
-require('./app/routes.js')(app, passport, multiparty, nodemailer, accessDb, zip);
+require('./app/routes.js')(app, passport, multiparty, nodemailer, accessDb, zip, fs);
 
 /* Statische Auslieferung */
 app.set('views', __dirname + '/views');

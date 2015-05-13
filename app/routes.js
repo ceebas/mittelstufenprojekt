@@ -1,5 +1,5 @@
 var userTemp = {};
-module.exports = function(app, passport, multiparty, nodemailer, accessDb, zip) {
+module.exports = function(app, passport, multiparty, nodemailer, accessDb, zip, fs) {
 	/* Index */
 	app.get('/', function(request, response) {
 		accessDb.getAllActiveGames(render);
@@ -403,10 +403,13 @@ module.exports = function(app, passport, multiparty, nodemailer, accessDb, zip) 
 			var game = rows[0];
 			if (request.user.isAdmin == 1 || request.user.id_user == game.user) {
 				//has right to download
-				var folderString = 'uploads/' + game.user + '/' + game.id_game + "." + game.gamename;
-				zip.folder(folderString);
-				var data = zip.generate({base64:false,compression:'DEFLATE'});
-				console.log(data);
+				var data = getAllFilesFromFolder(__dirname + '/../uploads/' + game.user + '/' + game.id_game + "." + game.gamename);
+				for (var i = data.length - 1; i >= 0; i--) {
+					zip.file(data[i], data[i]);
+				};
+				var zipData = zip.generate({base64:false,compression:'DEFLATE'});
+				fs.writeFileSync('test.zip', zipData, 'binary');
+				console.log(zipData);
 				response.status(200).send(data);
 			} else {
 				request.flash('message', 'Du hast nicht die nötigen Rechte dieses Spiel runterzuladen!');
@@ -414,6 +417,27 @@ module.exports = function(app, passport, multiparty, nodemailer, accessDb, zip) 
 			}
 		}
 	});
+};
+
+//alle Dateien eines Ordners lesen
+var getAllFilesFromFolder = function(dir) {
+
+	var fs = require("fs");
+    var results = [];
+
+    fs.readdirSync(dir).forEach(function(file) {
+
+        file = dir+'/'+file;
+        var stat = fs.statSync(file);
+
+        if (stat && stat.isDirectory()) {
+            results = results.concat(_getAllFilesFromFolder(file))
+        } else results.push(file);
+
+    });
+
+    return results;
+
 };
 
 /* Prüft ob Nutzer eingeloggt ist */
