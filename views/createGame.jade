@@ -125,6 +125,16 @@ body
 						// Gegner optionen				
 						div#seite4.hidden
 							h4 Gegner
+								br
+								br
+								input#foes_enabled(type='checkbox', name='foes_enabled', value='false', onchange='setFoesEnabled(this.checked); getFoeOptions()')
+								| 	Gegner aktivieren
+								br
+								br
+								| Geschwindigkeit des Spielers:
+								span#foes_intervall_span /
+								input#foes_intervall(type='range', name='foes_intervall', min='1', max='10', value='5', oninput='showValue(this.value, "foes_intervall");gameOptions.foes.spawnIntervall = parseInt(this.value);', onchange='showValue(this.value, "foes_intervall"); gameOptions.foes.spawnIntervall = parseInt(this.value);')
+
 								select#foes_shape.form-control(name='foes_shape', size='1', onchange='showDiv("foes_shape"); getFoeOptions(this.value)')
 									option(value='eckig') eckig
 									option(value='rund') rund

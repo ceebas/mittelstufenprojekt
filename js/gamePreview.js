@@ -23,7 +23,7 @@ scoreSend,
             right: false
         },
         foes: {
-            enabled: true,
+            enabled: false,
             lives: 1,
             spawnIntervall : 1,
             width: 20,
@@ -217,7 +217,9 @@ function getPlayerOptions(kind, value) {
 }
 
 function getFoeOptions(value) {
+    //gameOptions.foes.enabled = $('input#foes_enabled').val();
     gameOptions.foes.speed = $('input#foes_speed').val();
+    gameOptions.foes.spawnIntervall = $('input#foes_intervall').val();
     gameOptions.foes.gravity = $('input#foes_gravity').val();
     gameOptions.foes.shape = value;
     if ($('input#foes_width').val() != ''){
@@ -230,6 +232,16 @@ function getFoeOptions(value) {
     gameOptions.foes.color = $('input#foes_color').val();
 }
 
+
+function setFoesEnabled(value) {
+    gameOptions.foes.enabled = value
+    if (value == false) {
+        for (var s = 0; s < foes.length; s++) {
+            foes.splice(s,1);
+            foes = [];
+        }
+    }
+}
 
 
 
