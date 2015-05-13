@@ -12,10 +12,6 @@ body {
 	margin-bottom: -30px;
 }
 
-.thumbnail {
-	margin: 0px -15px 20px -15px !important;
-}
-
 .userControl {
 	position: absolute;
 	right: 260px;
