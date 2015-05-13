@@ -13,10 +13,10 @@ body
 			.panel-body
 				div#preview
 					canvas#gamePreview.horizontal
+					p.previewtext Diese Ansicht dient lediglich zur Veranschaulichung.
 					a#reset_player.btn.btn-default.changePageBtn(href='#', onclick='gameOptions.player.x = canvasWidth/2; gameOptions.player.y = canvasHeight/2;') 
 						span.glyphicon.glyphicon-user
 						span.glyphicon.glyphicon-repeat
-					p.previewtext Diese Ansicht dient lediglich zur Vorschau und spiegelt nicht die realen Größen oder Ähnliches wieder.	
 				div#options
 					form(role='form', action='/createGame', method='post')
 
