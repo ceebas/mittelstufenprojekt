@@ -10,67 +10,67 @@ multiplier = 0,
 canvasHeight = 400, 
 canvasWidth = 600,
 scoreSend,
-    // Parameter die generisch seinen müssen
-    gameStarted = false,
-    gameOptions = {
-        horizontal: true,
-        selfScroll: false,
-        scrollspeed: 0.5,
-        borders: {
-            top: false,
-            bottom: true,
-            left: false,
-            right: false
-        },
-        foes: {
-            enabled: false,
-            lives: 1,
-            spawnIntervall : 1,
-            spawn: "zufall",
-            width: 20,
-            height: 30,
-            shape: "eckig",
-            color: "#88FF00"
-        },
-        player: {
-            lives : 1,
-            x : canvasWidth/2,
-            y : canvasHeight - 30,
-            dead: false,
-            speed: 1,
-            gravity: 0,
-            width: 20,
-            height: 30,
-            shape: "eckig",
-            color: "#B4D455",
-            shoot: {
-                enabled: false,
-                speed: 1,
-                shape: "eckig",
-                color: "#FF0000"
-            },
-            images : {
-                normal : "new Image()",
-                dead : "new Image()",
-            }
-        },
+// Parameter die generisch seinen müssen
+gameStarted = false,
+gameOptions = {
+    horizontal: true,
+    selfScroll: false,
+    scrollspeed: 0.5,
+    borders: {
+        top: false,
+        bottom: true,
+        left: false,
+        right: false
     },
-    background = new Image(),
-    backX = 0,
-    backY = 0,
-    borders = [{
-        position: "bottom",
-        x: 0,
-        y: canvasHeight - 5,
-        width: canvasWidth,
-        height: 5
-    }];
-    background.src = "./img/horizontal_preview.png";
-    canvas.width = canvasWidth;
-    canvas.height = canvasHeight;
+    foes: {
+        enabled: false,
+        lives: 1,
+        spawnIntervall : 1,
+        spawn: "zufall",
+        width: 20,
+        height: 30,
+        shape: "eckig",
+        color: "#88FF00"
+    },
+    player: {
+        lives : 1,
+        x : canvasWidth/2,
+        y : canvasHeight - 30,
+        dead: false,
+        speed: 1,
+        gravity: 0,
+        width: 20,
+        height: 30,
+        shape: "eckig",
+        color: "#B4D455",
+        shoot: {
+            enabled: false,
+            speed: 1,
+            shape: "eckig",
+            color: "#FF0000"
+        },
+        images : {
+            normal : "new Image()",
+            dead : "new Image()",
+        }
+    },
+},
+background = new Image(),
+backX = 0,
+backY = 0,
+borders = [{
+    position: "bottom",
+    x: 0,
+    y: canvasHeight - 5,
+    width: canvasWidth,
+    height: 5
+}];
+background.src = "./img/horizontal_preview.png";
+canvas.width = canvasWidth;
+canvas.height = canvasHeight;
 
 
-    function changeBorder(id) {
+function changeBorder(id) {
     //Betreffende Border suchen und aus Array entfernen
     function popBorder() {
         for (var i = 0; i < borders.length; i++) {
