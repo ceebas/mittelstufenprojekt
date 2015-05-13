@@ -141,8 +141,8 @@ scoreSend,
 function changePreviewCanvas(id) {
     if (id == "vertical"){
         gameOptions.horizontal = false;
-        canvasWidth = 230;
-        canvasHeight = 300;
+        canvasWidth = 400;
+        canvasHeight = 600;
         gameOptions.player.x = canvasWidth/2;
         gameOptions.player.y = canvasHeight - gameOptions.player.height;
 
@@ -155,10 +155,10 @@ function changePreviewCanvas(id) {
                 borders[i].y = canvasHeight - 5;
             }
         }
-    } else if (id == "horizontal") {
+    } else{
         gameOptions.horizontal = true;
-        casnvasWidth = 300;
-        canvasHeight = 150;
+        canvasWidth = 600;
+        canvasHeight = 400;
         gameOptions.player.x = gameOptions.player.width;
         gameOptions.player.y = canvasHeight - gameOptions.player.height;
 
@@ -172,10 +172,6 @@ function changePreviewCanvas(id) {
             }
         }
 
-    } else {
-        //gameOptions.horizontal = true;
-        canvasWidth = 300;
-        canvasHeight = 150;
     }
     backX = 0;
     backY = 0;
