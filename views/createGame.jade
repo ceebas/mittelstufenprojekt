@@ -131,7 +131,7 @@ body
 								| 	Gegner aktivieren
 								br
 								br
-								| Geschwindigkeit des Spielers:
+								| Spawnintervall der Gegner:
 								span#foes_intervall_span /
 								input#foes_intervall(type='range', name='foes_intervall', min='1', max='10', value='5', oninput='showValue(this.value, "foes_intervall");gameOptions.foes.spawnIntervall = parseInt(this.value);', onchange='showValue(this.value, "foes_intervall"); gameOptions.foes.spawnIntervall = parseInt(this.value);')
 
