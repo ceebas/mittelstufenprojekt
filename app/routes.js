@@ -130,51 +130,53 @@ module.exports = function(app, passport, multiparty, nodemailer, accessDb, zip, 
 
 	app.post('/createGame', isLoggedIn, function(request, response) {
 		var requestObj = request.body;
+console.log(request.body);
+
 		var form = new multiparty.Form();
 		var gameObj = {
 			"gamedata": {
 				"name": requestObj.game_name,
 				"description": requestObj.game_description
 			},
-			"gameparameter": {
+			"gameParameter": {
 				"scrolldirection": requestObj.scroll_direction,
 				"scrollspeed": requestObj.scroll_speed,
 				"borders": {},
 				"foes": {},
 				"player": {
-					"active": requestObj.player_active,
 					"speed": requestObj.player_speed,
-					"gravity": requestObj.player_gravitiy,
+					"gravity": requestObj.player_gravity,
 					"shoot": {},
 					"size": {
 						"width": requestObj.player_width,
 						"height": requestObj.player_height
 					},
 					"shape": requestObj.player_shape,
-				}
+				},
+				"images":{}
 			}
 		}
 		if (requestObj.selfscroll) {
-			gameObj.gameparameter.selfscroll = requestObj.selfscroll;
+			gameObj.gameParameter.selfscroll = requestObj.selfscroll;
 		}
 		if (requestObj.border_top) {
-			gameObj.gameparameter.borders.top = requestObj.border_top;
+			gameObj.gameParameter.borders.top = requestObj.border_top;
 		}
 		if (requestObj.border_bottom) {
-			gameObj.gameparameter.borders.bottom = requestObj.border_bottom;
+			gameObj.gameParameter.borders.bottom = requestObj.border_bottom;
 		}
 		if (requestObj.border_left) {
-			gameObj.gameparameter.borders.left = requestObj.border_left;
+			gameObj.gameParameter.borders.left = requestObj.border_left;
 		}
 		if (requestObj.border_right) {
-			gameObj.gameparameter.borders.right = requestObj.border_right;
+			gameObj.gameParameter.borders.right = requestObj.border_right;
 		}
-		gameObj.gameparameter.foes = {
-			"active": requestObj.foes_active,
+		gameObj.gameParameter.foes = {
+			"enabled": requestObj.foes_active,
 			"speed": requestObj.foes_speed,
 			"active": requestObj.foes_enabled,
 			"shape": requestObj.foes_shape,
-			"intervall": requestObj.foes_intervall,
+			"SpawnIntervall": requestObj.foes_intervall,
 			"spawn": requestObj.foes_spawn,
 			"size": {
 				"width": requestObj.foes_width,
@@ -182,19 +184,25 @@ module.exports = function(app, passport, multiparty, nodemailer, accessDb, zip, 
 			}
 		}
 		if (requestObj.foes_shape != "eigene") {
-			gameObj.gameparameter.foes.color = requestObj.foes_color;
+			gameObj.gameParameter.foes.color = requestObj.foes_color;
+			gameObj.gameParameter.images.foe = "newImage()";
 		}
 		
 		if (requestObj.player_shoot_enabled) {
-			gameObj.gameparameter.player.shoot = {
+			gameObj.gameParameter.player.shoot = {
 				"enabled": requestObj.player_shoot_enabled,
 				"speed": requestObj.player_shoot_speed,
 				"shape": requestObj.player_shoot_shape,
 				"color": requestObj.player_shoot_color
 			}
+
+			if (requestObj.player_shoot_shape != "eigene") {
+				gameObj.gameParameter.images.shoot = "newImage()";
+			}
 		}
 		if (requestObj.player_shape != "eigene") {
-			gameObj.gameparameter.player.color = requestObj.player_color;
+			gameObj.gameParameter.player.color = requestObj.player_color;
+			gameObj.gameParameter.images.player = "newImage()";
 		}
 
 		form.parse(request, function(err) {

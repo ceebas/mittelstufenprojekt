@@ -41,7 +41,7 @@ body
 							input#direction_vertical(type='radio', name='scroll_direction', value='vertical', onchange='changePreviewDirection("vertical"); changePreviewCanvas("vertical")')
 							img#vertical(src='img/vertical.png', alt='vertical', height='100px')
 							br
-							input#selfscroll(type='checkbox', name='selfscroll', onchange='showDiv("selfscroll"); setSelfscroll()')
+							input#selfscroll(type='checkbox',value='true', name='selfscroll', onchange='showDiv("selfscroll"); setSelfscroll()')
 							| 	Selbstscroller
 							//Wenn selbstscroller dann anzeigen
 							div#scroll.hidden

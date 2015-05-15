@@ -52,8 +52,8 @@ body
 		var path = "/uploads/#{results.user}/#{results.id_game}.#{results.gamename}/";
 		var gameId =  #{results.id_game};
 	-if(results.javascript != null)
-		script(src='./uploads/#{results.user}/#{results.id_game}.#{results.gamename}/#{results.javascript}')
+		script(src='uploads/#{results.user}/#{results.id_game}.#{results.gamename}/#{results.javascript}')
 	-else
-		script(src='./uploads/#{results.user}/#{results.id_game}.#{results.gamename}/gameobtions.json')
-		script(src='./js/template.js')
+		script(src='uploads/#{results.user}/#{results.id_game}.#{results.gamename}/parameter.js')
+		script(src='js/template.js')
 	include ./layout/footer.jade
