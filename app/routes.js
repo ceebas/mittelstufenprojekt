@@ -172,12 +172,14 @@ module.exports = function(app, passport, multiparty, nodemailer, accessDb, zip, 
 		gameObj.gameparameter.foes = {
 			"active": requestObj.foes_active,
 			"speed": requestObj.foes_speed,
-			"gravity": requestObj.foes_gravity,
+			"active": requestObj.foes_enabled,
+			"shape": requestObj.foes_shape,
+			"intervall": requestObj.foes_intervall,
+			"spawn": requestObj.foes_spawn,
 			"size": {
 				"width": requestObj.foes_width,
 				"height": requestObj.foes_height
-			},
-			"shape": requestObj.foes_shape
+			}
 		}
 		if (requestObj.foes_shape != "eigene") {
 			gameObj.gameparameter.foes.color = requestObj.foes_color;
@@ -199,6 +201,15 @@ module.exports = function(app, passport, multiparty, nodemailer, accessDb, zip, 
 			accessDb.createGameFolder(request, gameObj, render);
 		});
 		function render(status, err) {
+			//pfad muss angepasst werden
+			var path = __dirname + "/../uploads/" + request.user.id_user + "/" + gameObj.gamedata.name + "_parameter.json";
+			fs.writeFile(path, JSON.stringify(gameObj), function(err){
+				if(err){
+					return console.log(err);
+				}
+				console.log("Json Datei in " +path+" gespeichert.");
+			});
+
 			response.render('uploadGameFiles.jade', { 
 				title: 'we♥games | Dateien hochladen',
 				user: request.user,
