@@ -494,6 +494,19 @@ module.exports = function(fs, bcrypt, mysql, accessEmail) {
 										}
 									});
 								}
+
+						//________________________		
+						//Speichern des JSON Objektes
+						var path_json = __dirname + "/../uploads/" + request.user.id_user + "/" + gameId +"."+gameObj.gamedata.name + "/parameter.json";
+						fs.writeFile(path_json, JSON.stringify(gameObj), function(err){
+							if(err){
+								return console.log(err);
+							}
+							console.log("Json Datei in " +path+" gespeichert.");
+						});
+						//___________________
+
+
 							} else {
 								console.log("SubmitError " + JSON.stringify(err));
 								return;

@@ -201,15 +201,6 @@ module.exports = function(app, passport, multiparty, nodemailer, accessDb, zip, 
 			accessDb.createGameFolder(request, gameObj, render);
 		});
 		function render(status, err) {
-			//pfad muss angepasst werden
-			var path = __dirname + "/../uploads/" + request.user.id_user + "/" + gameObj.gamedata.name + "_parameter.json";
-			fs.writeFile(path, JSON.stringify(gameObj), function(err){
-				if(err){
-					return console.log(err);
-				}
-				console.log("Json Datei in " +path+" gespeichert.");
-			});
-
 			response.render('uploadGameFiles.jade', { 
 				title: 'we♥games | Dateien hochladen',
 				user: request.user,
