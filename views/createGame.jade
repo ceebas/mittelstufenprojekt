@@ -83,11 +83,11 @@ body
 						div#seite3.hidden
 							h4 Spieler
 
-							| Form des Spielers
-							select#player_shape.form-control(name='player_shape', size='1', onchange='showDiv("player_shape"); getPlayerOptions("shape", this.value)')
+							//| Form des Spielers
+							select#player_shape.form-control.hidden(name='player_shape', size='1', onchange='showDiv("player_shape"); getPlayerOptions("shape", this.value)')
 								option(value='eckig') eckig
-								option(value='rund') rund
-								option(value='eigene') eigene Form hochladen (im nächsten Schritt)
+								//option(value='rund') rund
+								//option(value='eigene') eigene Form hochladen (im nächsten Schritt)
 							input#player_width.form-control(type='number', min='1', name='player_width', placeholder='Breite in px', onchange='getPlayerOptions()')
 							input#player_height.form-control(type='number',min='1', name='player_height', placeholder='Höhe in px', onchange='getPlayerOptions()')
 							input#player_color.form-control.color(type='text', name='player_color', placeholder='Farbe', onchange='getPlayerOptions()', value='#B4D455')
@@ -125,12 +125,11 @@ body
 						// Gegner optionen				
 						div#seite4.hidden
 							h4 Gegner
-							| Form der Gegner
-							select#foes_shape.form-control(name='foes_shape', size='1', onchange='showDiv("foes_shape"); getFoeOptions()')
+							//| Form der Gegner
+							select#foes_shape.form-control.hidden(name='foes_shape', size='1', onchange='showDiv("foes_shape"); getFoeOptions()')
 								option(value='eckig') eckig
-								option(value='rund') rund
-								option(value='eigene') eigene Form hochladen (im nächsten Schritt)
-								br
+								//option(value='rund') rund
+								//option(value='eigene') eigene Form hochladen (im nächsten Schritt)
 								br
 								input#foes_enabled(type='checkbox', name='foes_enabled', value='false', onchange='setFoesEnabled(this.checked); getFoeOptions()')
 								| 	Gegner aktivieren
