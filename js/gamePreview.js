@@ -374,7 +374,7 @@ function update() {
                 var by = Math.random() * (canvasWidth - 0) + 0;
                 foes.push({
                     x: by,
-                    y: -10,
+                    y: 10,
                     width: gameOptions.foes.width,
                     height: gameOptions.foes.height,
                     color: gameOptions.foes.color,
@@ -512,7 +512,7 @@ function render() {
                 if (foes[s].lives == 1) {
                     ctx.fillStyle = foes[s].color;
                     ctx.fillRect(foes[s].x, foes[s].y, foes[s].width, foes[s].height);
-                    foes[s].y += gameOptions.foes.speed;
+                    foes[s].y += gameOptions.foes.speed / 2;
                     console.log("speed: " + gameOptions.foes.speed);
                     if (foes[s].y > (canvasHeight + 20)) {
                         foes.splice(s,1);
