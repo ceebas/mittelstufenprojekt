@@ -138,16 +138,13 @@ body
 								| Spawnintervall der Gegner:
 								span#foes_intervall_span /
 								input#foes_intervall(type='range', name='foes_intervall', min='1', max='10', value='5', oninput='showValue(this.value, "foes_intervall");gameOptions.foes.spawnIntervall = parseInt(this.value);', onchange='showValue(this.value, "foes_intervall"); gameOptions.foes.spawnIntervall = parseInt(this.value);')
+								br
+								| Geschwindigkeit der Gegner:
+								span#foes_speed_span 5
+								input#foes_speed(type='range', name='foes_speed', min='1', max='20', value='5', oninput='showValue(this.value, "foes_speed");gameOptions.foes.speed = parseInt(this.value);', onchange='showValue(this.value, "foes_speed"); gameOptions.foes.speed = parseInt(this.value);')
 							input#foes_width.form-control(type='number', min='1', name='foes_width', placeholder='Breite in px', onchange='getFoeOptions()')
 							input#foes_height.form-control(type='number', min='1', name='foes_height', placeholder='Hoehe in px', onchange='getFoeOptions()')
 							input#foes_color.form-control.color(type='text', name='foes_color', placeholder='Farbe', onchange='getFoeOptions()', value='#88ff00')
-							| Wo sollen die Gegner spawnen?
-							select#foes_spawn.form-control(name='foes_spawn', size='1', onchange='getFoeOptions()')
-								option(value='unten') unten
-								option(value='oben') oben
-								option(value='links') links
-								option(value='rechts') rechts
-								option(value='zufall') zufällig
 							a.btn.btn-primary.changePageBtn(href='#', onclick='changePage(3);') zurück
 							button#loginButton.btn.btn-lg.btn-primary.btn-block(type='submit') senden
 	include ./layout/footer.jade
