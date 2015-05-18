@@ -216,6 +216,7 @@ function getPlayerOptions(kind, value) {
 
 function getFoeOptions() {
     gameOptions.foes.speed = $('input#foes_speed').val();
+    console.log("Speed: " + gameOptions.foes.speed);
     gameOptions.foes.spawnIntervall = $('input#foes_intervall').val();
     gameOptions.foes.gravity = $('input#foes_gravity').val();
     gameOptions.foes.shape = $('select#foes_shape').val();
@@ -234,7 +235,7 @@ function getFoeOptions() {
 
 function setFoesEnabled(value) {
     gameOptions.foes.enabled = value;
-    gameOtions.foes.speed = 5;
+    gameOptions.foes.speed = 5;
     if (gameOptions.foes.enabled == false) {
         for (var s = 0; s < foes.length; s++) {
             foes.splice(s,1);
@@ -502,7 +503,7 @@ function render() {
                     ctx.fillStyle = foes[s].color;
                     ctx.fillRect(foes[s].x, foes[s].y, foes[s].width, foes[s].height);
                     foes[s].x -= gameOptions.foes.speed;
-                    console.log("speed: " & gameOptions.foes.speed);
+                    console.log("speed: " + gameOptions.foes.speed);
                     if (foes[s].x < -20) {
                         foes.splice(s,1);
                     }
@@ -512,7 +513,7 @@ function render() {
                     ctx.fillStyle = foes[s].color;
                     ctx.fillRect(foes[s].x, foes[s].y, foes[s].width, foes[s].height);
                     foes[s].y += gameOptions.foes.speed;
-                    console.log("speed: " & gameOptions.foes.speed);
+                    console.log("speed: " + gameOptions.foes.speed);
                     if (foes[s].y > (canvasHeight + 20)) {
                         foes.splice(s,1);
                     }
