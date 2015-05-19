@@ -374,7 +374,7 @@ function update() {
                 var by = Math.random() * (canvasWidth - 0) + 0;
                 foes.push({
                     x: by,
-                    y: 10,
+                    y: -10,
                     width: gameOptions.foes.width,
                     height: gameOptions.foes.height,
                     color: gameOptions.foes.color,

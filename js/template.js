@@ -137,35 +137,31 @@ function update() {
         }
     }
 
-    //Gegner werden erstellt
-    if (options.gameParameter.foes.enabled) {
-        if (options.gameParameter.foes.spawn == "zufall") {
-            if (score % (options.gameParameter.foes.spawnIntervall * 30) == 0) {
-                if (options.gameParameter.horizontal) {
-                    var by = Math.random() * (canvasHeight - 0) + 0;
-                    foes.push({
-                        x: canvasWidth + 10,
-                        y: by,
-                        width: 30,
-                        height: 40,
-                        color: options.gameParameter.foes.color,
-                        lives: 1
-                    });  
-                } else {
-                    var by = Math.random() * (canvasWidth - 0) + 0;
-                    foes.push({
-                        x: by,
-                        y: -10,
-                        width: 30,
-                        height: 40,
-                        color: options.gameParameter.foes.color,
-                        lives: 1
-                    });  
-                }
-            } 
-        } else if (options.gameParameter.foes.spawn == "unten") {
-            //todo
-        }
+    //Gegner werden erstellt ##
+    if (options.gameParameter.foes.enabled && options.gameParameter.selfScroll) {
+        if (score % (options.gameOptions.foes.spawnIntervall * 20) == 0) {
+            if (options.gameOptions.horizontal) {
+                var by = Math.random() * (canvasHeight - 0) + 0;
+                foes.push({
+                    x: canvasWidth + 10,
+                    y: by,
+                    width: options.gameOptions.foes.width,
+                    height: options.gameOptions.foes.height,
+                    color: options.gameOptions.foes.color,
+                    lives: 1
+                });  
+            } else {
+                var by = Math.random() * (canvasWidth - 0) + 0;
+                foes.push({
+                    x: by,
+                    y: -10,
+                    width: options.gameOptions.foes.width,
+                    height: options.gameOptions.foes.height,
+                    color: options.gameOptions.foes.color,
+                    lives: 1
+                });  
+            }
+        } 
     }
 }
 
@@ -280,26 +276,28 @@ function render() {
     }
 
     //Gegner werden gezeichnet
-    for (var s = 0; s < foes.length; s++) {
-        if (options.gameParameter.horizontal) {
-            if (foes[s].lives == 1) {
-                ctx.fillStyle = foes[s].color;
-                ctx.fillRect(foes[s].x, foes[s].y, foes[s].width, foes[s].height);
-                foes[s].x -= multiplier / 2;
-                if (foes[s].x < -20) {
-                    foes.splice(s,1);
-                }
-            }   
-        } else {
-            if (foes[s].lives == 1) {
-                ctx.fillStyle = foes[s].color;
-                ctx.fillRect(foes[s].x, foes[s].y, foes[s].width, foes[s].height);
-                foes[s].y += multiplier / 2;
-                if (foes[s].y > (canvasHeight + 20)) {
-                    foes.splice(s,1);
-                }
+    if (options.gameParameter.selfScroll) {
+        for (var s = 0; s < foes.length; s++) {
+            if (options.gameParameter.horizontal) {
+                if (foes[s].lives == 1) {
+                    ctx.fillStyle = foes[s].color;
+                    ctx.fillRect(foes[s].x, foes[s].y, foes[s].width, foes[s].height);
+                    foes[s].x -= options.gameParameter.foes.speed;
+                    if (foes[s].x < -20) {
+                        foes.splice(s,1);
+                    }
+                 }   
+            } else {
+                if (foes[s].lives == 1) {
+                    ctx.fillStyle = foes[s].color;
+                    ctx.fillRect(foes[s].x, foes[s].y, foes[s].width, foes[s].height);
+                    foes[s].y += options.gameParameter.foes.speed / 2;
+                    if (foes[s].y > (canvasHeight + 20)) {
+                        foes.splice(s,1);
+                    }
+                }    
             }    
-        }    
+        }
     }
 }
 function shot() {
