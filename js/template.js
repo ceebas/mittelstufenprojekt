@@ -41,15 +41,16 @@ if (options.gameParameter.scrolldirection == "horizontal"){
 //Spielbeginn
 
 function mainLoop() {
-	/*if (!gameStarted) {
-		renderMenu();
+	if (!gameStarted) {
+        gameStarted = true;
+		/*renderMenu();
 		if (!scoreSend) {
 			sendScoreRequest();
-		}
-	} else {*/
+		}*/
+	} else {
 		update();
 		render();
-	//}
+	}
 	requestAnimationFrame(mainLoop);
 }
 
@@ -58,6 +59,15 @@ function renderMenu() {
 
 
 };
+
+function sendScoreRequest(){
+    var req = new XMLHttpRequest();
+    var data = { score: points, gameId: gamedId};
+    req.open('POST', '/submitScore');
+    req.setRequestHeader('Content-Type', 'application/json');
+    req.send(JSON.stringify(data));
+    scoreSend = true;
+}
 
 //Schleife wird aufgerufen, wenn Seite fertig geladen
 window.addEventListener("load", function(){
@@ -113,6 +123,8 @@ function update() {
         if (dir === "l" || dir === "r" || dir === "b" || dir ===  "t") {
             //alert("kollison mit wand: "+dir);
             playerVel = 0;
+        }else{
+            //playerVel = 1;
         }
     }
 
@@ -130,12 +142,16 @@ function update() {
 
     // Kollision mit einem Gegner?
     for (var j = 0; j < foes.length; j++) { 
-        var dir = collision(options.gameParameter.player, foes[j]);
+        var dir = collisionPlayerBorder(options.gameParameter.player, foes[j]);
         if (dir === "l" || dir === "r" || dir === "b" || dir === "t") {
             player_x = 10;
             player_y = canvasHeight/2 + options.gameParameter.player.size.height;
             foes = [];          
             shots = [];
+
+            if (gameStarted){
+                scoreSend = false;
+            }
         }
     }
 
