@@ -113,6 +113,7 @@ function update() {
         if (dir === "l" || dir === "r" || dir === "b" || dir ===  "t") {
             //alert("kollison mit wand: "+dir);
             playerVel = 0;
+        }
     }
 
     // Kollision zwischen Shot und Gegner?
@@ -305,10 +306,10 @@ function sendScoreRequest() {
 //Tastaturanschläge abfangen
 document.body.addEventListener("keydown", function(e) {
   if (gameStarted) {
-    e.preventDefault();
-}
-keys[e.keyCode] = true;
-}, false);
+        e.preventDefault();
+    }
+    keys[e.keyCode] = true;
+    }, false);
 
 document.body.addEventListener("keyup", function(e) {
   keys[e.keyCode] = false;
@@ -442,5 +443,5 @@ function createBorders(){
             });
         }
     
-
 }
+
