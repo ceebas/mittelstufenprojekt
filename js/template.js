@@ -12,6 +12,8 @@ canvasWidth = 600,
 scoreSend,
 // Parameter die generisch seinen müssen
 gameStarted = false,
+player_x = canvasWidth / 2,
+player_y = canvasHeight - 30,
 background = new Image(),
 backX = 0,
 backY = 0;
@@ -67,25 +69,25 @@ function update() {
         }
     }
     if (options.gameParameter.scrollldirection == "horizontal") {
-        options.gameParameter.player.y += options.gameParameter.player.gravity * options.gameParameter.player.speed /** 5*/; 
+        player_y += options.gameParameter.player.gravity * options.gameParameter.player.speed /** 5*/; 
     } else{
-        options.gameParameter.player.y += options.gameParameter.player.gravity * options.gameParameter.player.speed /** 5*/;
+        player_y += options.gameParameter.player.gravity * options.gameParameter.player.speed /** 5*/;
     }
     //Tastaturabfragen
     if (keys[87] || keys[38]) {    //up
-        options.gameParameter.player.y -= 8;
+        player_y -= 8;
         options.gameParameter.player.velY = -options.gameParameter.player.speed * 50;
     }
     if (keys[83] || keys[40]) {    //down
-        options.gameParameter.player.y += 8;
+        player_y += 8;
         options.gameParameter.player.velY = options.gameParameter.player.speed * 50;
     }
     if (keys[65] || keys[37]) {    //left
-        options.gameParameter.player.x -= 8;
+        player_x -= 8;
         options.gameParameter.player.velY = options.gameParameter.player.speed * 50;
     }
     if (keys[68] || keys[39]) {    //right
-        options.gameParameter.player.x += 8;
+        player_x += 8;
         options.gameParameter.player.velY = -options.gameParameter.player.speed * 50;
     }
     if (keys[32] ) {    //Leertaste
@@ -130,42 +132,38 @@ function update() {
         var dir = collision(options.gameParameter.player, foes[j]);
         if (dir === "l" || dir === "r" || dir === "b" || dir === "t") {
             options.gameParameter.player.lives--;
-            options.gameParameter.player.x = 10;
-            options.gameParameter.player.y = canvasHeight/2 + options.gameParameter.player.height;
+            player_x = 10;
+            player_y = canvasHeight/2 + options.gameParameter.player.size.height;
             foes = [];          
             shots = [];
         }
     }
 
-    //Gegner werden erstellt
-    if (options.gameParameter.foes.enabled) {
-        if (options.gameParameter.foes.spawn == "zufall") {
-            if (score % (options.gameParameter.foes.spawnIntervall * 30) == 0) {
-                if (options.gameParameter.horizontal) {
-                    var by = Math.random() * (canvasHeight - 0) + 0;
-                    foes.push({
-                        x: canvasWidth + 10,
-                        y: by,
-                        width: 30,
-                        height: 40,
-                        color: options.gameParameter.foes.color,
-                        lives: 1
-                    });  
-                } else {
-                    var by = Math.random() * (canvasWidth - 0) + 0;
-                    foes.push({
-                        x: by,
-                        y: -10,
-                        width: 30,
-                        height: 40,
-                        color: options.gameParameter.foes.color,
-                        lives: 1
-                    });  
-                }
-            } 
-        } else if (options.gameParameter.foes.spawn == "unten") {
-            //todo
-        }
+    //Gegner werden erstellt ##
+    if (options.gameParameter.foes.enabled && options.gameParameter.selfScroll) {
+        if (score % (options.gameOptions.foes.spawnIntervall * 20) == 0) {
+            if (options.gameOptions.horizontal) {
+                var by = Math.random() * (canvasHeight - 0) + 0;
+                foes.push({
+                    x: canvasWidth + 10,
+                    y: by,
+                    width: options.gameOptions.foes.width,
+                    height: options.gameOptions.foes.height,
+                    color: options.gameOptions.foes.color,
+                    lives: 1
+                });  
+            } else {
+                var by = Math.random() * (canvasWidth - 0) + 0;
+                foes.push({
+                    x: by,
+                    y: -10,
+                    width: options.gameOptions.foes.width,
+                    height: options.gameOptions.foes.height,
+                    color: options.gameOptions.foes.color,
+                    lives: 1
+                });  
+            }
+        } 
     }
 }
 
@@ -200,17 +198,17 @@ function render() {
         ctx.beginPath();
         ctx.lineWidth = 0.1;
         ctx.strokeStyle = '#003300';
-        ctx.rect(options.gameParameter.player.x, options.gameParameter.player.y, options.gameParameter.player.width, options.gameParameter.player.height);
+        ctx.rect(player_x, player_y, options.gameParameter.player.size.width, options.gameParameter.player.size.height);
         ctx.stroke();
         ctx.fillStyle = options.gameParameter.player.color;
-        ctx.fillRect(options.gameParameter.player.x, options.gameParameter.player.y, options.gameParameter.player.width, options.gameParameter.player.height);
+        ctx.fillRect(player_x, player_y, options.gameParameter.player.size.width, options.gameParameter.player.size.height);
         ctx.lineWidth = 1;
         ctx.strokeStyle = '#003300';
         ctx.stroke();
     } else if (options.gameParameter.player.shape == "rund") {
-        var radius = options.gameParameter.player.width;
+        var radius = options.gameParameter.player.size.width;
         ctx.beginPath();
-        ctx.arc(options.gameParameter.player.x, options.gameParameter.player.y + (options.gameParameter.player.width / 2), radius, 0, 2 * Math.PI, false);
+        ctx.arc(player_x, player_y + (options.gameParameter.player.size.width / 2), radius, 0, 2 * Math.PI, false);
         ctx.fillStyle = options.gameParameter.player.color;
         ctx.fill();
         ctx.lineWidth = 1;
@@ -227,18 +225,18 @@ function render() {
           if (options.gameParameter.player.shape == "rund") {
             if (options.gameParameter.horizontal) {
                     // Schuss: Eckig / Player: Rund / Horizontal
-                    ctx.fillRect(shots[s].x + options.gameParameter.player.width/2 + shots[s].width, shots[s].y + options.gameParameter.player.width/2 - shots[s].height/2, shots[s].width, shots[s].height);
+                    ctx.fillRect(shots[s].x + options.gameParameter.player.size.width/2 + shots[s].width, shots[s].y + options.gameParameter.player.size.width/2 - shots[s].height/2, shots[s].width, shots[s].height);
                 } else {
                     // Schuss: Eckig / Player: Rund / Vertikal
-                    ctx.fillRect(shots[s].x - options.gameParameter.player.width/2 , shots[s].y - options.gameParameter.player.width/2 - shots[s].height - 4, shots[s].width, shots[s].height); 
+                    ctx.fillRect(shots[s].x - options.gameParameter.player.size.width/2 , shots[s].y - options.gameParameter.player.size.width/2 - shots[s].height - 4, shots[s].width, shots[s].height); 
                 }                
             } else if (options.gameParameter.player.shape == "eckig") {
              if (options.gameParameter.horizontal) {
                     // Schuss: Eckig / Player: Eckig / Horizontal
-                    ctx.fillRect(shots[s].x + options.gameParameter.player.width, shots[s].y + options.gameParameter.player.height/2 - shots[s].height/2, shots[s].width, shots[s].height);
+                    ctx.fillRect(shots[s].x + options.gameParameter.player.size.width, shots[s].y + options.gameParameter.player.size.height/2 - shots[s].height/2, shots[s].width, shots[s].height);
                 } else {
                     // Schuss: Eckig / Player: Eckig / Vertikal
-                    ctx.fillRect(shots[s].x, shots[s].y - options.gameParameter.player.height/2, shots[s].width, shots[s].height);
+                    ctx.fillRect(shots[s].x, shots[s].y - options.gameParameter.player.size.height/2, shots[s].width, shots[s].height);
                 }  
                 
             }
@@ -249,15 +247,15 @@ function render() {
             if (options.gameParameter.player.shape == "rund") {
                 if (options.gameParameter.horizontal) {
                     // Schuss: Rund / Player: Rund / Horizontal
-                    ctx.arc(shots[s].x + shots[s].width + options.gameParameter.player.width/2 + 4, shots[s].y + options.gameParameter.player.width/2, radius, 0, 2 * Math.PI, false);
+                    ctx.arc(shots[s].x + shots[s].width + options.gameParameter.player.size.width/2 + 4, shots[s].y + options.gameParameter.player.size.width/2, radius, 0, 2 * Math.PI, false);
                 } else { 
                     // Schuss: Rund / Player: Rund / Vertikal   
-                    ctx.arc((shots[s].x + shots[s].width/2) - options.gameParameter.player.width/2, shots[s].y - options.gameParameter.player.width/2 - radius - 4, radius, 0, 2 * Math.PI, false);
+                    ctx.arc((shots[s].x + shots[s].width/2) - options.gameParameter.player.size.width/2, shots[s].y - options.gameParameter.player.size.width/2 - radius - 4, radius, 0, 2 * Math.PI, false);
                 }            
             }else if (options.gameParameter.player.shape == "eckig"){
                 if (options.gameParameter.horizontal) {
                     // Schuss: Rund / Player: Eckig / Horizontal
-                    ctx.arc(shots[s].x + options.gameParameter.player.width + shots[s].width/2, shots[s].y + options.gameParameter.player.height/2 , radius, 0, 2 * Math.PI, false);
+                    ctx.arc(shots[s].x + options.gameParameter.player.size.width + shots[s].width/2, shots[s].y + options.gameParameter.player.size.height/2 , radius, 0, 2 * Math.PI, false);
                 } else {
                     // Schuss: Rund / Player: Eckig / Vertikal       
                     ctx.arc(shots[s].x + shots[s].width/2, shots[s].y - radius - 3, radius, 0, 2 * Math.PI, false);
@@ -280,32 +278,34 @@ function render() {
     }
 
     //Gegner werden gezeichnet
-    for (var s = 0; s < foes.length; s++) {
-        if (options.gameParameter.horizontal) {
-            if (foes[s].lives == 1) {
-                ctx.fillStyle = foes[s].color;
-                ctx.fillRect(foes[s].x, foes[s].y, foes[s].width, foes[s].height);
-                foes[s].x -= multiplier / 2;
-                if (foes[s].x < -20) {
-                    foes.splice(s,1);
-                }
-            }   
-        } else {
-            if (foes[s].lives == 1) {
-                ctx.fillStyle = foes[s].color;
-                ctx.fillRect(foes[s].x, foes[s].y, foes[s].width, foes[s].height);
-                foes[s].y += multiplier / 2;
-                if (foes[s].y > (canvasHeight + 20)) {
-                    foes.splice(s,1);
-                }
+    if (options.gameParameter.selfScroll) {
+        for (var s = 0; s < foes.length; s++) {
+            if (options.gameParameter.horizontal) {
+                if (foes[s].lives == 1) {
+                    ctx.fillStyle = foes[s].color;
+                    ctx.fillRect(foes[s].x, foes[s].y, foes[s].width, foes[s].height);
+                    foes[s].x -= options.gameParameter.foes.speed;
+                    if (foes[s].x < -20) {
+                        foes.splice(s,1);
+                    }
+                 }   
+            } else {
+                if (foes[s].lives == 1) {
+                    ctx.fillStyle = foes[s].color;
+                    ctx.fillRect(foes[s].x, foes[s].y, foes[s].width, foes[s].height);
+                    foes[s].y += options.gameParameter.foes.speed / 2;
+                    if (foes[s].y > (canvasHeight + 20)) {
+                        foes.splice(s,1);
+                    }
+                }    
             }    
-        }    
+        }
     }
 }
 function shot() {
   shots.push({
-    x: options.gameParameter.player.x + options.gameParameter.player.width / 2 - 6,
-    y: options.gameParameter.player.y,
+    x: player_x + options.gameParameter.player.size.width / 2 - 6,
+    y: player_y,
     width: 10,
     height: 10
 });

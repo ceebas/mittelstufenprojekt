@@ -25,6 +25,7 @@ gameOptions = {
     foes: {
         enabled: false,
         lives: 1,
+        speed: 5,
         spawnIntervall : 1,
         spawn: "zufall",
         width: 20,
@@ -215,12 +216,14 @@ function getPlayerOptions(kind, value) {
 
 function getFoeOptions() {
     gameOptions.foes.speed = $('input#foes_speed').val();
+    console.log("Speed: " + gameOptions.foes.speed);
     gameOptions.foes.spawnIntervall = $('input#foes_intervall').val();
     gameOptions.foes.gravity = $('input#foes_gravity').val();
     gameOptions.foes.shape = $('select#foes_shape').val();
     gameOptions.foes.spawn = $('select#foes_spawn').val();
     if ($('input#foes_width').val() != ''){
         gameOptions.foes.width = $('input#foes_width').val();
+        console.log(gameOptions.foes.width);
     }
 
     if ($('input#foes_height').val() != ''){
@@ -231,8 +234,9 @@ function getFoeOptions() {
 
 
 function setFoesEnabled(value) {
-    gameOptions.foes.enabled = value
-    if (value == false) {
+    gameOptions.foes.enabled = value;
+    gameOptions.foes.speed = 5;
+    if (gameOptions.foes.enabled == false) {
         for (var s = 0; s < foes.length; s++) {
             foes.splice(s,1);
             foes = [];
@@ -335,6 +339,7 @@ function update() {
             if (dir === "b" || dir ===  "t" || dir === "l" || dir === "r") {
                 foes[j].lives--;
                 shots.splice(k, 1);
+                console.log("hier");
             }
         }
        // shots.splice(k, 1);
@@ -353,34 +358,30 @@ function update() {
     }
 
     //Gegner werden erstellt
-    if (gameOptions.foes.enabled) {
-        if (gameOptions.foes.spawn == "zufall") {
-            if (score % (gameOptions.foes.spawnIntervall * 30) == 0) {
-                if (gameOptions.horizontal) {
-                    var by = Math.random() * (canvasHeight - 0) + 0;
-                    foes.push({
-                        x: canvasWidth + 10,
-                        y: by,
-                        width: 30,
-                        height: 40,
-                        color: gameOptions.foes.color,
-                        lives: 1
-                    });  
-                } else {
-                    var by = Math.random() * (canvasWidth - 0) + 0;
-                    foes.push({
-                        x: by,
-                        y: -10,
-                        width: 30,
-                        height: 40,
-                        color: gameOptions.foes.color,
-                        lives: 1
-                    });  
-                }
-            } 
-        } else if (gameOptions.foes.spawn == "unten") {
-            //todo
-        }
+    if (gameOptions.foes.enabled && gameOptions.selfScroll) {
+        if (score % (gameOptions.foes.spawnIntervall * 20) == 0) {
+            if (gameOptions.horizontal) {
+                var by = Math.random() * (canvasHeight - 0) + 0;
+                foes.push({
+                    x: canvasWidth + 10,
+                    y: by,
+                    width: gameOptions.foes.width,
+                    height: gameOptions.foes.height,
+                    color: gameOptions.foes.color,
+                    lives: 1
+                });  
+            } else {
+                var by = Math.random() * (canvasWidth - 0) + 0;
+                foes.push({
+                    x: by,
+                    y: -10,
+                    width: gameOptions.foes.width,
+                    height: gameOptions.foes.height,
+                    color: gameOptions.foes.color,
+                    lives: 1
+                });  
+            }
+        } 
     }
 }
 
@@ -495,26 +496,30 @@ function render() {
     }
 
     //Gegner werden gezeichnet
-    for (var s = 0; s < foes.length; s++) {
-        if (gameOptions.horizontal) {
-            if (foes[s].lives == 1) {
-                ctx.fillStyle = foes[s].color;
-                ctx.fillRect(foes[s].x, foes[s].y, foes[s].width, foes[s].height);
-                foes[s].x -= multiplier / 2;
-                if (foes[s].x < -20) {
-                    foes.splice(s,1);
-                }
-             }   
-        } else {
-            if (foes[s].lives == 1) {
-                ctx.fillStyle = foes[s].color;
-                ctx.fillRect(foes[s].x, foes[s].y, foes[s].width, foes[s].height);
-                foes[s].y += multiplier / 2;
-                if (foes[s].y > (canvasHeight + 20)) {
-                    foes.splice(s,1);
-                }
+    if (gameOptions.selfScroll) {
+        for (var s = 0; s < foes.length; s++) {
+            if (gameOptions.horizontal) {
+                if (foes[s].lives == 1) {
+                    ctx.fillStyle = foes[s].color;
+                    ctx.fillRect(foes[s].x, foes[s].y, foes[s].width, foes[s].height);
+                    foes[s].x -= gameOptions.foes.speed;
+                    console.log("speed: " + gameOptions.foes.speed);
+                    if (foes[s].x < -20) {
+                        foes.splice(s,1);
+                    }
+                 }   
+            } else {
+                if (foes[s].lives == 1) {
+                    ctx.fillStyle = foes[s].color;
+                    ctx.fillRect(foes[s].x, foes[s].y, foes[s].width, foes[s].height);
+                    foes[s].y += gameOptions.foes.speed / 2;
+                    console.log("speed: " + gameOptions.foes.speed);
+                    if (foes[s].y > (canvasHeight + 20)) {
+                        foes.splice(s,1);
+                    }
+                }    
             }    
-        }    
+        }
     }
 }
 function shot() {
