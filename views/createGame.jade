@@ -49,7 +49,7 @@ body
 								span#scroll_speed_span /
 								input#scroll_speed(type='range', name='scroll_speed', min='1', max='20', value='10', oninput='showValue(this.value, "scroll_speed"); setSelfscroll(this.value)', onchange='showValue(this.value, "scroll_speed")')
 							br
-							a.btn.btn-primary.changePageBtn(href='#', onclick='changePage(2);') weiter	
+							a.btn.btn-primary.changePageBtn(href='#borders', onclick='changePage(2);') weiter	
 
 						//Borders
 						div#seite2.hidden
@@ -74,8 +74,8 @@ body
 							| Rechts: 
 							input#border_right(type='checkbox', name='border_right', value='true', onchange='changeBorder("right")')
 							br
-							a.btn.btn-primary.changePageBtn(href='#', onclick='changePage(1);') zurück	
-							a.btn.btn-primary.changePageBtn(href='#', onclick='changePage(3);') weiter	
+							a.btn.btn-primary.changePageBtn(href='#gameoptions', onclick='changePage(1);') zurück	
+							a.btn.btn-primary.changePageBtn(href='#playeroptions', onclick='changePage(3);') weiter	
 
 
 
@@ -119,8 +119,8 @@ body
 									option(value='rund') rund	
 									//option(value='eigene') eigene Form hochladen (im nächsten Schritt)
 
-							a.btn.btn-primary.changePageBtn(href='#', onclick='changePage(2);') zurück
-							a.btn.btn-primary.changePageBtn(href='#', onclick='changePage(4);') weiter		
+							a.btn.btn-primary.changePageBtn(href='#borders', onclick='changePage(2);') zurück
+							a.btn.btn-primary.changePageBtn(href='#foeoptions', onclick='changePage(4);') weiter		
 
 						// Gegner optionen				
 						div#seite4.hidden
@@ -148,7 +148,7 @@ body
 								option(value='links') links
 								option(value='rechts') rechts
 								option(value='zufall') zufällig
-							a.btn.btn-primary.changePageBtn(href='#', onclick='changePage(3);') zurück
+							a.btn.btn-primary.changePageBtn(href='#playeroptions', onclick='changePage(3);') zurück
 							button#loginButton.btn.btn-lg.btn-primary.btn-block(type='submit') senden
 	include ./layout/footer.jade
 	script(src='js/gamePreview.js')
