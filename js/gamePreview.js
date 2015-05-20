@@ -326,7 +326,7 @@ function update() {
         } else {
             dir = collision(gameOptions.player, borders[j]);
         }
-        if (dir === "ture" || dir === "l" || dir === "r" || dir === "b" || dir ===  "t") {
+        if (dir === "true" || dir === "l" || dir === "r" || dir === "b" || dir ===  "t") {
             gameOptions.player.velX = 0;
             gameOptions.player.velY = 0;
         }

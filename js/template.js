@@ -13,13 +13,20 @@ scoreSend,
 // Parameter die generisch seinen müssen
 gameStarted = false,
 player_x = canvasWidth / 2,
-player_y = canvasHeight - 30,
+player_y = canvasHeight/2,
+playerVel = 1,
+//Border
+borderX = 0,
+borderY = 0,
+borderWidth = 0,
+borderHeight = 0,
+borderArray = [],
 background = new Image(),
 backX = 0,
 backY = 0;
 background.src = "img/horizontal_preview.png";
 
-if (options.gameParameter.scrollldirection == "horizontal"){
+if (options.gameParameter.scrolldirection == "horizontal"){
     canvas.width = 600;
     canvas.height = 400;
 }else{
@@ -54,10 +61,13 @@ function renderMenu() {
 
 //Schleife wird aufgerufen, wenn Seite fertig geladen
 window.addEventListener("load", function(){
+  createBorders();  
   mainLoop();
 });
 
 function update() {
+
+
     if (options.gameParameter.selfscroll) {
         multiplier = options.gameParameter.scrollspeed * 2;
 
@@ -75,20 +85,16 @@ function update() {
     }
     //Tastaturabfragen
     if (keys[87] || keys[38]) {    //up
-        player_y -= 8;
-        options.gameParameter.player.velY = -options.gameParameter.player.speed * 50;
+        player_y -= playerVel * options.gameParameter.player.speed;
     }
     if (keys[83] || keys[40]) {    //down
-        player_y += 8;
-        options.gameParameter.player.velY = options.gameParameter.player.speed * 50;
+        player_y += playerVel * options.gameParameter.player.speed;
     }
     if (keys[65] || keys[37]) {    //left
-        player_x -= 8;
-        options.gameParameter.player.velY = options.gameParameter.player.speed * 50;
+        player_x -= playerVel * options.gameParameter.player.speed;
     }
     if (keys[68] || keys[39]) {    //right
-        player_x += 8;
-        options.gameParameter.player.velY = -options.gameParameter.player.speed * 50;
+        player_x += playerVel * options.gameParameter.player.speed;
     }
     if (keys[32] ) {    //Leertaste
         if (options.gameParameter.player.shoot.enabled) {
@@ -102,17 +108,11 @@ function update() {
     }
 
     // Kollision mit der Grenze?
-    for (var j = 0, l = options.gameParameter.borders.length; j < l; j++) {
-        var dir;
-        if (options.gameParameter.player.shape == "rund") {
-            dir = collides(borders[j],options.gameParameter.player, null);
-        } else {
-            dir = collision(options.gameParameter.player, borders[j]);
-        }
-        if (dir === "ture" || dir === "l" || dir === "r" || dir === "b" || dir ===  "t") {
-            options.gameParameter.player.velX = 0;
-            options.gameParameter.player.velY = 0;
-        }
+    for (var j = 0, l = borderArray.length; j < l; j++) {
+        var dir = collisionPlayerBorder(options.gameParameter.player, borderArray[j]);
+        if (dir === "l" || dir === "r" || dir === "b" || dir ===  "t") {
+            //alert("kollison mit wand: "+dir);
+            playerVel = 0;
     }
 
     // Kollision zwischen Shot und Gegner?
@@ -131,7 +131,6 @@ function update() {
     for (var j = 0; j < foes.length; j++) { 
         var dir = collision(options.gameParameter.player, foes[j]);
         if (dir === "l" || dir === "r" || dir === "b" || dir === "t") {
-            options.gameParameter.player.lives--;
             player_x = 10;
             player_y = canvasHeight/2 + options.gameParameter.player.size.height;
             foes = [];          
@@ -179,10 +178,9 @@ function render() {
         ctx.drawImage(background, backX, backY - canvasHeight + 1, canvasWidth, canvasHeight);
     }
 
-    for (var s = 0; s < options.gameParameter.borders.length; s++) {
-        ctx.fillStyle = "red";
-        ctx.fillRect(borders[s].x, borders[s].y, borders[s].width, borders[s].height);
-    }
+
+
+
 
     if (Math.abs(backX) > canvasWidth) {
         // Wurden die Bilder mehr als die Canvas Breite verschoben (egal welche Richtung (abs))
@@ -194,7 +192,6 @@ function render() {
         backY = 0;
         // Dann resetten
     }
-    if (options.gameParameter.player.shape == "eckig") {
         ctx.beginPath();
         ctx.lineWidth = 0.1;
         ctx.strokeStyle = '#003300';
@@ -205,18 +202,7 @@ function render() {
         ctx.lineWidth = 1;
         ctx.strokeStyle = '#003300';
         ctx.stroke();
-    } else if (options.gameParameter.player.shape == "rund") {
-        var radius = options.gameParameter.player.size.width;
-        ctx.beginPath();
-        ctx.arc(player_x, player_y + (options.gameParameter.player.size.width / 2), radius, 0, 2 * Math.PI, false);
-        ctx.fillStyle = options.gameParameter.player.color;
-        ctx.fill();
-        ctx.lineWidth = 1;
-        ctx.strokeStyle = '#003300';
-        ctx.stroke();
-    } else {
-        //ctx.drawImage(options.gameParameter.player.images.normal, options.gameParameter.player.x, options.gameParameter.player.y, options.gameParameter.player.width, options.gameParameter.player.height);  
-    }
+
 
     //Schüsse werden gezeichnet
     for (var s = 0; s < shots.length; s++) {
@@ -361,46 +347,100 @@ function collision(shapeA, shapeB) {
     }
 }
 
-//circle.width == radius!!
-function collides (rect, circle, collide_inside) {
-    // compute a center-to-center vector
-    var half = { x: rect.w/2, y: rect.h/2 };
-    var center = {
-        x: circle.x - (rect.x+half.x),
-        y: circle.y - (rect.y+half.y)};
-        
-    // check circle position inside the rectangle quadrant
-    var side = {
-        x: Math.abs (center.x) - half.x,
-        y: Math.abs (center.y) - half.y};
-    if (side.x >  circle.width || side.y >  circle.width) // outside
-        return false; 
-    if (side.x < -circle.width && side.y < -circle.width) // inside
-        return collide_inside;
-    if (side.x < 0 || side.y < 0) // intersects side or corner
-        return true;
-
-    // circle is near the corner
-    return side.x*side.x + side.y*side.y  < circle.width*circle.width;
+//Kollisionsabfragen
+function collisionPlayerBorder(shapeA, shapeB) {
+    if (shapeA !== undefined && shapeB !== undefined) {
+        var vX = (player_x + (shapeA.size.width / 2)) - (shapeB.x + (shapeB.width / 2)),
+        vY = (player_y + (shapeA.size.height / 2)) - (shapeB.y + (shapeB.height / 2)),
+        hWidths = (shapeA.size.width / 2) + (shapeB.width / 2),
+        hHeights = (shapeA.size.height / 2) + (shapeB.height / 2),
+        colDir = null;
+        if (Math.abs(vX) < hWidths && Math.abs(vY) < hHeights) {
+            var oX = hWidths - Math.abs(vX),
+            oY = hHeights - Math.abs(vY);
+            if (oX >= oY) {
+                if (vY > 0) {
+                    colDir = "t";
+                    shapeA.y += oY;
+                } else {
+                    colDir = "b";
+                    shapeA.y -= oY;
+                }
+            } else {
+                if (vX > 0) {
+                    colDir = "l";
+                    shapeA.x += oX;
+                } else {
+                    colDir = "r";
+                    shapeA.x -= oX;
+                }
+            }
+            return colDir;
+        }
+    }
 }
 
-function rectCircleCollision(circle,rect) {
-    var distX = Math.abs(circle.x - rect.x-rect.width/2);
-    var distY = Math.abs(circle.y - rect.y-rect.height/2);
-    if (distX > (rect.width/2 + circle.width)) { 
-        return false; 
-    }
-    if (distY > (rect.height/2 + circle.width)) { 
-        return false; 
-    }
+function createBorders(){
+        if (options.gameParameter.borders.top) {
+            borderX = 0;
+            borderY = 0;
+            borderWidth = canvas.width;
+            borderHeight = 5;
+            //ctx.fillStyle = "red";
+            ctx.fillRect(borderX, borderY, borderWidth, borderHeight);
+            borderArray.push({ //top
+                position: "top",
+                x: borderX,
+                y: borderY,
+                width: borderWidth,
+                height: borderHeight
+            });
+        }
+        if (options.gameParameter.borders.bottom) {
+            borderX = 0;
+            borderY = canvas.height - 5;
+            borderWidth = canvas.width;
+            borderHeight = 5;
+            //ctx.fillStyle = "red";
+            ctx.fillRect(borderX, borderY, borderWidth, borderHeight);
+            borderArray.push({ //bottom
+                position: "bottom",
+                x: borderX,
+                y: borderY,
+                width: borderWidth,
+                height: borderHeight
+            });         
+        }
+        if (options.gameParameter.borders.right) {
+            borderX = canvas.width - 5;
+            borderY = 0;
+            borderWidth = 5;
+            borderHeight = canvas.height;
+            //ctx.fillStyle = "red";
+            ctx.fillRect(borderX, borderY, borderWidth, borderHeight);
+            borderArray.push({ //right
+                position: "right",
+                x: borderX,
+                y: borderY,
+                width: borderWidth,
+                height: borderHeight
+            });
+        }
+        if (options.gameParameter.borders.left) {
+            borderX = 0;
+            borderY = 0;
+            borderWidth = 5;
+            borderHeight = canvas.height;
+            //ctx.fillStyle = "red";
+            ctx.fillRect(borderX, borderY, borderWidth, borderHeight);
+            borderArray.push({ //left
+                position: "left",
+                x: borderX,
+                y: borderY,
+                width: borderWidth,
+                height: borderHeight
+            });
+        }
+    
 
-    if (distX <= (rect.width/2)) { 
-        return true; 
-    } 
-    if (distY <= (rect.height/2)) { 
-        return true; 
-    }
-    var dx=distX-rect.width/2;
-    var dy=distY-rect.height/2;
-    return (dx*dx+dy*dy<=(circle.width*circle.width));
 }
