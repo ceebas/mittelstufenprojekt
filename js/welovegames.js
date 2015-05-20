@@ -90,6 +90,11 @@ $(document).keydown(function(e) {
             return false;
         }
     }
+    if(e.keyCode == 13){
+        if($('#gamename').length){
+            return false;
+        }
+    }
 });
 
 function checkPass() {
