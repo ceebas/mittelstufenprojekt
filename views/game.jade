@@ -56,6 +56,9 @@ body
 	-if(results.javascript != null)
 		script(src='uploads/#{results.user}/#{results.id_game}.#{results.gamename}/#{results.javascript}')
 	-else
+		script.
+			var background = new Image();
+			background.src = "uploads/#{results.user}/#{results.id_game}.#{results.gamename}/background.png";
 		script(src='uploads/#{results.user}/#{results.id_game}.#{results.gamename}/parameter.js')
 		script(src='js/template.js')
 	include ./layout/footer.jade

@@ -13,10 +13,11 @@ panel-body
 						.col-sm-6.col-md-4.gamePanel
 							if(data.inactive == 1)
 								.thumbnail.indexGameView.alert.alert-danger
-									if(data.imageEnc !== null)
+									if(data.imageEnc != null)
 										img.previewPics(src='uploads/#{data.user}/#{data.id_game}.#{data.gamename}/image.#{data.imageEnc}', alt='#{data.gamename}')
 									else 
-										img.previewPics(src='img/placeholder.png', alt='#{data.gamename}')
+										//img.previewPics(src='/preview.png', alt='#{data.gamename}')
+										img.previewPics(src='uploads/#{data.user}/#{data.id_game}.#{data.gamename}/image.png', alt='#{data.gamename}')
 									div
 										h3 #{data.gamename}
 										p #{data.description}
@@ -26,10 +27,10 @@ panel-body
 											span.glyphicon.glyphicon-ok
 							else		
 								.thumbnail.indexGameView
-									if(data.imageEnc !== null)
+									if(data.imageEnc != null)
 										img.previewPics(src='uploads/#{data.user}/#{data.id_game}.#{data.gamename}/image.#{data.imageEnc}', alt='#{data.gamename}')
 									else 
-										img.previewPics(src='img/placeholder.png', alt='#{data.gamename}')
+										img.previewPics(src='uploads/#{data.user}/#{data.id_game}.#{data.gamename}/image.png', alt='#{data.gamename}')
 									div
 										h3 #{data.gamename}
 										p #{data.description}

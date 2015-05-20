@@ -27,7 +27,7 @@ body
 					.col-sm-6.col-md-4.gamePanel
 						.thumbnail.indexGameView
 							a(href='http://files1.coloribus.com/files/adsarchive/part_679/6796305/file/volkswagen-fake-logo-small-12100.jpg')
-										img.previewPics(src='img/wv.png', alt='Werbung')
+								img.previewPics(src='img/wv.png', alt='Werbung')
 								.caption
 									h3 Werbung
 									p Hier könnte Ihre Werbung stehen	
@@ -38,7 +38,7 @@ body
 								img.previewPics(src='uploads/#{data.user}/#{data.id_game}.#{data.gamename}/image.#{data.imageEnc}', alt='#{data.gamename}')
 						else 
 							a(href='/play?game=#{data.id_game}')
-								img.previewPics(src='img/placeholder.png', alt='#{data.gamename}')
+								img.previewPics(src='uploads/#{data.user}/#{data.id_game}.#{data.gamename}/image.png', alt='#{data.gamename}')
 						.caption
 							h3 #{data.gamename}
 							p #{data.description}
