@@ -24,7 +24,7 @@ borderArray = [],
 background = new Image(),
 backX = 0,
 backY = 0;
-//background.src = "/background.png";
+background.src = "img/horizontal_preview.png";
 
 if (options.gameParameter.scrolldirection == "horizontal"){
     canvas.width = 600;
@@ -168,7 +168,7 @@ function update() {
 
 function render() {
 	//overwrite canvas with new parameter - clear out before!
-    ctx.clearRect(null, 0, 0, canvasWidth, canvasHeight);
+    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
     // Erstmal Canvas sauber machen ... alles leer
     ctx.drawImage(background, backX, backY, canvasWidth, canvasHeight);
     if (options.gameParameter.horizontal) {
