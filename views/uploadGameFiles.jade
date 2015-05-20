@@ -9,17 +9,11 @@ body
 				form#files(action='', method='post', enctype='multipart/form-data')
 					.vorschaubild
 						label(for='preview') Vorschaubild
-						input#vorschau(type='file', name='preview', accept=".png,.jpg,.jpeg")
-					.spielerform.hidden
-						label(for='player') Spieler Form
-						input(type='file', name='player', accept=".png,.jpg,.jpeg")
-					.schussform.hidden
-						label(for='shoot') Schuss Form
-						input(type='file', name='shoot', accept=".png,.jpg,.jpeg")
-					.gegnerform.hidden
-						label(for='foes') Gegner Form
-						input(type='file', name='foes', accept=".png,.jpg,.jpeg")
+						input#vorschau(type='file', name='preview', accept=".png,.jpg,.jpeg", required="required")
+					.backgroundinput
+						label(for='background') Hintergrundbild
+						input#background(type='file', name='background', accept=".png,.jpg,.jpeg", required="required")
 					button#loginButton.btn.btn-lg.btn-primary.btn-block(type='submit',onclick='uploadUserFiles();') Hochladen
-	script.
-		updateFilePicker(!{JSON.stringify(gameObj)})
+	//script.
+	//	updateFilePicker(!{JSON.stringify(gameObj)})
 	include ./layout/footer.jade

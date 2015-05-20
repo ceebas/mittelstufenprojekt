@@ -535,8 +535,25 @@ module.exports = function(fs, bcrypt, mysql, accessEmail) {
 								if(filesObject.preview != undefined) {
 									if(filesObject.preview[0].size > 0) {
 										fs.readFile(filesObject.preview[0].path, function(err, data) {
-											fs.writeFile(path + "/" + filesObject.preview[0].fieldName + extension, data, function() {
-												fs.unlink(filesObject.preview[0].path, function() {
+											if(!err) {
+												fs.writeFile(path + "/" + "image" + extension, data, function() {
+													fs.unlink(filesObject.preview[0].path, function() {
+														if(err) {
+															console.log(JSON.stringify(err));
+														}
+													});
+												});
+											}
+										});
+									} 
+								} else {
+									fs.createReadStream(__dirname + '/../img/placeholder.png').pipe(fs.createWriteStream(path + "/" + "image" + extension));
+								}
+								if(filesObject.background != undefined) {
+									if(filesObject.background[0].size > 0) {
+										fs.readFile(filesObject.background[0].path, function(err, data) {
+											fs.writeFile(path + "/" + filesObject.background[0].fieldName + extension, data, function() {
+												fs.unlink(filesObject.background[0].path, function() {
 													if(err) {
 														console.log(JSON.stringify(err));
 													}
@@ -545,7 +562,7 @@ module.exports = function(fs, bcrypt, mysql, accessEmail) {
 										});
 									}
 								}
-								// Spielerform - player
+								/*// Spielerform - player
 								if(filesObject.player != undefined) {
 									if(filesObject.player[0].size > 0) {
 										fs.readFile(filesObject.player[0].path, function(err, data) {
@@ -586,7 +603,7 @@ module.exports = function(fs, bcrypt, mysql, accessEmail) {
 											});
 										});
 									}
-								}
+								}*/
 							} else {
 								console.log(err);
 							}

@@ -296,16 +296,18 @@ module.exports = function(app, passport, multiparty, nodemailer, accessDb, zip, 
 	});
 
 	app.post('/uploadGameFiles', function(request, response) {
-		var requestObj = request.body;
 		var form = new multiparty.Form();
-
+		console.log(request);
 		form.parse(request, function(err, fieldsObject, filesObject, fieldsList, filesList) {
 			accessDb.createGameFiles(request, fieldsObject, filesObject, fieldsList, filesList, render);
+			function render(redirect, err) {
+				if(err) {
+					response.status(500).send(redirect);
+				} else {
+					response.status(200).send(redirect);
+				}
+			}
 		});
-
-		function render(err) {
-			response.redirect('/');
-		}
 	});
 
 	/* Logout */

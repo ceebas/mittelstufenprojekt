@@ -18,6 +18,7 @@ function uploadFile() {
         gamename: document.getElementById("gamename").value,
         gamedescription: document.getElementById("gamedescription").value,
     }
+    
     if (!file) {
         return;
     }
@@ -44,20 +45,31 @@ function uploadFile() {
     }
 }
 
+function handleSelfCreatedGameFileUploadEvent(evt) {
+    files.push(evt.target.files);
+}
+
 // Wird aufgerufen, wenn beim selbst erstellten Spiel die Dateien hochgeladen werden
 function uploadUserFiles() {
     var fileForm = document.getElementById("files");
     var formData = new FormData();
     var xmlreq = new XMLHttpRequest();
-    for(var i = 0;i<fileForm.length;i++) {
-        if(fileForm[i].files != null) {
-            if(fileForm[i].files.length>0) {
-                for(var j = 0; j<fileForm[i].files.length;j++) {
-                    var uploadedFile = fileForm[i].files[j];
-                    formData.append(fileForm[i].name, uploadedFile);
-                }
-            }
+    
+    for(var i = 0;i<files.length;i++) {
+        if(i==0) {
+            formData.append("preview", files[i].item(0));
+            setTimeout(null,5000); 
+        } else if(i==1) {
+            formData.append("background", files[i].item(0));
         }
+    }
+
+    xmlreq.onload = function(e) {
+        console.log("Progress: ");
+    }
+
+    xmlreq.onerror = function() {
+        console.log(xmlreq.responseText);
     }
     xmlreq.open("POST", "/uploadGameFiles");
     xmlreq.send(formData);
@@ -76,8 +88,9 @@ function textareaLimiter() {
     $('#descletters').text(maxlength-length);
 }
 
-// Textlimit-Anzeige für Spieltitel
-function inputLimiter() {
+// Spieltitel wird limitiert und von Sonderzeichen gefiltert
+function inputValidator() {
+    
     var length = $('input#gamename').val().length;
     var maxlength = $('input#gamename').attr('maxlength');
     $('#titleletters').text(maxlength-length);
@@ -222,7 +235,7 @@ function changePreviewDirection(id){
     }
 }
 
-function updateFilePicker(gameObject) {
+/*function updateFilePicker(gameObject) {
     if (gameObject.gameparameter.player.shape == "eigene") {
         $('div.spielerform').removeClass('hidden');
     }
@@ -232,7 +245,7 @@ function updateFilePicker(gameObject) {
     if (gameObject.gameparameter.foes.shape == "eigene") {
         $('div.gegnerform').removeClass('hidden');
     }
-}
+}*/
 
 //Disable input-cache
 $("form :input").attr("autocomplete", "off");
@@ -241,5 +254,8 @@ $("form :input").attr("autocomplete", "off");
 window.onload = function() {
     if (document.getElementById('files') != undefined && window.document.URL == "http://localhost:8081/uploadDoneGame") {
         document.getElementById('files').addEventListener('change', handleFileSelect, false);
+    } else if(document.getElementById('files') != undefined) {
+        document.getElementById('files').addEventListener('change', handleSelfCreatedGameFileUploadEvent, false);
+        files = [];
     }
 }
