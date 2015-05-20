@@ -222,7 +222,7 @@ module.exports = function(fs, bcrypt, mysql, accessEmail) {
 								if (request.user.isAdmin == 0) {
 									request.logout();
 									request.flash('loginMessage', 'Melde dich mit deinen neuen Daten an!');
-									callback(response, '/login');
+									callback(request, '/login');
 								} else if (request.user.isAdmin == 1 && newData.id_user == undefined) {
 									callback(request, "/");
 								} else {
