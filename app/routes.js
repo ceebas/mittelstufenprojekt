@@ -78,6 +78,10 @@ module.exports = function(app, passport, multiparty, nodemailer, accessDb, zip, 
 		response.redirect(userTemp[userIp]);
 		delete userTemp[userIp];
 	});
+
+	app.get('/impressum', function(request, response) {
+		response.render('impressum.jade');
+	});
 	
 	/* Bearbeiten von Nutzerangaben */	
 	app.get('/userSetting',isLoggedIn, function(request, response) {
