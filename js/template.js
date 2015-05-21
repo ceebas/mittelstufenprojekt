@@ -96,6 +96,7 @@ function update() {
     //Tastaturabfragen
     if (keys[87] || keys[38]) {    //up
         player_y -= playerVel * options.gameParameter.player.speed;
+
     }
     if (keys[83] || keys[40]) {    //down
         player_y += playerVel * options.gameParameter.player.speed;
@@ -122,7 +123,21 @@ function update() {
         var dir = collisionPlayerBorder(options.gameParameter.player, borderArray[j]);
         if (dir === "l" || dir === "r" || dir === "b" || dir ===  "t") {
             //alert("kollison mit wand: "+dir);
-            playerVel = 0;
+            //playerVel = 0;
+
+            if (dir === "b") {
+                player_y = canvas.height - options.gameParameter.player.size.height
+            }
+            if (dir === "t") {
+                player_y = 0
+            }
+            if (dir === "l") {
+                player_x = 0
+            }
+            if (dir === "r") {
+                player_y = canvas.width - options.gameParameter.player.size.width
+            }
+
         }else{
             //playerVel = 1;
         }
