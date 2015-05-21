@@ -175,7 +175,7 @@ module.exports = function(app, passport, multiparty, nodemailer, accessDb, zip, 
 			gameObj.gameParameter.borders.right = requestObj.border_right;
 		}
 		gameObj.gameParameter.foes = {
-			"enabled": requestObj.foes_active,
+			"enabled": "true",
 			"speed": requestObj.foes_speed,
 			"active": requestObj.foes_enabled,
 			"shape": requestObj.foes_shape,

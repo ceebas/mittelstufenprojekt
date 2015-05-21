@@ -23,7 +23,7 @@ gameOptions = {
         right: false
     },
     foes: {
-        enabled: false,
+        enabled: true,
         lives: 1,
         speed: 5,
         spawnIntervall : 1,
