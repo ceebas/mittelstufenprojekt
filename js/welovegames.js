@@ -75,9 +75,10 @@ function uploadUserFiles() {
             formData.append("background", files[i].item(0));
         }
     }
-    debugger;
     xmlreq.open("POST", "/uploadGameFiles");
     xmlreq.send(formData);   
+
+    debugger;
 }
 
 // Textarea-Limit-Anzeige für Spielbeschreibung
