@@ -132,18 +132,13 @@ body
 								option(value='eckig') eckig
 								//option(value='rund') rund
 								//option(value='eigene') eigene Form hochladen (im nächsten Schritt)
-								br
-								input#foes_enabled(type='checkbox', name='foes_enabled', value='false', onchange='setFoesEnabled(this.checked); getFoeOptions()')
-								| 	Gegner aktivieren
-								br
-								br
-								label.createGameOption(for='foes_intervall') Spawnintervall der Gegner:
-								span#foes_intervall_span /
-								input#foes_intervall(type='range', name='foes_intervall', min='1', max='10', value='5', oninput='showValue(this.value, "foes_intervall");gameOptions.foes.spawnIntervall = parseInt(this.value);', onchange='showValue(this.value, "foes_intervall"); gameOptions.foes.spawnIntervall = parseInt(this.value);')
-								br
-								label.createGameOption(for='foes_speed') Geschwindigkeit der Gegner:
-								span#foes_speed_span 5
-								input#foes_speed(type='range', name='foes_speed', min='1', max='20', value='5', oninput='showValue(this.value, "foes_speed");gameOptions.foes.speed = parseInt(this.value);', onchange='showValue(this.value, "foes_speed"); gameOptions.foes.speed = parseInt(this.value);')
+							label.createGameOption(for='foes_intervall') Spawnintervall der Gegner:
+							span#foes_intervall_span /
+							input#foes_intervall(type='range', name='foes_intervall', min='1', max='10', value='5', oninput='showValue(this.value, "foes_intervall");gameOptions.foes.spawnIntervall = parseInt(this.value);', onchange='showValue(this.value, "foes_intervall"); gameOptions.foes.spawnIntervall = parseInt(this.value);')
+							br
+							label.createGameOption(for='foes_speed') Geschwindigkeit der Gegner:
+							span#foes_speed_span 5
+							input#foes_speed(type='range', name='foes_speed', min='1', max='20', value='5', oninput='showValue(this.value, "foes_speed");gameOptions.foes.speed = parseInt(this.value);', onchange='showValue(this.value, "foes_speed"); gameOptions.foes.speed = parseInt(this.value);')
 							label.createGameOption(for='foes_width') Breite in px	
 							input#foes_width.form-control(type='number', min='1', name='foes_width',value='20', placeholder='Breite in px', onchange='getFoeOptions()')
 							label.createGameOption(for='foes_height') Höhe in PX
