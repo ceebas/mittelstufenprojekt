@@ -10,7 +10,7 @@ body
 				form.form-signin(role='form', method='post', action='/', )
 					div.form-group
 						label(for='gamename') Name des Spiels
-						input#gamename.form-control(name='gamedata[gamename]', onkeyup='inputLimiter()', type='text', placeholder='Name deines Spiels', maxlength='20', required='required')
+						input#gamename.form-control(name='gamedata[gamename]', onkeyup='inputValidator()', type='text', placeholder='Name deines Spiels', maxlength='20', required='required')
 						div#titleletters.textcount 20
 						br
 					div.form-group

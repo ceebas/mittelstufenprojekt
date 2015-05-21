@@ -1,5 +1,22 @@
 /* FileUpload */
 var files;
+var xmlreq = new XMLHttpRequest();
+
+
+
+    xmlreq.onload = function(e) {
+        console.log("Progress: ");
+    }
+
+    xmlreq.onerror = function() {
+        console.log(xmlreq.responseText);
+    }
+
+    xmlreq.onreadystatechange = function() {
+        if(xmlreq.readyState == 4 && xmlreq.status == 200) {
+            window.location = xmlreq.response;
+        }
+    }
 // Anzeige von Dateiinformationen der ausgewählten Datei(en)
 function handleFileSelect(evt) {
     files = evt.target.files;
@@ -53,7 +70,6 @@ function handleSelfCreatedGameFileUploadEvent(evt) {
 function uploadUserFiles() {
     var fileForm = document.getElementById("files");
     var formData = new FormData();
-    var xmlreq = new XMLHttpRequest();
     
     for(var i = 0;i<files.length;i++) {
         if(i==0) {
@@ -63,22 +79,9 @@ function uploadUserFiles() {
             formData.append("background", files[i].item(0));
         }
     }
-
-    xmlreq.onload = function(e) {
-        console.log("Progress: ");
-    }
-
-    xmlreq.onerror = function() {
-        console.log(xmlreq.responseText);
-    }
     xmlreq.open("POST", "/uploadGameFiles");
     xmlreq.send(formData);
 
-    xmlreq.onreadystatechange = function() {
-        if(xmlreq.readyState == 4 && xmlreq.status == 200) {
-            window.location = xmlreq.response;
-        }
-    }
 }
 
 // Textarea-Limit-Anzeige für Spielbeschreibung
