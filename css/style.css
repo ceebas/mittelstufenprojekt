@@ -187,6 +187,10 @@ textarea {
 	margin-left: 10px;
 }
 
+.createGameOption{
+	//float: left;
+}
+
 #reset_player{
 	margin: 10px;
 }

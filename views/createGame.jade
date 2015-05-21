@@ -45,7 +45,7 @@ body
 							| 	Selbstscroller
 							//Wenn selbstscroller dann anzeigen
 							div#scroll.hidden
-								| Scrollgeschwindigkeit:
+								label.createGameOption(for='scroll_speed') Scrollgeschwindigkeit:
 								span#scroll_speed_span /
 								input#scroll_speed(type='range', name='scroll_speed', min='1', max='20', value='10', oninput='showValue(this.value, "scroll_speed"); setSelfscroll(this.value)', onchange='showValue(this.value, "scroll_speed")')
 							br
@@ -145,9 +145,9 @@ body
 								span#foes_speed_span 5
 								input#foes_speed(type='range', name='foes_speed', min='1', max='20', value='5', oninput='showValue(this.value, "foes_speed");gameOptions.foes.speed = parseInt(this.value);', onchange='showValue(this.value, "foes_speed"); gameOptions.foes.speed = parseInt(this.value);')
 							label.createGameOption(for='foes_width') Breite in px	
-							input#foes_width.form-control(type='number', min='1', name='foes_width', placeholder='Breite in px', onchange='getFoeOptions()')
+							input#foes_width.form-control(type='number', min='1', name='foes_width',value='20', placeholder='Breite in px', onchange='getFoeOptions()')
 							label.createGameOption(for='foes_height') Höhe in PX
-							input#foes_height.form-control(type='number', min='1', name='foes_height', placeholder='Hoehe in px', onchange='getFoeOptions()')
+							input#foes_height.form-control(type='number', min='1', name='foes_height',value='30', placeholder='Hoehe in px', onchange='getFoeOptions()')
 							input#foes_color.form-control.color(type='text', name='foes_color', placeholder='Farbe', onchange='getFoeOptions()', value='#88ff00')
 							label.createGameOption(for='foes_spawn') Wo sollen die Gegner spawnen?
 							select#foes_spawn.form-control(name='foes_spawn', size='1', onchange='getFoeOptions()')
