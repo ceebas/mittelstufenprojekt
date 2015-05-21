@@ -21,6 +21,8 @@ borderY = 0,
 borderWidth = 0,
 borderHeight = 0,
 borderArray = [],
+shots = [],
+shootSpeed = 1,
 background = new Image(),
 backX = 0,
 backY = 0;
@@ -34,6 +36,11 @@ if (options.gameParameter.scrolldirection == "horizontal"){
     canvas.height = 600;
 }
 
+if (options.gameParameter.player.shoot.speed == null || options.gameParameter.player.shoot.speed == undefined ) {
+    shootSpeed = 2;
+}else{
+    shootSpeed = options.gameParameter.player.shoot.speed;
+} 
 
 
 
@@ -79,16 +86,17 @@ function update() {
 
 
     if (options.gameParameter.selfscroll) {
-        multiplier = options.gameParameter.scrollspeed * 2;
+
+        multiplier = (options.gameParameter.scrollspeed / 10) * 2;
 
         score = Math.floor(score + multiplier);
-        if (options.gameParameter.scrollldirection == "horizontal") {
+        if (options.gameParameter.scrolldirection == "horizontal") {
             backX -= multiplier;
         } else {
             backY += multiplier;
         }
     }
-    if (options.gameParameter.scrollldirection == "horizontal") {
+    if (options.gameParameter.scrolldirection == "horizontal") {
         player_y += options.gameParameter.player.gravity * options.gameParameter.player.speed /** 5*/; 
     } else{
         player_y += options.gameParameter.player.gravity * options.gameParameter.player.speed /** 5*/;
@@ -150,6 +158,7 @@ function update() {
             if (dir === "b" || dir ===  "t" || dir === "l" || dir === "r") {
                 foes[j].lives--;
                 shots.splice(k, 1);
+                console.log("1");
             }
         }
        // shots.splice(k, 1);
@@ -160,7 +169,7 @@ function update() {
         var dir = collisionPlayerBorder(options.gameParameter.player, foes[j]);
         if (dir === "l" || dir === "r" || dir === "b" || dir === "t") {
             player_x = 10;
-            player_y = canvasHeight/2 + options.gameParameter.player.size.height;
+            player_y = canvas.height/2 + options.gameParameter.player.size.height;
             foes = [];          
             shots = [];
 
@@ -173,10 +182,10 @@ function update() {
     //Gegner werden erstellt ##
     if (options.gameParameter.foes.enabled && options.gameParameter.selfScroll) {
         if (score % (options.gameOptions.foes.spawnIntervall * 20) == 0) {
-            if (options.gameOptions.horizontal) {
-                var by = Math.random() * (canvasHeight - 0) + 0;
+            if (options.gameParameter.scrolldirection == "horizontal") {
+                var by = Math.random() * (canvas.height - 0) + 0;
                 foes.push({
-                    x: canvasWidth + 10,
+                    x: canvas.width + 10,
                     y: by,
                     width: options.gameOptions.foes.width,
                     height: options.gameOptions.foes.height,
@@ -184,7 +193,7 @@ function update() {
                     lives: 1
                 });  
             } else {
-                var by = Math.random() * (canvasWidth - 0) + 0;
+                var by = Math.random() * (canvas.width - 0) + 0;
                 foes.push({
                     x: by,
                     y: -10,
@@ -200,26 +209,26 @@ function update() {
 
 function render() {
 	//overwrite canvas with new parameter - clear out before!
-    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     // Erstmal Canvas sauber machen ... alles leer
-    ctx.drawImage(background, backX, backY, canvasWidth, canvasHeight);
-    if (options.gameParameter.horizontal) {
-        ctx.drawImage(background, backX + canvasWidth - 1, backY, canvasWidth, canvasHeight);
+    ctx.drawImage(background, backX, backY, canvas.width, canvas.height);
+    if (options.gameParameter.scrolldirection == "horizontal") {
+        ctx.drawImage(background, backX + canvas.width - 1, backY, canvas.width, canvas.height);
     } else {
-        ctx.drawImage(background, backX, backY + canvasHeight - 1, canvasWidth, canvasHeight);
-        ctx.drawImage(background, backX, backY - canvasHeight + 1, canvasWidth, canvasHeight);
+        ctx.drawImage(background, backX, backY + canvas.height - 1, canvas.width, canvas.height);
+        ctx.drawImage(background, backX, backY - canvas.height + 1, canvas.width, canvas.height);
     }
 
 
 
 
 
-    if (Math.abs(backX) > canvasWidth) {
+    if (Math.abs(backX) > canvas.width) {
         // Wurden die Bilder mehr als die Canvas Breite verschoben (egal welche Richtung (abs))
         backX = 0;
         // Dann resetten
     }
-    if (Math.abs(backY) > canvasHeight) {
+    if (Math.abs(backY) > canvas.height) {
         // Wurden die Bilder mehr als die Canvas Höhe verschoben (egal welche Richtung (abs))
         backY = 0;
         // Dann resetten
@@ -241,7 +250,7 @@ function render() {
         ctx.fillStyle = options.gameParameter.player.shoot.color;
         if (options.gameParameter.player.shoot.shape == "eckig") {
           if (options.gameParameter.player.shape == "rund") {
-            if (options.gameParameter.horizontal) {
+            if (options.gameParameter.scrolldirection == "horizontal") {
                     // Schuss: Eckig / Player: Rund / Horizontal
                     ctx.fillRect(shots[s].x + options.gameParameter.player.size.width/2 + shots[s].width, shots[s].y + options.gameParameter.player.size.width/2 - shots[s].height/2, shots[s].width, shots[s].height);
                 } else {
@@ -249,7 +258,7 @@ function render() {
                     ctx.fillRect(shots[s].x - options.gameParameter.player.size.width/2 , shots[s].y - options.gameParameter.player.size.width/2 - shots[s].height - 4, shots[s].width, shots[s].height); 
                 }                
             } else if (options.gameParameter.player.shape == "eckig") {
-             if (options.gameParameter.horizontal) {
+             if (options.gameParameter.scrolldirection == "horizontal") {
                     // Schuss: Eckig / Player: Eckig / Horizontal
                     ctx.fillRect(shots[s].x + options.gameParameter.player.size.width, shots[s].y + options.gameParameter.player.size.height/2 - shots[s].height/2, shots[s].width, shots[s].height);
                 } else {
@@ -263,7 +272,7 @@ function render() {
             var radius = shots[s].width / 2;
             ctx.beginPath();
             if (options.gameParameter.player.shape == "rund") {
-                if (options.gameParameter.horizontal) {
+                if (options.gameParameter.scrolldirection == "horizontal") {
                     // Schuss: Rund / Player: Rund / Horizontal
                     ctx.arc(shots[s].x + shots[s].width + options.gameParameter.player.size.width/2 + 4, shots[s].y + options.gameParameter.player.size.width/2, radius, 0, 2 * Math.PI, false);
                 } else { 
@@ -271,10 +280,11 @@ function render() {
                     ctx.arc((shots[s].x + shots[s].width/2) - options.gameParameter.player.size.width/2, shots[s].y - options.gameParameter.player.size.width/2 - radius - 4, radius, 0, 2 * Math.PI, false);
                 }            
             }else if (options.gameParameter.player.shape == "eckig"){
-                if (options.gameParameter.horizontal) {
+                if (options.gameParameter.scrolldirection == "horizontal") {
                     // Schuss: Rund / Player: Eckig / Horizontal
                     ctx.arc(shots[s].x + options.gameParameter.player.size.width + shots[s].width/2, shots[s].y + options.gameParameter.player.size.height/2 , radius, 0, 2 * Math.PI, false);
-                } else {
+                    ctx.fill();                
+               } else {
                     // Schuss: Rund / Player: Eckig / Vertikal       
                     ctx.arc(shots[s].x + shots[s].width/2, shots[s].y - radius - 3, radius, 0, 2 * Math.PI, false);
                 }
@@ -283,22 +293,23 @@ function render() {
         }
         
         // Schussrichtung festlegen je nach Horizontal / Vertikal
-        if (options.gameParameter.horizontal){
-            shots[s].x += options.gameParameter.player.shoot.speed + 7;
+        if (options.gameParameter.scrolldirection == "horizontal"){
+            shots[s].x += shootSpeed + 7;
         }else{
-            shots[s].y -= options.gameParameter.player.shoot.speed + 7;
+            shots[s].y -= shootSpeed + 7;
         } 
 
         
         if (shots[s].y < (-50)) {
             shots.splice(s,1);
+            console.log("2");
         }
     }
 
     //Gegner werden gezeichnet
     if (options.gameParameter.selfScroll) {
         for (var s = 0; s < foes.length; s++) {
-            if (options.gameParameter.horizontal) {
+            if (options.gameParameter.scrolldirection == "horizontal") {
                 if (foes[s].lives == 1) {
                     ctx.fillStyle = foes[s].color;
                     ctx.fillRect(foes[s].x, foes[s].y, foes[s].width, foes[s].height);
@@ -312,7 +323,7 @@ function render() {
                     ctx.fillStyle = foes[s].color;
                     ctx.fillRect(foes[s].x, foes[s].y, foes[s].width, foes[s].height);
                     foes[s].y += options.gameParameter.foes.speed / 2;
-                    if (foes[s].y > (canvasHeight + 20)) {
+                    if (foes[s].y > (canvas.height + 20)) {
                         foes.splice(s,1);
                     }
                 }    
