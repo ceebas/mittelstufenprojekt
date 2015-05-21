@@ -8,10 +8,10 @@ body
 			.panel-body
 				form#files(action='', method='post', enctype='multipart/form-data')
 					.vorschaubild
-						label(for='preview') Vorschaubild
+						label.createGameOption(for='preview') Vorschaubild
 						input#vorschau(type='file', name='preview', accept=".png,.jpg,.jpeg", required="required")
 					.backgroundinput
-						label(for='background') Hintergrundbild
+						label.createGameOption(for='background') Hintergrundbild
 						input#background(type='file', name='background', accept=".png,.jpg,.jpeg", required="required")
 					button#loginButton.btn.btn-lg.btn-primary.btn-block(type='submit',onclick='uploadUserFiles();') Hochladen
 	//script.

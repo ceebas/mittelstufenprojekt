@@ -45,7 +45,7 @@ body
 							| 	Selbstscroller
 							//Wenn selbstscroller dann anzeigen
 							div#scroll.hidden
-								| Scrollgeschwindigkeit:
+								label.createGameOption(for='scroll_speed') Scrollgeschwindigkeit:
 								span#scroll_speed_span /
 								input#scroll_speed(type='range', name='scroll_speed', min='1', max='20', value='10', oninput='showValue(this.value, "scroll_speed"); setSelfscroll(this.value)', onchange='showValue(this.value, "scroll_speed")')
 							br
