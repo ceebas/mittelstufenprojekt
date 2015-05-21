@@ -10,6 +10,7 @@ multiplier = 0,
 canvasHeight = 400, 
 canvasWidth = 600,
 scoreSend,
+points = 0,
 // Parameter die generisch seinen müssen
 gameStarted = false,
 player_x = canvasWidth / 2,
@@ -73,6 +74,7 @@ function sendScoreRequest(){
     req.open('POST', '/submitScore');
     req.setRequestHeader('Content-Type', 'application/json');
     req.send(JSON.stringify(data));
+    points = 0;
     scoreSend = true;
 }
 
@@ -330,6 +332,12 @@ function render() {
             }    
         }
     }
+
+
+    // Render points
+    ctx.font="20px Georgia";
+    ctx.fillText("Punkte: " + points,10,20);
+
 }
 function shot() {
   shots.push({
