@@ -187,8 +187,8 @@ function update() {
                 foes.push({
                     x: canvas.width + 10,
                     y: by,
-                    width: options.gameOptions.foes.width,
-                    height: options.gameOptions.foes.height,
+                    width: options.gameOptions.foes.size.width,
+                    height: options.gameOptions.foes.size.height,
                     color: options.gameOptions.foes.color,
                     lives: 1
                 });  
