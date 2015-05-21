@@ -10,7 +10,9 @@ body
 			//was passiert wenn kein javascript vorhanden ist?
 			-if (user != null && user.id_user == results.user)
 				-if(results.javascript != null)
-					a(href='download?gameId=#{results.id_game}')  Dieses Spiel downloaden
+					a(href='uploads/#{results.user}/#{results.id_game}.#{results.gamename}/#{results.javascript}' download='WeLoveGames_#{results.gamename}.js') Dieses Spiel downloaden
+				-else 
+					a(href='uploads/#{results.user}/#{results.id_game}.#{results.gamename}/parameter.js' download='WeLoveGames_#{results.gamename}.js')  Dieses Spiel downloaden
 			br
 			canvas#canvas
 			br
