@@ -134,7 +134,6 @@ module.exports = function(app, passport, multiparty, nodemailer, accessDb, zip, 
 
 	app.post('/createGame', isLoggedIn, function(request, response) {
 		var requestObj = request.body;
-
 		var form = new multiparty.Form();
 		var gameObj = {
 			"gamedata": {
