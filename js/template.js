@@ -27,7 +27,8 @@ shootSpeed = 1,
 background = new Image(),
 backX = 0,
 backY = 0;
-background.src = "img/horizontal_preview.png";
+background.src = backgroundPath;  
+
 
 if (options.gameParameter.scrolldirection == "horizontal"){
     canvas.width = 600;
@@ -43,7 +44,13 @@ if (options.gameParameter.player.shoot.speed == null || options.gameParameter.pl
     shootSpeed = options.gameParameter.player.shoot.speed;
 } 
 
-
+function noBackground(){
+    if (options.gameParameter.scrolldirection =="horizontal"){
+        background.src = "img/horizontal_preview.png"; 
+    }else{
+        background.src = "img/vertical_preview.png";
+    }
+}
 
 
 //Spielbeginn
@@ -210,16 +217,17 @@ function update() {
 }
 
 function render() {
+    console.log(background.src);
 	//overwrite canvas with new parameter - clear out before!
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     // Erstmal Canvas sauber machen ... alles leer
-    ctx.drawImage(background, backX, backY, canvas.width, canvas.height);
-    if (options.gameParameter.scrolldirection == "horizontal") {
-        ctx.drawImage(background, backX + canvas.width - 1, backY, canvas.width, canvas.height);
-    } else {
-        ctx.drawImage(background, backX, backY + canvas.height - 1, canvas.width, canvas.height);
-        ctx.drawImage(background, backX, backY - canvas.height + 1, canvas.width, canvas.height);
-    }
+        ctx.drawImage(background, backX, backY, canvas.width, canvas.height);
+        if (options.gameParameter.scrolldirection == "horizontal") {
+            ctx.drawImage(background, backX + canvas.width - 1, backY, canvas.width, canvas.height);
+        } else {
+            ctx.drawImage(background, backX, backY + canvas.height - 1, canvas.width, canvas.height);
+            ctx.drawImage(background, backX, backY - canvas.height + 1, canvas.width, canvas.height);
+        }
 
 
 
@@ -238,9 +246,9 @@ function render() {
         ctx.beginPath();
         ctx.lineWidth = 0.1;
         ctx.strokeStyle = '#003300';
+        ctx.fillStyle = options.gameParameter.player.color;
         ctx.rect(player_x, player_y, options.gameParameter.player.size.width, options.gameParameter.player.size.height);
         ctx.stroke();
-        ctx.fillStyle = options.gameParameter.player.color;
         ctx.fillRect(player_x, player_y, options.gameParameter.player.size.width, options.gameParameter.player.size.height);
         ctx.lineWidth = 1;
         ctx.strokeStyle = '#003300';
