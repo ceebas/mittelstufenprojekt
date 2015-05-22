@@ -250,6 +250,13 @@ function changePreviewDirection(id){
 //Disable input-cache
 $("form :input").attr("autocomplete", "off");
 
+
+//Zeige placeholder wenn Bild nicht vorhanden
+function showPlaceholder(){
+    $(".previewPics").attr("src","img/placeholder.png");
+    //document.getElementByClas('gamePreview').src='img/placeholder.png';
+}
+
 /* EventListener */
 window.onload = function() {
     if (document.getElementById('files') != undefined && window.document.URL == "http://localhost:8081/uploadDoneGame") {
