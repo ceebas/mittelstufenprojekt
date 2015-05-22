@@ -33,12 +33,12 @@ body
 									p Hier könnte Ihre Werbung stehen	
 				.col-sm-6.col-md-4.gamePanel
 					.thumbnail.indexGameView
-						if(data.imageEnc !== null)
+						if(data.imageEnc != null)
 							a(href='/play?game=#{data.id_game}')
-								img.previewPics(src='uploads/#{data.user}/#{data.id_game}.#{data.gamename}/image.#{data.imageEnc}', alt='#{data.gamename}')
+								img.previewPics(src='uploads/#{data.user}/#{data.id_game}.#{data.gamename}/image.#{data.imageEnc}', alt='#{data.gamename}', onerror='showPlaceholder()')
 						else 
 							a(href='/play?game=#{data.id_game}')
-								img.previewPics(src='uploads/#{data.user}/#{data.id_game}.#{data.gamename}/image.png', alt='#{data.gamename}')
+								img.previewPics(src='uploads/#{data.user}/#{data.id_game}.#{data.gamename}/image.png', alt='#{data.gamename}', onerror='showPlaceholder()')
 						.caption
 							h3 #{data.gamename}
 							p #{data.description}
