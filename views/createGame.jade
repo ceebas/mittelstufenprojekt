@@ -144,13 +144,6 @@ body
 							label.createGameOption(for='foes_height') Höhe in PX
 							input#foes_height.form-control(type='number', min='1', name='foes_height',value='30', placeholder='Hoehe in px', onchange='getFoeOptions()')
 							input#foes_color.form-control.color(type='text', name='foes_color', placeholder='Farbe', onchange='getFoeOptions()', value='#88ff00')
-							label.createGameOption(for='foes_spawn') Wo sollen die Gegner spawnen?
-							select#foes_spawn.form-control(name='foes_spawn', size='1', onchange='getFoeOptions()')
-								option(value='unten') unten
-								option(value='oben') oben
-								option(value='links') links
-								option(value='rechts') rechts
-								option(value='zufall') zufällig
 							a.btn.btn-primary.changePageBtn(href='#playeroptions', onclick='changePage(3);') zurück
 							button#loginButton.btn.btn-lg.btn-primary.btn-block(type='submit') senden
 	include ./layout/footer.jade
