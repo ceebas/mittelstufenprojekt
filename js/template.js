@@ -335,8 +335,11 @@ function render() {
 
 
     // Render points
-    ctx.font="20px Georgia";
+    ctx.fillStyle=options.gameParameter.player.color;
+    ctx.font="20px Arial";
     ctx.fillText("Punkte: " + points,10,20);
+    //Wasserzeichen
+    ctx.fillText("We♥Games",canvas.width - 110,canvas.height -5);
 
 }
 function shot() {
