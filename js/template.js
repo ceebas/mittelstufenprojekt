@@ -117,7 +117,7 @@ function update() {
         player_y += playerVel * options.gameParameter.player.speed;
     }
     if (keys[65] || keys[37]) {    //left
-        player_x -= playerVel * options.gameParameter.player.speed ;
+        player_x -= playerVel * options.gameParameter.player.speed;
     }
     if (keys[68] || keys[39]) {    //right
         player_x += playerVel * options.gameParameter.player.speed;
@@ -150,7 +150,7 @@ function update() {
                 player_x = 0
             }
             if (dir === "r") {
-                player_y = canvas.width - options.gameParameter.player.size.width
+                player_x = canvas.width - options.gameParameter.player.size.width
             }
 
         }else{
