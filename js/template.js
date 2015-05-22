@@ -110,17 +110,17 @@ function update() {
     }
     //Tastaturabfragen
     if (keys[87] || keys[38]) {    //up
-        player_y -= playerVel * options.gameParameter.player.speed * 1.5;
+        player_y -= playerVel * options.gameParameter.player.speed;
 
     }
     if (keys[83] || keys[40]) {    //down
-        player_y += playerVel * options.gameParameter.player.speed * 1.5;
+        player_y += playerVel * options.gameParameter.player.speed;
     }
     if (keys[65] || keys[37]) {    //left
-        player_x -= playerVel * options.gameParameter.player.speed * 1.5;
+        player_x -= playerVel * options.gameParameter.player.speed ;
     }
     if (keys[68] || keys[39]) {    //right
-        player_x += playerVel * options.gameParameter.player.speed * 1.5;
+        player_x += playerVel * options.gameParameter.player.speed;
     }
     if (keys[32] ) {    //Leertaste
         if (options.gameParameter.player.shoot.enabled) {
