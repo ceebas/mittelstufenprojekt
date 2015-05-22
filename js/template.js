@@ -72,7 +72,7 @@ function renderMenu() {
 
 function sendScoreRequest(){
     var req = new XMLHttpRequest();
-    var data = { score: points, gameId: gameId};
+    var data = { score: Math.floor(points), gameId: gameId};
     req.open('POST', '/submitScore');
     req.setRequestHeader('Content-Type', 'application/json');
     req.send(JSON.stringify(data));
@@ -223,11 +223,11 @@ function render() {
     ctx.drawImage(background, backX, backY, canvas.width, canvas.height);
     if (options.gameParameter.scrolldirection == "horizontal") {
         ctx.drawImage(background, backX + canvas.width - 1, backY, canvas.width, canvas.height);
-        points += backX;
+        points += Math.floor(backX);
     } else {
         ctx.drawImage(background, backX, backY + canvas.height - 1, canvas.width, canvas.height);
         ctx.drawImage(background, backX, backY - canvas.height + 1, canvas.width, canvas.height);
-        points += backY;
+        points += Math.floor(backY);
     }
 
 
@@ -346,7 +346,7 @@ function render() {
     // Render points
     ctx.fillStyle=options.gameParameter.player.color;
     ctx.font="20px Arial";
-    ctx.fillText("Punkte: " + points,10,20);
+    ctx.fillText("Punkte: " + Math.floor(points),10,20);
     //Wasserzeichen
     ctx.fillText("We♥Games",canvas.width - 110,canvas.height -5);
 
