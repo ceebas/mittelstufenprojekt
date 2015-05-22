@@ -37,6 +37,15 @@ if (options.gameParameter.scrolldirection == "horizontal"){
     canvas.height = 600;
 }
 
+function noBackground(){
+    if (options.gameParameter.scrolldirection == "horizontal"){
+        background.src = "img/horizontal_preview.png";
+    }else{
+        background.src = "img/vertical_preview.png";
+    }
+}
+
+
 if (options.gameParameter.player.shoot.speed == null || options.gameParameter.player.shoot.speed == undefined ) {
     shootSpeed = 2;
 }else{
@@ -111,7 +120,6 @@ function update() {
     //Tastaturabfragen
     if (keys[87] || keys[38]) {    //up
         player_y -= playerVel * options.gameParameter.player.speed;
-
     }
     if (keys[83] || keys[40]) {    //down
         player_y += playerVel * options.gameParameter.player.speed;
