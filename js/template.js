@@ -44,8 +44,6 @@ if (options.gameParameter.player.shoot.speed == null || options.gameParameter.pl
 } 
 
 
-
-
 //Spielbeginn
 
 function mainLoop() {
