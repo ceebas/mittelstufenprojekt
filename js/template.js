@@ -50,7 +50,9 @@ if (options.gameParameter.player.shoot.speed == null || options.gameParameter.pl
 
 function mainLoop() {
 	if (!gameStarted) {
-        gameStarted = true;
+         //gameStarted = true;
+        update();
+        render();        
 		/*renderMenu();
 		if (!scoreSend) {
 			sendScoreRequest();
@@ -58,8 +60,9 @@ function mainLoop() {
 	} else {
 		update();
 		render();
+        requestAnimationFrame(mainLoop);
 	}
-	requestAnimationFrame(mainLoop);
+	
 }
 
 
@@ -105,17 +108,17 @@ function update() {
     }
     //Tastaturabfragen
     if (keys[87] || keys[38]) {    //up
-        player_y -= playerVel * options.gameParameter.player.speed;
+        player_y -= playerVel * options.gameParameter.player.speed * 1.5;
 
     }
     if (keys[83] || keys[40]) {    //down
-        player_y += playerVel * options.gameParameter.player.speed;
+        player_y += playerVel * options.gameParameter.player.speed * 1.5;
     }
     if (keys[65] || keys[37]) {    //left
-        player_x -= playerVel * options.gameParameter.player.speed;
+        player_x -= playerVel * options.gameParameter.player.speed * 1.5;
     }
     if (keys[68] || keys[39]) {    //right
-        player_x += playerVel * options.gameParameter.player.speed;
+        player_x += playerVel * options.gameParameter.player.speed * 1.5;
     }
     if (keys[32] ) {    //Leertaste
         if (options.gameParameter.player.shoot.enabled) {
@@ -171,9 +174,11 @@ function update() {
         var dir = collisionPlayerBorder(options.gameParameter.player, foes[j]);
         if (dir === "l" || dir === "r" || dir === "b" || dir === "t") {
             player_x = 10;
-            player_y = canvas.height/2 + options.gameParameter.player.size.height;
+            player_y = (canvas.height / 2) + parseInt(options.gameParameter.player.size.height);
             foes = [];          
             shots = [];
+            gameStarted = false;
+            sendScoreRequest();
 
             if (gameStarted){
                 scoreSend = false;
@@ -309,7 +314,7 @@ function render() {
     }
 
     //Gegner werden gezeichnet
-    if (options.gameParameter.selfScroll) {
+    if (options.gameParameter.selfscroll) {
         for (var s = 0; s < foes.length; s++) {
             if (options.gameParameter.scrolldirection == "horizontal") {
                 if (foes[s].lives == 1) {
@@ -360,6 +365,9 @@ function sendScoreRequest() {
 document.body.addEventListener("keydown", function(e) {
   if (gameStarted) {
         e.preventDefault();
+    } else {
+        gameStarted = true;
+        requestAnimationFrame(mainLoop);
     }
     keys[e.keyCode] = true;
     }, false);
