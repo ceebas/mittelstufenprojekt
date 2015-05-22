@@ -55,6 +55,7 @@ function mainLoop() {
 		if (!scoreSend) {
 			sendScoreRequest();
 		}*/
+
 	} else {
 		update();
 		render();
@@ -71,10 +72,12 @@ function renderMenu() {
 
 function sendScoreRequest(){
     var req = new XMLHttpRequest();
-    var data = { score: points, gameId: gamedId};
+    var data = { score: points, gameId: gameId};
     req.open('POST', '/submitScore');
     req.setRequestHeader('Content-Type', 'application/json');
     req.send(JSON.stringify(data));
+    backX = 0;
+    backY = 0;
     points = 0;
     scoreSend = true;
 }
@@ -91,8 +94,9 @@ function update() {
     if (options.gameParameter.selfscroll) {
 
         multiplier = (options.gameParameter.scrollspeed / 10) * 2;
+        var tempMultiplier = options.gameParameter.scrollspeed * 2;
 
-        score = Math.floor(score + multiplier);
+        score = Math.floor(score + (multiplier * 2));
         if (options.gameParameter.scrolldirection == "horizontal") {
             backX -= multiplier;
         } else {
@@ -177,7 +181,7 @@ function update() {
             shots = [];
             gameStarted = false;
             sendScoreRequest();
-
+            //points = 0;
             if (gameStarted){
                 scoreSend = false;
             }
@@ -219,9 +223,11 @@ function render() {
     ctx.drawImage(background, backX, backY, canvas.width, canvas.height);
     if (options.gameParameter.scrolldirection == "horizontal") {
         ctx.drawImage(background, backX + canvas.width - 1, backY, canvas.width, canvas.height);
+        points += backX;
     } else {
         ctx.drawImage(background, backX, backY + canvas.height - 1, canvas.width, canvas.height);
         ctx.drawImage(background, backX, backY - canvas.height + 1, canvas.width, canvas.height);
+        points += backY;
     }
 
 
@@ -354,10 +360,6 @@ function shot() {
 });
 }
 
-function sendScoreRequest() {
-	//post request with score object
-	scoreSend = true;
-}
 
 //Tastaturanschläge abfangen
 document.body.addEventListener("keydown", function(e) {
