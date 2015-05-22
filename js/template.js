@@ -182,16 +182,16 @@ function update() {
     }
 
     //Gegner werden erstellt ##
-    if (options.gameParameter.foes.enabled && options.gameParameter.selfScroll) {
-        if (score % (options.gameOptions.foes.spawnIntervall * 20) == 0) {
+    if (options.gameParameter.selfscroll) {
+        if (score % (options.gameParameter.foes.SpawnIntervall * 20) == 0) {
             if (options.gameParameter.scrolldirection == "horizontal") {
                 var by = Math.random() * (canvas.height - 0) + 0;
                 foes.push({
                     x: canvas.width + 10,
                     y: by,
-                    width: options.gameOptions.foes.size.width,
-                    height: options.gameOptions.foes.size.height,
-                    color: options.gameOptions.foes.color,
+                    width: options.gameParameter.foes.size.width,
+                    height: options.gameParameter.foes.size.height,
+                    color: options.gameParameter.foes.color,
                     lives: 1
                 });  
             } else {
@@ -199,9 +199,9 @@ function update() {
                 foes.push({
                     x: by,
                     y: -10,
-                    width: options.gameOptions.foes.width,
-                    height: options.gameOptions.foes.height,
-                    color: options.gameOptions.foes.color,
+                    width: options.gameParameter.foes.size.width,
+                    height: options.gameParameter.foes.size.height,
+                    color: options.gameParameter.foes.color,
                     lives: 1
                 });  
             }
