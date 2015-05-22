@@ -35,10 +35,10 @@ body
 					.thumbnail.indexGameView
 						if(data.imageEnc != null)
 							a(href='/play?game=#{data.id_game}')
-								img.previewPics(src='uploads/#{data.user}/#{data.id_game}.#{data.gamename}/image.#{data.imageEnc}', alt='#{data.gamename}', onerror='showPlaceholder()')
+								img.previewPics(name='#{data.id_game}',src='uploads/#{data.user}/#{data.id_game}.#{data.gamename}/image.#{data.imageEnc}', alt='#{data.gamename}', onerror='showPlaceholder({data.id_game})')
 						else 
 							a(href='/play?game=#{data.id_game}')
-								img.previewPics(src='uploads/#{data.user}/#{data.id_game}.#{data.gamename}/image.png', alt='#{data.gamename}', onerror='showPlaceholder()')
+								img.previewPics(name='#{data.id_game}', src='uploads/#{data.user}/#{data.id_game}.#{data.gamename}/image.png', alt='#{data.gamename}', onerror='showPlaceholder(#{data.id_game})')
 						.caption
 							h3 #{data.gamename}
 							p #{data.description}

@@ -252,8 +252,8 @@ $("form :input").attr("autocomplete", "off");
 
 
 //Zeige placeholder wenn Bild nicht vorhanden
-function showPlaceholder(){
-    $(".previewPics").attr("src","img/placeholder.png");
+function showPlaceholder(id){
+    $('img[name='+id+']').attr("src","img/placeholder.png");
     //document.getElementByClas('gamePreview').src='img/placeholder.png';
 }
 
