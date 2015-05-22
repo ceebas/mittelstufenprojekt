@@ -15,7 +15,6 @@ body
 					a(href='uploads/#{results.user}/#{results.id_game}.#{results.gamename}/parameter.js' download='WeLoveGames_#{results.gamename}.js')  Dieses Spiel downloaden
 			br
 			canvas#canvas
-			img#background.hidden(src='uploads/#{results.user}/#{results.id_game}.#{results.gamename}/background.png', onerror='noBackground()')
 			br
 		#accordion.panel-group
 			.panel.panel-default
@@ -64,3 +63,4 @@ body
 		script(src='uploads/#{results.user}/#{results.id_game}.#{results.gamename}/parameter.js')
 		script(src='js/template.js')
 	include ./layout/footer.jade
+	img#background.hidden(src='uploads/#{results.user}/#{results.id_game}.#{results.gamename}/background.png', onerror='noBackground()')

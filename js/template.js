@@ -52,8 +52,6 @@ function noBackground(){
     }
 }
 
-
-
 //Spielbeginn
 
 function mainLoop() {
