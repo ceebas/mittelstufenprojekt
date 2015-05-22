@@ -43,7 +43,7 @@ if (options.gameParameter.player.shoot.speed == null || options.gameParameter.pl
 }else{
     shootSpeed = options.gameParameter.player.shoot.speed;
 } 
-
+//Wenn hintergrund nicht vorhand, dann andere bilder
 function noBackground(){
     if (options.gameParameter.scrolldirection =="horizontal"){
         background.src = "img/horizontal_preview.png"; 
@@ -53,19 +53,20 @@ function noBackground(){
 }
 
 
+
 //Spielbeginn
 
 function mainLoop() {
-	if (!gameStarted) {
+	/*if (!gameStarted) {
         gameStarted = true;
-		/*renderMenu();
+		renderMenu();
 		if (!scoreSend) {
 			sendScoreRequest();
-		}*/
-	} else {
+		}
+	} else {*/
 		update();
 		render();
-	}
+	//}
 	requestAnimationFrame(mainLoop);
 }
 
@@ -217,16 +218,17 @@ function update() {
 }
 
 function render() {
-    console.log(background.src);
 	//overwrite canvas with new parameter - clear out before!
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     // Erstmal Canvas sauber machen ... alles leer
         ctx.drawImage(background, backX, backY, canvas.width, canvas.height);
         if (options.gameParameter.scrolldirection == "horizontal") {
             ctx.drawImage(background, backX + canvas.width - 1, backY, canvas.width, canvas.height);
+            points = backX;
         } else {
             ctx.drawImage(background, backX, backY + canvas.height - 1, canvas.width, canvas.height);
             ctx.drawImage(background, backX, backY - canvas.height + 1, canvas.width, canvas.height);
+            points = backY;
         }
 
 
@@ -357,11 +359,6 @@ function shot() {
     width: 10,
     height: 10
 });
-}
-
-function sendScoreRequest() {
-	//post request with score object
-	scoreSend = true;
 }
 
 //Tastaturanschläge abfangen
