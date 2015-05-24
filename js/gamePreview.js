@@ -277,8 +277,9 @@ window.addEventListener("load", function(){
 function update() {
     if (gameOptions.selfScroll) {
         multiplier = gameOptions.scrollspeed * 2;
+        
 
-        score = Math.floor(score + multiplier);
+        score = Math.floor(score + 1);
         if (gameOptions.horizontal) {
             backX -= multiplier;
         } else {
