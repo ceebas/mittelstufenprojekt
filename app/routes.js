@@ -297,6 +297,7 @@ module.exports = function(app, passport, multiparty, nodemailer, accessDb, zip, 
 	app.post('/uploadGameFiles', function(request, response) {
 		var form = new multiparty.Form();
 		form.parse(request, function(err, fieldsObject, filesObject, fieldsList, filesList) {
+			console.log(request.body);
 			accessDb.createGameFiles(request, fieldsObject, filesObject, fieldsList, filesList, render);
 			function render(redirect, err) {
 				if(err) {
