@@ -395,6 +395,7 @@ module.exports = function(app, passport, multiparty, nodemailer, accessDb, zip, 
 	app.get('/removeGame', isLoggedIn, function(request, response) {
 			accessDb.removeGame(request, render);
 			function render(redirect, err) {
+				//Timeout, damit unsere wunderschönen Animationen überhaupt angezeigt werden
 				setTimeout(function() {
 					response.redirect(redirect);
 				}, 1000);
