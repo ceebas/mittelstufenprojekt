@@ -356,7 +356,12 @@ function render() {
     ctx.font="20px Arial";
     ctx.fillText("Punkte: " + Math.floor(points),10,20);
     //Wasserzeichen
-    ctx.fillText("We♥Games",canvas.width - 110,canvas.height -5);
+    ctx.fillStyle="#fff";
+    ctx.fillText("We",canvas.width - 110,canvas.height -5);
+    ctx.fillStyle="#F00";
+    ctx.fillText("♥",canvas.width - 80,canvas.height -5);
+    ctx.fillStyle="#fff";
+    ctx.fillText("Games",canvas.width - 68,canvas.height -5);
 
 }
 function shot() {
