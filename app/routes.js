@@ -411,7 +411,7 @@ module.exports = function(app, passport, multiparty, nodemailer, accessDb, zip, 
 			}
 		}
 	});
-
+	/*
 	app.get('/download', isLoggedIn, function(request, response) {
 		var gameId = request.param("gameId");
 		accessDb.getGame(gameId, request, validate);
@@ -434,6 +434,7 @@ module.exports = function(app, passport, multiparty, nodemailer, accessDb, zip, 
 			}
 		}
 	});
+	*/
 };
 
 //alle Dateien eines Ordners lesen
