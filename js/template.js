@@ -85,7 +85,6 @@ function sendScoreRequest(){
     req.open('POST', '/submitScore');
     req.setRequestHeader('Content-Type', 'application/json');
     req.send(JSON.stringify(data));
-    sweetAlert("Du bist Tot", "Du hast " +Math.floor(points) +" Punkte erreicht.", "error");
     backX = 0;
     backY = 0;
     points = 0;
@@ -189,6 +188,7 @@ function update() {
             foes = [];          
             shots = [];
             gameStarted = false;
+            sweetAlert("Du bist Tot", "Du hast " +Math.floor(points) +" Punkte erreicht.", "error");
             sendScoreRequest();
             //points = 0;
             if (gameStarted){
