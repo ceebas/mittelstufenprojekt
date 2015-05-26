@@ -85,6 +85,7 @@ function sendScoreRequest(){
     req.open('POST', '/submitScore');
     req.setRequestHeader('Content-Type', 'application/json');
     req.send(JSON.stringify(data));
+    sweetAlert("Du bist Tot", "Du hast " +Math.floor(points) +" Punkte erreicht.", "error");
     backX = 0;
     backY = 0;
     points = 0;
@@ -173,7 +174,7 @@ function update() {
             if (dir === "b" || dir ===  "t" || dir === "l" || dir === "r") {
                 foes[j].lives--;
                 shots.splice(k, 1);
-                console.log("1");
+                //console.log("1");
             }
         }
        // shots.splice(k, 1);
@@ -231,11 +232,11 @@ function render() {
     ctx.drawImage(background, backX, backY, canvas.width, canvas.height);
     if (options.gameParameter.scrolldirection == "horizontal") {
         ctx.drawImage(background, backX + canvas.width - 1, backY, canvas.width, canvas.height);
-        points += Math.floor(backX * -1);
+        points += Math.floor(backX * -1)/100;
     } else {
         ctx.drawImage(background, backX, backY + canvas.height - 1, canvas.width, canvas.height);
         ctx.drawImage(background, backX, backY - canvas.height + 1, canvas.width, canvas.height);
-        points += Math.floor(backY);
+        points += Math.floor(backY)/100;
     }
 
 
