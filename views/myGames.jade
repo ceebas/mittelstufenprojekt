@@ -23,7 +23,7 @@ panel-body
 										p #{data.description}
 										p
 										a.btn.btn-primary(href='/play?game=#{data.id_game}', role='button') Anzeigen 
-										a.btn.btn-primary(href='/removeGame?gameId=#{data.id_game}', title='Spiel aktivieren')
+										a.btn.btn-primary(href='/removeGame?gameId=#{data.id_game}', title='Spiel aktivieren', onclick='swal({title: "#{data.gamename} wurde aktiviert", text: "Das Spiel ist nun für jeden sichtbar", showConfirmButton: false, type: "success"});')
 											span.glyphicon.glyphicon-ok
 							else		
 								.thumbnail.indexGameView
@@ -36,7 +36,7 @@ panel-body
 										p #{data.description}
 										p
 										a.btn.btn-primary(href='/play?game=#{data.id_game}', role='button') Anzeigen 
-										a.btn.btn-primary(href='/removeGame?gameId=#{data.id_game}', title='Spiel deaktivieren')
+										a.btn.btn-primary(href='/removeGame?gameId=#{data.id_game}', title='Spiel deaktivieren', onclick='swal({title: "#{data.gamename} wurde deaktiviert", text: "Das Spiel ist nun nicht mehr sichtbar", showConfirmButton: false, type: "error"});')
 											span.glyphicon.glyphicon-remove
 				else
 					div.alert.alert-warning Du hast noch keine Spiele hochgeladen oder erstellt.
