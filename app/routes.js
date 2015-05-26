@@ -189,11 +189,10 @@ module.exports = function(app, passport, multiparty, nodemailer, accessDb, zip, 
 			gameObj.gameParameter.foes.color = requestObj.foes_color;
 			gameObj.gameParameter.images.foe = "newImage()";
 		}
-		
 		if (requestObj.player_shoot_enabled) {
 			gameObj.gameParameter.player.shoot = {
 				"enabled": requestObj.player_shoot_enabled,
-				"speed": requestObj.player_shoot_speed,
+				"speed": requestObj.shoot_speed,
 				"shape": requestObj.player_shoot_shape,
 				"color": requestObj.player_shoot_color
 			}
