@@ -16,6 +16,7 @@ var keys = {},
     points = 0,
     // Parameter die generisch seinen müssen
     gameStarted = false,
+    disableGameStart = false,
     player_x = canvasWidth / 2,
     player_y = canvasHeight/2,
     playerVel = 1,
@@ -195,7 +196,21 @@ function update() {
             foes = [];          
             shots = [];
             gameStarted = false;
-            sweetAlert("Game Over!", "Du hast " +Math.floor(points) +" Punkte erreicht.", "error");
+            //swal("Game Over!", "Du hast " +Math.floor(points) +" Punkte erreicht.", "error");
+            disableGameStart = true;
+            swal({
+            title: "Game Over",
+            text: "Du hast " + Math.floor(points) + " Punkte erreicht.",
+            type: "error",
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "OK",
+            closeOnConfirm: true
+            },
+            function(){
+                disableGameStart = false;
+            });
+
+
             sendScoreRequest();
             //points = 0;
             if (gameStarted){
@@ -367,14 +382,15 @@ function shot() {
 
 //Tastaturanschläge abfangen
 document.body.addEventListener("keydown", function(e) {
-  if (gameStarted) {
-        e.preventDefault();
-    } else {
-        gameStarted = true;
-        requestAnimationFrame(mainLoop);
-    }
-    keys[e.keyCode] = true;
-    }, false);
+    if (!disableGameStart) {  
+      if (gameStarted) {
+            e.preventDefault();
+        } else {
+            gameStarted = true;
+            requestAnimationFrame(mainLoop);
+        }}
+        keys[e.keyCode] = true;
+        }, false);
 
 document.body.addEventListener("keyup", function(e) {
   keys[e.keyCode] = false;
