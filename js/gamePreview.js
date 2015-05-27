@@ -61,9 +61,9 @@ backX = 0,
 backY = 0,
 borders = [{
     position: "bottom",
-    x: 0,
+    x: -500,
     y: canvasHeight - 5,
-    width: canvasWidth,
+    width: canvasWidth + 500,
     height: 5
 }];
 background.src = "./img/horizontal_preview.png";
@@ -85,9 +85,9 @@ function changeBorder(id) {
             gameOptions.borders.top = true;
             borders.push({
                 position: "top",
-                x: 0,
+                x: -500,
                 y: 0,
-                width: canvasWidth,
+                width: canvasWidth + 500,
                 height: 5
             });
         }else{
@@ -99,9 +99,9 @@ function changeBorder(id) {
             gameOptions.borders.bottom = true;
             borders.push({
                 position: "bottom",
-                x: 0,
+                x: -500,
                 y: canvasHeight - 5,
-                width: canvasWidth,
+                width: canvasWidth + 500,
                 height: 5
             });
         }else{
@@ -406,6 +406,7 @@ function render() {
     ctx.drawImage(background, backX, backY, canvasWidth, canvasHeight);
     if (gameOptions.horizontal) {
         ctx.drawImage(background, backX + canvasWidth - 1, backY, canvasWidth, canvasHeight);
+        ctx.drawImage(background, backX - canvasWidth + 1, backY, canvasWidth, canvasHeight);
     } else {
         ctx.drawImage(background, backX, backY + canvasHeight - 1, canvasWidth, canvasHeight);
         ctx.drawImage(background, backX, backY - canvasHeight + 1, canvasWidth, canvasHeight);
