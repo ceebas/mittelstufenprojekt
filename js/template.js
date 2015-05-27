@@ -239,6 +239,7 @@ function render() {
     ctx.drawImage(background, backX, backY, canvas.width, canvas.height);
     if (options.gameParameter.scrolldirection == "horizontal") {
         ctx.drawImage(background, backX + canvas.width - 1, backY, canvas.width, canvas.height);
+        ctx.drawImage(background, backX - canvas.width + 1, backY, canvas.width, canvas.height);
         points += Math.floor(backX * -1)/100;
     } else {
         ctx.drawImage(background, backX, backY + canvas.height - 1, canvas.width, canvas.height);
@@ -447,9 +448,9 @@ function collisionPlayerBorder(shapeA, shapeB) {
 
 function createBorders(){
         if (options.gameParameter.borders.top) {
-            borderX = 0;
+            borderX = -500;
             borderY = 0;
-            borderWidth = canvas.width;
+            borderWidth = canvas.width + 500;
             borderHeight = 5;
             //ctx.fillStyle = "red";
             ctx.fillRect(borderX, borderY, borderWidth, borderHeight);
@@ -462,9 +463,9 @@ function createBorders(){
             });
         }
         if (options.gameParameter.borders.bottom) {
-            borderX = 0;
+            borderX = -500;
             borderY = canvas.height - 5;
-            borderWidth = canvas.width;
+            borderWidth = canvas.width + 500;
             borderHeight = 5;
             //ctx.fillStyle = "red";
             ctx.fillRect(borderX, borderY, borderWidth, borderHeight);
