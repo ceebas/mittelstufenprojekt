@@ -117,10 +117,26 @@ function update() {
         player_y += playerVel * options.gameParameter.player.speed;
     }
     if (keys[65] || keys[37]) {    //left
-        player_x -= playerVel * options.gameParameter.player.speed;
+        //player_x -= playerVel * options.gameParameter.player.speed;
+        if (!options.gameParameter.selfscroll && player_x >= canvas.width - 100) {
+            backX += 16;
+            player_x -= playerVel * options.gameParameter.player.speed;
+        } else if (!options.gameParameter.selfscroll && player_x <= 100) {
+            backX += 16;
+        } else {
+            player_x -= playerVel * options.gameParameter.player.speed;
+        }
     }
     if (keys[68] || keys[39]) {    //right
-        player_x += playerVel * options.gameParameter.player.speed;
+        //player_x += playerVel * options.gameParameter.player.speed;
+         if (!options.gameParameter.selfscroll && player_x >= canvas.width - 100) {
+            backX -= 16;
+        } else if (!options.gameParameter.selfscroll && player_x <= 100) {
+            backX -= 16;
+            player_x += playerVel * options.gameParameter.player.speed;
+        } else {
+            player_x += playerVel * options.gameParameter.player.speed;
+        }
     }
     if (keys[32] ) {    //Leertaste
         if (options.gameParameter.player.shoot.enabled) {
