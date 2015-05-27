@@ -1,31 +1,34 @@
-var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame,
-canvas = document.getElementById('canvas'),
-ctx = canvas.getContext('2d');
+var requestAnimationFrame = window.requestAnimationFrame || 
+                            window.mozRequestAnimationFrame || 
+                            window.webkitRequestAnimationFrame || 
+                            window.msRequestAnimationFrame,
+    canvas = document.getElementById('canvas'),
+    ctx = canvas.getContext('2d');
 var keys = {},
-shots = [],
-foes = [],
-shotVar = 10,
-score = 0,
-multiplier = 0,
-canvasHeight = 400, 
-canvasWidth = 600,
-scoreSend,
-points = 0,
-// Parameter die generisch seinen müssen
-gameStarted = false,
-player_x = canvasWidth / 2,
-player_y = canvasHeight/2,
-playerVel = 1,
-//Border
-borderX = 0,
-borderY = 0,
-borderWidth = 0,
-borderHeight = 0,
-borderArray = [],
-shots = [],
-background = new Image(),
-backX = 0,
-backY = 0;
+    shots = [],
+    foes = [],
+    shotVar = 10,
+    score = 0,
+    multiplier = 0,
+    canvasHeight = 400, 
+    canvasWidth = 600,
+    scoreSend,
+    points = 0,
+    // Parameter die generisch seinen müssen
+    gameStarted = false,
+    player_x = canvasWidth / 2,
+    player_y = canvasHeight/2,
+    playerVel = 1,
+    //Border
+    borderX = 0,
+    borderY = 0,
+    borderWidth = 0,
+    borderHeight = 0,
+    borderArray = [],
+    shots = [],
+    background = new Image(),
+    backX = 0,
+    backY = 0;
 background.src = "img/horizontal_preview.png";
 
 if (options.gameParameter.scrolldirection == "horizontal"){
@@ -44,7 +47,6 @@ function noBackground(){
     }
 }
 
-
 //Spielbeginn
 
 function mainLoop() {
@@ -61,13 +63,10 @@ function mainLoop() {
 		update();
 		render();
         requestAnimationFrame(mainLoop);
-	}
-	
+	}	
 }
 
-
 function renderMenu() {
-
 
 };
 
