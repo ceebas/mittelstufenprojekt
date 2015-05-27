@@ -180,7 +180,7 @@ function update() {
             foes = [];          
             shots = [];
             gameStarted = false;
-            sweetAlert("Du bist Tot", "Du hast " +Math.floor(points) +" Punkte erreicht.", "error");
+            sweetAlert("Game Over!", "Du hast " +Math.floor(points) +" Punkte erreicht.", "error");
             sendScoreRequest();
             //points = 0;
             if (gameStarted){
