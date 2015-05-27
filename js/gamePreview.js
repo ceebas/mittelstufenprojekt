@@ -285,7 +285,7 @@ function update() {
         }
     }
     if (gameOptions.horizontal) {
-        gameOptions.player.y += gameOptions.player.gravity * gameOptions.player.speed /** 5*/; 
+        gameOptions.player.y += gameOptions.player.gravity * gameOptions.player.speed /** 5*/;
     } else {
         gameOptions.player.y += gameOptions.player.gravity * gameOptions.player.speed /** 5*/;
     }
@@ -299,12 +299,28 @@ function update() {
         gameOptions.player.velY = gameOptions.player.speed * 50;
     }
     if (keys[65] || keys[37]) {    //left
-        gameOptions.player.x -= 8;
-        gameOptions.player.velY = gameOptions.player.speed * 50;
+        if (!gameOptions.selfScroll && gameOptions.player.x >= canvasWidth - 100) {
+            backX += 16;
+            gameOptions.player.x -= 8;
+            gameOptions.player.velY = gameOptions.player.speed * 50;
+        } else if (!gameOptions.selfScroll && gameOptions.player.x <= 100) {
+            backX += 16;
+        } else {
+            gameOptions.player.x -= 8;
+            gameOptions.player.velY = gameOptions.player.speed * 50;
+        }
     }
     if (keys[68] || keys[39]) {    //right
-        gameOptions.player.x += 8;
-        gameOptions.player.velY = -gameOptions.player.speed * 50;
+        if (!gameOptions.selfScroll && gameOptions.player.x >= canvasWidth - 100) {
+            backX -= 16;
+        } else if (!gameOptions.selfScroll && gameOptions.player.x <= 100) {
+            backX -= 16;
+            gameOptions.player.x += 8;
+            gameOptions.player.velY = -gameOptions.player.speed * 50;
+        } else {
+            gameOptions.player.x += 8;
+            gameOptions.player.velY = -gameOptions.player.speed * 50;
+        }
     }
     if (keys[32] ) {    //Leertaste
         if (gameOptions.player.shoot.enabled) {

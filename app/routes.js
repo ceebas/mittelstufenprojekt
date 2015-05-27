@@ -80,7 +80,10 @@ module.exports = function(app, passport, multiparty, nodemailer, accessDb, zip, 
 	});
 
 	app.get('/impressum', function(request, response) {
-		response.render('impressum.jade');
+		response.render('impressum.jade', {
+			title: 'we♥games | Impressum',
+			user: request.user
+		});
 	});
 	
 	/* Bearbeiten von Nutzerangaben */	
