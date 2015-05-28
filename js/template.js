@@ -30,7 +30,7 @@ var keys = {},
     background = new Image(),
     backX = 0,
     backY = 0;
-background.src = "img/horizontal_preview.png";
+background.src = backgroundPath;
 
 if (options.gameParameter.scrolldirection == "horizontal"){
     canvas.width = 600;
