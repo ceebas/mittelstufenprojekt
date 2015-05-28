@@ -21,7 +21,6 @@ module.exports = function(app, passport, multiparty, nodemailer, accessDb, zip, 
 		}
 		accessDb.getGameAndHighscores(gameId,request, render);
 		function render(rowsGame, rowsScore, err) {
-			console.log(request.user);
 			if (rowsGame[0] == undefined || request.user == null && rowsGame[0].inactive == 1||request.user != null && (request.user.id_user != rowsGame[0].user && rowsGame[0].inactive == 1)) {
 				request.flash('message', 'Dieses Spiel wurde leider nicht gefunden!');
 				response.redirect('/');
@@ -300,7 +299,6 @@ module.exports = function(app, passport, multiparty, nodemailer, accessDb, zip, 
 	app.post('/uploadGameFiles', function(request, response) {
 		var form = new multiparty.Form();
 		form.parse(request, function(err, fieldsObject, filesObject, fieldsList, filesList) {
-			console.log(request.body);
 			accessDb.createGameFiles(request, fieldsObject, filesObject, fieldsList, filesList, render);
 			function render(redirect, err) {
 				if(err) {
