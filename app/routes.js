@@ -21,7 +21,8 @@ module.exports = function(app, passport, multiparty, nodemailer, accessDb, zip, 
 		}
 		accessDb.getGameAndHighscores(gameId,request, render);
 		function render(rowsGame, rowsScore, err) {
-			if (rowsGame[0] == undefined || request.user == null && rowsGame[0].inactive == 1||request.user != null && (request.user.id_user != rowsGame[0].user || request.user.isAdmin != 1) && rowsGame[0].inactive == 1) {
+			console.log(request.user);
+			if (rowsGame[0] == undefined || request.user == null && rowsGame[0].inactive == 1||request.user != null && (request.user.id_user != rowsGame[0].user && rowsGame[0].inactive == 1)) {
 				request.flash('message', 'Dieses Spiel wurde leider nicht gefunden!');
 				response.redirect('/');
 			} else {
