@@ -16,7 +16,7 @@ body
 			-if(message != undefined && message.length > 0)
 				div.alert.alert-warning #{message}
 			-if(search != undefined)
-				-if (results[0] != undefined)
+				-if ( results != undefined && results[0] != undefined)
 					div.alert.alert-success Deine Suche nach "#{search}" hat folgendes Ergeben:
 				-else
 					div.alert.alert-warning Deine Suche nach "#{search}" hatte leider keine Ergebnisse :(
