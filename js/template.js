@@ -181,7 +181,7 @@ function update() {
             if (dir === "b" || dir ===  "t" || dir === "l" || dir === "r") {
                 foes[j].lives--;
                 shots.splice(k, 1);
-                //console.log("1");
+                foes.splice(j,1);
             }
         }
        // shots.splice(k, 1);
@@ -327,7 +327,6 @@ function render() {
         
         if (shots[s].y < (-50)) {
             shots.splice(s,1);
-            console.log("2");
         }
     }
 
@@ -368,6 +367,8 @@ function render() {
     ctx.fillText("♥",canvas.width - 80,canvas.height -5);
     ctx.fillStyle="#fff";
     ctx.fillText("Games",canvas.width - 68,canvas.height -5);
+
+
 
 }
 function shot() {
