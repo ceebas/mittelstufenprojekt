@@ -47,6 +47,7 @@ gameOptions = {
         shoot: {
             enabled: false,
             speed: 1,
+            interval: 10,
             shape: "eckig",
             color: "#FF0000"
         },
@@ -334,7 +335,7 @@ function update() {
     }
     if (keys[32] ) {    //Leertaste
         if (gameOptions.player.shoot.enabled) {
-            if (shotVar == 10) {
+            if (shotVar > gameOptions.player.shoot.interval) {
                 shot();
                 shotVar = 0;
             } else {

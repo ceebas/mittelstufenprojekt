@@ -140,7 +140,7 @@ function update() {
     }
     if (keys[32] ) {    //Leertaste
         if (options.gameParameter.player.shoot.enabled) {
-            if (shotVar == 10) {
+            if (shotVar > options.gameParameter.player.shoot.interval) {
                 shot();
                 shotVar = 0;
             } else {

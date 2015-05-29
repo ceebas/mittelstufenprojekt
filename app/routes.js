@@ -196,6 +196,7 @@ module.exports = function(app, passport, multiparty, nodemailer, accessDb, zip, 
 			gameObj.gameParameter.player.shoot = {
 				"enabled": requestObj.player_shoot_enabled,
 				"speed": requestObj.shoot_speed,
+				"interval": requestObj.shoot_interval,
 				"shape": requestObj.player_shoot_shape,
 				"color": requestObj.player_shoot_color
 			}
