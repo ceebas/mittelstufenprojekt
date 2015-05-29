@@ -204,11 +204,11 @@ function getPlayerOptions(kind, value) {
         } 
     }
     if ($('input#player_width').val() != ''){
-        gameOptions.player.width = parseInt($('input#player_width').val()) + 11;
+        gameOptions.player.width = parseInt($('input#player_width').val());
     }
 
     if ($('input#player_height').val() != ''){
-        gameOptions.player.height = parseInt($('input#player_height').val()) + 11;
+        gameOptions.player.height = parseInt($('input#player_height').val());
     }
     gameOptions.player.color = $('input#player_color').val();
     //gameOptions.player.images.normal.src = "http://placehold.it/"+gameOptions.player.width+"x"+gameOptions.player.height;
@@ -365,6 +365,7 @@ function update() {
             if (dir === "b" || dir ===  "t" || dir === "l" || dir === "r") {
                 foes[j].lives--;
                 shots.splice(k, 1);
+                foes.splice(j,1);
             }
         }
        // shots.splice(k, 1);

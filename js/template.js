@@ -279,7 +279,7 @@ function render() {
         ctx.beginPath();
         ctx.lineWidth = 0.1;
         ctx.strokeStyle = '#003300';
-        ctx.rect(player_x, player_y, options.gameParameter.player.size.width, options.gameParameter.player.size.height);
+        ctx.rect(player_x, player_y, parseInt(options.gameParameter.player.size.width), parseInt(options.gameParameter.player.size.height));
         ctx.stroke();
         ctx.fillStyle = options.gameParameter.player.color;
         ctx.fillRect(player_x, player_y, options.gameParameter.player.size.width, options.gameParameter.player.size.height);
