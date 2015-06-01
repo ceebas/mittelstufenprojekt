@@ -204,6 +204,7 @@ function update() {
             type: "error",
             confirmButtonColor: "#DD6B55",
             confirmButtonText: "OK",
+            allowEscapeKey: false,
             closeOnConfirm: true
             },
             function(){
