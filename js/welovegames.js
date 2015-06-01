@@ -57,14 +57,13 @@ function uploadUserFiles() {
         data: formData,
         type: 'POST',
         processData: false,
+        async: false,
         cache: false,
-        contentType: false,
-        success: bla
-   });
+        contentType: false
+    });
+    return false;
 }
-function bla() {
-    console.log("bla");
-}
+
 // Textarea-Limit-Anzeige für Spielbeschreibung
 function textareaLimiter() {
     var length = $('textarea#gamedescription').val().length;
