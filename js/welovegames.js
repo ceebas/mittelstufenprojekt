@@ -18,7 +18,7 @@ function uploadFile() {
         gamename: document.getElementById("gamename").value,
         gamedescription: document.getElementById("gamedescription").value,
     }
-    
+
     if (!file) {
         return;
     }
@@ -51,21 +51,14 @@ function handleSelfCreatedGameFileUploadEvent(e) {
 
 // Wird aufgerufen, wenn beim selbst erstellten Spiel die Dateien hochgeladen werden
 function uploadUserFiles() {
-    var formData = new FormData();
-    for(i=0;i<files.length;i++) {
-        var filename = files[i];
-        i++;
-        var file = files[i];
-        formData.append(filename, file);
-    }
-
-    console.log(formData);
-
+    var formData = new FormData($('#files')[0]);
     $.ajax({
         url: '/uploadGameFiles',
         data: formData,
         type: 'POST',
         processData: false,
+        cache: false,
+        contentType: false,
         success: bla
    });
 }
@@ -81,7 +74,7 @@ function textareaLimiter() {
 
 // Spieltitel wird limitiert und von Sonderzeichen gefiltert
 function inputValidator() {
-    
+
     var length = $('input#gamename').val().length;
     var maxlength = $('input#gamename').attr('maxlength');
     $('#titleletters').text(maxlength-length);
