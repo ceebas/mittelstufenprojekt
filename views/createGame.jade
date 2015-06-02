@@ -105,10 +105,9 @@ body
 
 							br
 							// Schießen
-							input#player_shoot_enable(type='checkbox', name='player_shoot_enabled', value='true', onchange='showDiv("shoot")')
+							input#player_shoot_enable(type='checkbox', name='player_shoot_enabled', value='true', onchange='showDiv("shoot"); gameOptions.player.shoot.enabled=this.checked')
 							|  Schießen erlauben (mit Leertaste)
 							br
-
 							//	Wenn an dann folgende werte zeigen
 							div#shoot_enabled.hidden
 
