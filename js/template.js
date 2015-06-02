@@ -222,7 +222,7 @@ function update() {
 
     //Gegner werden erstellt ##
     if (options.gameParameter.selfscroll) {
-        if (score % (parseInt(options.gameParameter.foes.SpawnIntervall) * 20) == 0) {
+        if (points % (parseInt(options.gameParameter.foes.SpawnIntervall) * 20) == 0) {
             if (options.gameParameter.scrolldirection == "horizontal") {
                 var by = Math.random() * (canvas.height - 0) + 0;
                 foes.push({
