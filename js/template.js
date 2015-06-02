@@ -256,14 +256,16 @@ function render() {
     if (options.gameParameter.scrolldirection == "horizontal") {
         ctx.drawImage(background, backX + canvas.width - 1, backY, canvas.width, canvas.height);
         ctx.drawImage(background, backX - canvas.width + 1, backY, canvas.width, canvas.height);
-        points += Math.floor(backX * -1)/100;
+        //points += Math.floor(backX * -1)/100;
     } else {
         ctx.drawImage(background, backX, backY + canvas.height - 1, canvas.width, canvas.height);
         ctx.drawImage(background, backX, backY - canvas.height + 1, canvas.width, canvas.height);
-        points += Math.floor(backY)/100;
+        //points += Math.floor(backY)/100;
     }
 
-
+    //Punkte hochzählen
+    points += 1
+    
 
 
 
@@ -356,6 +358,10 @@ function render() {
         }
     }
 
+
+    if (!gameStarted) {
+        points = 0;
+    }    
 
     // Render points
     ctx.fillStyle=options.gameParameter.player.color;
