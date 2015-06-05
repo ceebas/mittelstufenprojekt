@@ -70,7 +70,7 @@ borders = [{
 background.src = "./img/horizontal_preview.png";
 canvas.width = canvasWidth;
 canvas.height = canvasHeight;
-
+//canvas.tabIndex = 1;
 
 function changeBorder(id) {
     //Betreffende Border suchen und aus Array entfernen
@@ -310,11 +310,11 @@ function update() {
         gameOptions.player.velY = gameOptions.player.speed * 50;
     }
     if (keys[65] || keys[37]) {    //left
-        if (!gameOptions.selfScroll && gameOptions.player.x >= canvasWidth - 100) {
+        if (!gameOptions.selfScroll && gameOptions.player.x >= canvasWidth - 100 && gameOptions.horizontal) {
             backX += 16;
             gameOptions.player.x -= 8;
             gameOptions.player.velY = gameOptions.player.speed * 50;
-        } else if (!gameOptions.selfScroll && gameOptions.player.x <= 100) {
+        } else if (!gameOptions.selfScroll && gameOptions.player.x <= 100 && gameOptions.horizontal) {
             backX += 16;
         } else {
             gameOptions.player.x -= 8;
@@ -322,9 +322,9 @@ function update() {
         }
     }
     if (keys[68] || keys[39]) {    //right
-        if (!gameOptions.selfScroll && gameOptions.player.x >= canvasWidth - 100) {
+        if (!gameOptions.selfScroll && gameOptions.player.x >= canvasWidth - 100 && gameOptions.horizontal ) {
             backX -= 16;
-        } else if (!gameOptions.selfScroll && gameOptions.player.x <= 100) {
+        } else if (!gameOptions.selfScroll && gameOptions.player.x <= 100 && gameOptions.horizontal) {
             backX -= 16;
             gameOptions.player.x += 8;
             gameOptions.player.velY = -gameOptions.player.speed * 50;
@@ -421,10 +421,13 @@ function render() {
         ctx.drawImage(background, backX + canvasWidth - 1, backY, canvasWidth, canvasHeight);
         ctx.drawImage(background, backX - canvasWidth + 1, backY, canvasWidth, canvasHeight);
     } else {
-        //ctx.drawImage(background, backX, backY + canvasHeight - 1, canvasWidth, canvasHeight);
-        //ctx.drawImage(background, backX, backY - canvasHeight + 1, canvasWidth, canvasHeight);
-        ctx.drawImage(background, backX + canvasWidth - 1, backY, canvasWidth, canvasHeight);
-        ctx.drawImage(background, backX - canvasWidth + 1, backY, canvasWidth, canvasHeight);
+        if (gameOptions.selfScroll) {
+            ctx.drawImage(background, backX, backY + canvasHeight - 1, canvasWidth, canvasHeight);
+            ctx.drawImage(background, backX, backY - canvasHeight + 1, canvasWidth, canvasHeight);
+        }
+             
+        //ctx.drawImage(background, backX + canvasWidth - 1, backY, canvasWidth, canvasHeight);
+        //ctx.drawImage(background, backX - canvasWidth + 1, backY, canvasWidth, canvasHeight);
     }
 
     for (var s = 0; s < borders.length; s++) {
@@ -566,7 +569,7 @@ function sendScoreRequest() {
 
 //Tastaturanschläge abfangen
 document.body.addEventListener("keydown", function(e) {
-  if (gameStarted) {
+if (gameStarted) {
     e.preventDefault();
 }
 keys[e.keyCode] = true;

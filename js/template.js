@@ -118,10 +118,10 @@ function update() {
     }
     if (keys[65] || keys[37]) {    //left
         //player_x -= playerVel * options.gameParameter.player.speed;
-        if (!options.gameParameter.selfscroll && player_x >= canvas.width - 100) {
+        if (!options.gameParameter.selfscroll && player_x >= canvas.width - 100 && options.gameParameter.scrolldirection == "horizontal") {
             backX += 16;
             player_x -= playerVel * options.gameParameter.player.speed;
-        } else if (!options.gameParameter.selfscroll && player_x <= 100) {
+        } else if (!options.gameParameter.selfscroll && player_x <= 100 && options.gameParameter.scrolldirection == "horizontal") {
             backX += 16;
         } else {
             player_x -= playerVel * options.gameParameter.player.speed;
@@ -129,9 +129,9 @@ function update() {
     }
     if (keys[68] || keys[39]) {    //right
         //player_x += playerVel * options.gameParameter.player.speed;
-         if (!options.gameParameter.selfscroll && player_x >= canvas.width - 100) {
+         if (!options.gameParameter.selfscroll && player_x >= canvas.width - 100 && options.gameParameter.scrolldirection == "horizontal") {
             backX -= 16;
-        } else if (!options.gameParameter.selfscroll && player_x <= 100) {
+        } else if (!options.gameParameter.selfscroll && player_x <= 100 && options.gameParameter.scrolldirection == "horizontal") {
             backX -= 16;
             player_x += playerVel * options.gameParameter.player.speed;
         } else {
@@ -260,8 +260,8 @@ function render() {
     } else {
         ctx.drawImage(background, backX, backY + canvas.height - 1, canvas.width, canvas.height);
         ctx.drawImage(background, backX, backY - canvas.height + 1, canvas.width, canvas.height);
-        ctx.drawImage(background, backX + canvas.width - 1, backY, canvas.width, canvas.height);
-        ctx.drawImage(background, backX - canvas.width + 1, backY, canvas.width, canvas.height);
+        //ctx.drawImage(background, backX + canvas.width - 1, backY, canvas.width, canvas.height);
+        //ctx.drawImage(background, backX - canvas.width + 1, backY, canvas.width, canvas.height);
         //points += Math.floor(backY)/100;
     }
 
