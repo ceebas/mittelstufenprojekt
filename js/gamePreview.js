@@ -292,18 +292,18 @@ function update() {
     }
     //Tastaturabfragen
     if (keys[87] || keys[38]) {    //up
-        if (!gameOptions.selfScroll && gameOptions.player.y <= 50) {
+       // if (!gameOptions.selfScroll && gameOptions.player.y <= 50) {
             //backY += 16;
-            gameOptions.player.y -= 8;
-            gameOptions.player.velY = -gameOptions.player.speed * 50;
-        } else if (!gameOptions.selfScroll && gameOptions.player.y >= canvasHeight - 50) {
+            //gameOptions.player.y -= 8;
+            //gameOptions.player.velY = -gameOptions.player.speed * 50;
+        //} else if (!gameOptions.selfScroll && gameOptions.player.y >= canvasHeight - 50) {
             //backY -= 16;
-            gameOptions.player.y += 8;
-            gameOptions.player.velY = gameOptions.player.speed * 50;
-        } else {
+            //gameOptions.player.y += 8;
+            //gameOptions.player.velY = gameOptions.player.speed * 50;
+       // } else {
             gameOptions.player.y -= 8;
             gameOptions.player.velY = -gameOptions.player.speed * 50;
-        }
+        //}
     }
     if (keys[83] || keys[40]) {    //down
         gameOptions.player.y += 8;
