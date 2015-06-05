@@ -293,11 +293,11 @@ function update() {
     //Tastaturabfragen
     if (keys[87] || keys[38]) {    //up
         if (!gameOptions.selfScroll && gameOptions.player.y <= 50) {
-            backY += 16;
+            //backY += 16;
             gameOptions.player.y -= 8;
             gameOptions.player.velY = -gameOptions.player.speed * 50;
         } else if (!gameOptions.selfScroll && gameOptions.player.y >= canvasHeight - 50) {
-            backY -= 16;
+            //backY -= 16;
             gameOptions.player.y += 8;
             gameOptions.player.velY = gameOptions.player.speed * 50;
         } else {
@@ -416,12 +416,15 @@ function render() {
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
     // Erstmal Canvas sauber machen ... alles leer
     ctx.drawImage(background, backX, backY, canvasWidth, canvasHeight);
+    
     if (gameOptions.horizontal) {
         ctx.drawImage(background, backX + canvasWidth - 1, backY, canvasWidth, canvasHeight);
         ctx.drawImage(background, backX - canvasWidth + 1, backY, canvasWidth, canvasHeight);
     } else {
-        ctx.drawImage(background, backX, backY + canvasHeight - 1, canvasWidth, canvasHeight);
-        ctx.drawImage(background, backX, backY - canvasHeight + 1, canvasWidth, canvasHeight);
+        //ctx.drawImage(background, backX, backY + canvasHeight - 1, canvasWidth, canvasHeight);
+        //ctx.drawImage(background, backX, backY - canvasHeight + 1, canvasWidth, canvasHeight);
+        ctx.drawImage(background, backX + canvasWidth - 1, backY, canvasWidth, canvasHeight);
+        ctx.drawImage(background, backX - canvasWidth + 1, backY, canvasWidth, canvasHeight);
     }
 
     for (var s = 0; s < borders.length; s++) {
