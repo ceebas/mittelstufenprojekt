@@ -260,6 +260,8 @@ function render() {
     } else {
         ctx.drawImage(background, backX, backY + canvas.height - 1, canvas.width, canvas.height);
         ctx.drawImage(background, backX, backY - canvas.height + 1, canvas.width, canvas.height);
+        ctx.drawImage(background, backX + canvas.width - 1, backY, canvas.width, canvas.height);
+        ctx.drawImage(background, backX - canvas.width + 1, backY, canvas.width, canvas.height);
         //points += Math.floor(backY)/100;
     }
 
